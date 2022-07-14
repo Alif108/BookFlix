@@ -6,18 +6,15 @@ require("dotenv").config({ path: "./config.env" });
 
 const port = process.env.PORT || 5000;
 app.use(cors());
-// whatever comes in req.body is in json format
 app.use(express.json());
 
 // import routes
-app.use(require("./routes/register"));
-// app.use(require("./routes/login"));
-app.use(require("./routes/books"))
+const bookRouter = require("./routes/books");
 
-// home page of server
-app.get('/', (req, res) => {
-    res.send("Haha Vodox");
-});
+//app.use(require("./routes/register"));
+// app.use(require("./routes/login"));
+app.use("/books", bookRouter);
+
 
 // connecting to database
 mongoose.connect(process.env.ATLAS_URI, {dbName: "BookFlix", useNewUrlParser: true, useUnifiedTopology: true})
