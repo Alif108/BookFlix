@@ -89,7 +89,7 @@ export default class AddBook extends Component{
         this.setState({
             cover: e.target.files[0],
             coverName: e.target.files[0].name
-        });      
+        });  
     };
 
     savePdf(e) {
@@ -97,58 +97,74 @@ export default class AddBook extends Component{
             pdf: e.target.files[0],
             pdfName: e.target.files[0].name
         });
-        // setPdf(e.target.files[0]);
-        // setPdfName(e.target.files[0].name);
     };
 
-    addBook(e) {
+    async addBook(e) {
         e.preventDefault();
 
-        const book = {
-            title: this.state.title,
-            isbn: this.state.isbn,
-            author: this.state.author,
-            publisher: this.state.publisher,
-            year: this.state.year,
-            genre: this.state.genre,
-            numPage: this.state.numPage,
-            description: this.state.description,
-            cover: this.state.cover,
-            coverName: this.state.coverName,
-            pdf: this.state.pdf,
-            pdfName: this.state.pdfName,
-        }
-
-        console.log(book);
-
-        axios.post("http://localhost:5000/books/add", book)
-            .then(res => console.log(res.data));
-        
-        window.alert("Book Added");
-
-        window.location ="/admin/addbook"
-
-        // this.state = {
-        //     title: "",
-        //     isbn: "",
-        //     author: "",
-        //     publisher: "",
-        //     year: "",
-        //     genre: "",
-        //     numPage: "",
-        //     description: "",
-        //     cover: null,
-        //     coverName: "",
-        //     pdf: null,
-        //     pdfName: "",
+        // const book = {
+        //     title: this.state.title,
+        //     isbn: this.state.isbn,
+        //     author: this.state.author,
+        //     publisher: this.state.publisher,
+        //     year: this.state.year,
+        //     genre: this.state.genre,
+        //     numPage: this.state.numPage,
+        //     description: this.state.description,
+        //     cover: this.state.cover,
+        //     coverName: this.state.coverName,
+        //     pdf: this.state.pdf,
+        //     pdfName: this.state.pdfName,
         // }
-        
-    }
 
-//center the motherfucking h3
-//fix labels of the inputs
-//add validations
-//add admin role base
+        // console.log(book);
+
+        // axios({
+        //     method: "post",
+        //     url: "http://localhost:5000/books/add",
+        //     data: formData,
+        //     headers: {'Content-Type': 'multipart/form-data'}
+        // });
+
+        const formData = new FormData();
+
+        formData.append("title", this.state.title);
+        formData.append("isbn", this.state.isbn);
+        formData.append("author", this.state.author);
+        formData.append("publisher", this.state.publisher);
+        formData.append("year", this.state.year);
+        formData.append("genre", this.state.genre);
+        formData.append("numPage", this.state.numPage);
+        formData.append("description", this.state.description);
+        formData.append("cover", this.state.cover, this.state.coverName);
+        formData.append("pdf", this.state.pdf, this.state.pdfName);
+
+
+
+        try {
+            axios.post("http://localhost:5000/books/add", formData, {headers:{'Content-type': this.state.cover.type}})
+                .then(res => console.log(res.data));
+        } catch (err) {
+            console.log(err);
+        }
+        
+        //window.alert("Book Added");
+
+        this.setState({
+            title: "",
+            isbn: "",
+            author: "",
+            publisher: "",
+            year: "",
+            genre: "",
+            numPage: "",
+            description: "",
+            cover: null,
+            coverName:"",
+            pdf: null,
+            pdfName:"",
+        });        
+    }
 
     render() {
         return(
@@ -236,18 +252,7 @@ export default class AddBook extends Component{
     
 }
 
-
-// const uploadCover = async (e) => {
-//     const formData = new FormData();
-//     formData.append("cover", cover);
-//     formData.append("coverName", coverName);
-//     try {
-//         const res = await axios.post(
-//             "http://localhost:3000/addCover",
-//             formData
-//         );
-//         console.log(res);
-//     } catch (ex) {
-//         console.log(ex);
-//     }
-// };
+//center the motherfucking h3
+//fix labels of the inputs
+//add validations
+//add admin role base
