@@ -163,7 +163,10 @@ export default class AddBook extends Component{
             coverName:"",
             pdf: null,
             pdfName:"",
-        });        
+        });
+        
+        document.getElementById("cover").value = "";
+        document.getElementById("pdf").value = "";
     }
 
     render() {
@@ -177,14 +180,13 @@ export default class AddBook extends Component{
                             <Row>
                                 <Form.Group controlId="formFileSm" className="mb-3">
                                     <Form.Label>Upload book cover</Form.Label>
-                                    <Form.Control className="w-75" type="file" size="sm" onChange={this.saveCover}/>
-                                    {/* <Button size="sm" variant="info" onClick={uploadCover}>Upload</Button> */}
+                                    <Form.Control id="cover" className="w-75" type="file" size="sm" onChange={this.saveCover} ref={ref=> this.fileInput = ref}/>
                                 </Form.Group>
                             </Row>
                             <Row>
                                 <Form.Group controlId="formFileSm" className="mb-3">
                                     <Form.Label>Upload PDF</Form.Label>
-                                    <Form.Control className="w-75" type="file" size="sm" onChange={this.savePdf}/>
+                                    <Form.Control id="pdf" className="w-75" type="file" size="sm" onChange={this.savePdf}/>
                                 </Form.Group>
                             </Row>
                         </Col>
