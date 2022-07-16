@@ -102,30 +102,6 @@ export default class AddBook extends Component{
     async addBook(e) {
         e.preventDefault();
 
-        // const book = {
-        //     title: this.state.title,
-        //     isbn: this.state.isbn,
-        //     author: this.state.author,
-        //     publisher: this.state.publisher,
-        //     year: this.state.year,
-        //     genre: this.state.genre,
-        //     numPage: this.state.numPage,
-        //     description: this.state.description,
-        //     cover: this.state.cover,
-        //     coverName: this.state.coverName,
-        //     pdf: this.state.pdf,
-        //     pdfName: this.state.pdfName,
-        // }
-
-        // console.log(book);
-
-        // axios({
-        //     method: "post",
-        //     url: "http://localhost:5000/books/add",
-        //     data: formData,
-        //     headers: {'Content-Type': 'multipart/form-data'}
-        // });
-
         const formData = new FormData();
 
         formData.append("title", this.state.title);
@@ -144,11 +120,11 @@ export default class AddBook extends Component{
         try {
             axios.post("http://localhost:5000/books/add", formData, {headers:{'Content-type': this.state.cover.type}})
                 .then(res => console.log(res.data));
+            window.alert("Book Added");
         } catch (err) {
             console.log(err);
         }
         
-        //window.alert("Book Added");
 
         this.setState({
             title: "",
