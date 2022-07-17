@@ -13,6 +13,7 @@ const User = new mongoose.Schema(
         badge_id: {type: Number, default: null},
         number_of_books_read: {type: Number, default: 0},
         number_of_total_review: {type: Number, default: 0},
+        role: {type: String, default:"Basic", required: true},
     },
     { collection: 'user' }
 )
