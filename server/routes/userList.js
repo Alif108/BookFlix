@@ -6,18 +6,15 @@ const {adminAuth} = require("../middleware/auth");
 // the collection that will be needed
 const User = require("../models/user.model");
 
-// router.get("/profile", (req, res) => {
-//         // return res.json({data: "OK"});
-//         User.find({}, function (err, result) {
-//                 if (err) throw err;
-//                 res.json(result);
-//               });
-// });
+const userlist = async (req, res) => {
 
-router.get('/userlist', adminAuth, (req, res) => {
-        User.find()
-          .then(users => res.json(users))
-          .catch(err => res.status(404).json({ nousersfound: 'No Users found' }));
-      });
+  let current_user = req.session.user;
+  console.log(current_user);
+  await User.find()
+    .then(users => res.json({users, current_user}))
+    .catch(err => res.status(404).json({ nousersfound: 'No Users found' }));
+}
+
+router.get('/admin/userlist', adminAuth, userlist);
 
 module.exports = router;

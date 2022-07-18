@@ -3,19 +3,31 @@ const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
+const session = require("express-session");
 require("dotenv").config({ path: "./config.env" });
 
 app.use(cors());
 app.use(cookieParser());
+
+const oneDay = 1000 * 60 * 60 * 24;
+const sessionSecretKey = "BOOKFLIX";
+app.use(session({
+  secret: sessionSecretKey,
+  saveUninitialized:true,
+  cookie: { maxAge: oneDay },
+  resave: false 
+}));
+
 // whatever comes in req.body is in json format
 app.use(express.json());
-
-app.use(express.static('files'));
 
 // import routes
 app.use(require("./routes/register"));
 app.use(require("./routes/login"));
 app.use(require("./routes/userList"));
+app.use(require("./routes/adminHome"));
+app.use(require("./routes/userHome"));
+app.use(require("./routes/logout"));
 
 const bookRouter = require("./routes/books");
 app.use("/books", bookRouter);

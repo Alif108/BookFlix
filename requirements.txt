@@ -3,8 +3,10 @@ npm init -y
 npm install mongoose express cors dotenv nodemon
 npm install jsonwebtoken
 npm install bcryptjs
+npm i cookie-parser
+npm i express-session
 
 cd ../client
 npx create-react-app ./
 npm install bootstrap react-router-dom
-npm install jsonwebtoken
+npm i react-bootstrap

@@ -37,28 +37,38 @@ const UserCard = (props) => {
 class UserList extends Component {
   constructor(props) {
     super(props);
-    this.state = {users: []};
+    this.state = {users: [], current_user:""};
   }
 
   componentDidMount() {
-    axios.get('http://localhost:5000/userlist')
+
+    axios.get('http://localhost:5000/admin/userlist', {
+      method: 'GET',
+      headers: {
+        'token': localStorage.getItem('token'),
+      },
+    })
       .then(res => {
-        this.setState({users: res.data})
+        this.setState({users: res.data.users, current_user: res.data.current_user})
       })
       .catch(err =>{
         console.log('Error from UserList');
-      })
-  };
-
+      });
+}
 
   render() {
+
     const users = this.state.users;
-    console.log("PrintUser: " + users);
+    const current_user = this.state.current_user;
+    console.log(this.state.current_user);
     let userList;
+    // let curr_user;
 
     if(!users) {
+      // curr_user = "no current user"
       userList = "there is no user!";
     } else {
+      // curr_user = current_user;
       userList = users.map((user, k) =>
         <UserCard user={user} key={k} />
       );
@@ -83,7 +93,12 @@ class UserList extends Component {
             </div>
 
           </div> */}
-
+          <div className="user">
+            <h1>
+              {/* {current_user.username}   */}
+              BookFlix
+              </h1>
+          </div>
           <div className="list">
                 {userList}
           </div>

@@ -42,18 +42,8 @@ router.post("/login", (req, res) => {
                             {expiresIn: token_age} 
                         );
 
-                        // // After the token is generated, send it as a cookie to the client
-                        res.cookie("jwt", token, {
-                            httpOnly: true,
-                            maxAge: token_age * 1000, // 3hrs in ms
-                        });
-                        
                         console.log("Login successful");
-                        console.log(token);
-                        console.log(data.role);
-                        
-                        res.status(201).json({message: "User successfully Logged in", user: data._id, token});
-                        // return res.redirect("/userlist");
+                        res.status(201).json({message: "User successfully Logged in", user: data, token});
                     }
                     else{
                         console.log("Password does not match");
@@ -71,45 +61,6 @@ router.post("/login", (req, res) => {
         console.log(error);
         res.status(400).json({ message: "An error occurred", user: false });
     };
-
-    // // finding a matching record
-    // const user = User.findOne({
-    //     email: req.body.email,
-    // });
-
-    // if(!user)
-    // {
-    //     return res.json( { status: "error", error: "Invalid Login", user: false} );
-    // }
-    // else
-    // {
-    //     console.log("User logged in");
-    //     console.log(user.username);
-    //     console.log(user.email);
-        
-    //     return res.json({status: "ok", user: true});
-    // }
-
-    
-    // const isPasswordValid = bcrypt.compare(req.body.password, user.password)
-
-    // if(isPasswordValid)
-    // {
-    //     const token = jwt.sign(
-    //         {
-    //             username: user.username,
-    //             email: user.email,
-    //         },
-    //         // secret key
-    //         process.env.LOGIN_SECRET_KEY 
-    //     )
-
-    //     return res.json({ status: "ok", user: token });
-    // }
-    // else
-    // {
-    //     return res.json({ status: "error", user: false });
-    // }
 });
 
 module.exports = router;

@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import logout from "./LogOut";
 
-class adminHome extends Component {
+class UserHome extends Component {
     constructor(props) {
       super(props);
       this.state = {user:""};
@@ -12,7 +12,7 @@ class adminHome extends Component {
   
     componentDidMount() {
   
-      axios.get('http://localhost:5000/admin', {
+      axios.get('http://localhost:5000/user', {
         method: 'GET',
         headers: {
           'token': localStorage.getItem('token'),
@@ -22,7 +22,7 @@ class adminHome extends Component {
           this.setState({user: res.data.user})
         })
         .catch(err =>{
-          console.log('Error from adminHome');
+          console.log('Error from UserHome');
         });
   }
 
@@ -33,10 +33,9 @@ class adminHome extends Component {
   
     render() {
       const user = this.state.user;
-      console.log(user);
       if(user)
         return (
-            <div className="adminHome">
+            <div className="UserHome">
             <div className="container">
                 <div>
                     <h1>
@@ -49,8 +48,9 @@ class adminHome extends Component {
                     </h3>
                 </div>
                 <div>
-                    <a href='/admin/addBook'>Add Book</a><br></br>
-                    <a href='/admin/userlist'>List of Users</a><br></br>
+                    {/* <a href='/admin/addBook'>Add Book</a><br></br>
+                    <a href='/admin/userlist'>List of Users</a> */}
+                    {/* List of Books <br></br> */}
                     <a href='/books'>Books</a>
                 </div>
                 <div>
@@ -68,4 +68,4 @@ class adminHome extends Component {
     }
   }
   
-  export default adminHome;
+  export default UserHome;

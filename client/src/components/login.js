@@ -1,8 +1,6 @@
 import { useState } from 'react';
-import { useNavigate } from "react-router";
 
 export default function Login() {
-	const navigate = useNavigate();
 
     // initializing fields
 	const [email, setEmail] = useState('')
@@ -40,14 +38,18 @@ export default function Login() {
 
 		if(data.user)
         {
-            // localStorage.setItem('token', data.token);
+            localStorage.setItem('token', data.token);
             alert("Login Successful");
 			console.log("Login Successful");
 			console.log(data.token);
 
             // redirect here
 			// navigate("/userlist");
-			window.location.href = "/userlist";
+			console.log(data.user.role);
+			if(data.user.role === "Admin")
+				window.location.href = "/admin";
+			else
+				window.location.href = "/user";
         }
         else
         {
