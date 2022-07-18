@@ -9,6 +9,8 @@ require("dotenv").config({ path: "./config.env" });
 app.use(cors());
 app.use(cookieParser());
 
+app.use(express.static('files'));
+
 const oneDay = 1000 * 60 * 60 * 24;
 const sessionSecretKey = "BOOKFLIX";
 app.use(session({

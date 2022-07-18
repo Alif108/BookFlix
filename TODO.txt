@@ -1,0 +1,1 @@
+- anyone can access the addBook page

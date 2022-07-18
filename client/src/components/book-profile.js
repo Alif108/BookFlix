@@ -29,7 +29,7 @@ export default class Book extends Component{
           user: response.data.user,
           book: response.data.book,
         });
-        console.log(response.data);
+        console.log(this.state.book.coverLocation);
       })
       .catch(function(error){
         console.log(error);
@@ -56,7 +56,7 @@ export default class Book extends Component{
         <Row>
           <Col></Col>
           <Col>
-            <img src= {'localhost:5000'+this.state.book.coverLocation} alt="" height='350px' width='250px'/>
+            <img src= {"http://localhost:5000" + this.state.book.coverLocation} alt="" height='350px' width='250px'/>
             { this.renderButton() }
           </Col>
           <Col>

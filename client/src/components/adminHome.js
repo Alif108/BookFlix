@@ -2,8 +2,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-import logout from "./LogOut";
-
 class adminHome extends Component {
     constructor(props) {
       super(props);
@@ -24,11 +22,6 @@ class adminHome extends Component {
         .catch(err =>{
           console.log('Error from adminHome');
         });
-  }
-
-  handleClick(event)
-  {
-    logout.LogOut();
   }
   
     render() {
@@ -52,9 +45,6 @@ class adminHome extends Component {
                     <a href='/admin/addBook'>Add Book</a><br></br>
                     <a href='/admin/userlist'>List of Users</a><br></br>
                     <a href='/books'>Books</a>
-                </div>
-                <div>
-                    <button onClick={this.handleClick}>Logout</button>
                 </div>
             </div>
             </div>

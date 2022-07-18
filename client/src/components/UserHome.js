@@ -2,8 +2,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-import logout from "./LogOut";
-
 class UserHome extends Component {
     constructor(props) {
       super(props);
@@ -25,11 +23,6 @@ class UserHome extends Component {
           console.log('Error from UserHome');
         });
   }
-
-  handleClick(event)
-  {
-    logout.LogOut();
-  }
   
     render() {
       const user = this.state.user;
@@ -48,13 +41,7 @@ class UserHome extends Component {
                     </h3>
                 </div>
                 <div>
-                    {/* <a href='/admin/addBook'>Add Book</a><br></br>
-                    <a href='/admin/userlist'>List of Users</a> */}
-                    {/* List of Books <br></br> */}
                     <a href='/books'>Books</a>
-                </div>
-                <div>
-                    <button onClick={this.handleClick}>Logout</button>
                 </div>
             </div>
             </div>

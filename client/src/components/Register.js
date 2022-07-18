@@ -44,19 +44,21 @@ export default function Register() {
 		  });
 
 
-		  alert("Registration Successful");
-		  window.location.href = "/login";
+		//   alert("Registration Successful");
+		//   window.location.href = "/login";
 
         // extract the JSON object from fetch response
-		// const data = await response.json()
+		const data = await response.json()
+		localStorage.setItem('token', data.token);
 
-		// console.log(data.user);
+		console.log(data.user);
+		console.log(data.token);
 
-		// if (data.user) {
-		// 	alert("Registration Successful");
-		// 	window.location.href = "/user";
-		// 	// navigate("/user");
-		// }
+		if (data.user) {
+			alert("Registration Successful");
+			window.location = "/user";
+			// navigate("/user");
+		}
 	}
 
 	return (

@@ -37,19 +37,25 @@ export default class AddBook extends Component{
     }
 
     componentDidMount(){
-      axios.get('http://localhost:5000/books/'+this.state.id)
+      axios.get('http://localhost:5000/books/'+this.state.id, {
+        method: 'GET',
+        headers: {
+          'token': localStorage.getItem('token'),
+        },
+      })
         .then(response => {
           this.setState({
-            book: response.data,
-            title: response.data.title,
-            isbn: response.data.isbn,
-            author: response.data.author,
-            publisher: response.data.publisher,
-            year: response.data.publishingYear,
-            genre: response.data.genre,
-            numPage: response.data.numPage,
-            description: response.data.description,
+            book: response.data.book,
+            title: response.data.book.title,
+            isbn: response.data.book.isbn,
+            author: response.data.book.author,
+            publisher: response.data.book.publisher,
+            year: response.data.book.publishingYear,
+            genre: response.data.book.genre,
+            numPage: response.data.book.numPage,
+            description: response.data.book.description,
           });
+          console.log(response.data.book.title);
         })
         .catch(function(error){
           console.log(error);

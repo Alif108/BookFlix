@@ -4,7 +4,7 @@ const router = express.Router();
 const {generalAuth} = require("../middleware/auth");
 
 const navBar = (req, res) => {
-    console.log("In navbar");
+    console.log(req.session.user);
     if(req.session.user)
         res.json({user: true, role: req.session.user.role});
     else

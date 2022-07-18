@@ -10,7 +10,7 @@ const Book = props => (
     <div onClick={() => window.location.href = '/books/'+props.book._id}>
       <Card style={{ width: '15rem' }}>
         <Card.Body>
-          <Card.Img variant="top" src= { 'localhost:5000'+props.book.coverLocation } />
+          <Card.Img variant="top" src= { 'http://localhost:5000'+props.book.coverLocation } />
           <Card.Title>{ props.book.title }</Card.Title>
           <Card.Title>{ props.book.author }</Card.Title>
           <Card.Subtitle className="mb-2 text-muted">{ props.book.genre }</Card.Subtitle>
@@ -59,7 +59,7 @@ export default class BookList extends Component{
         <Row xs={1} md={5} className="g-4">
             {this.bookList()}
         </Row>
-        <img src="localhost:5000/covers/The Godfather_1969.jpg" alt=""/>
+        {/* <img src="http://localhost:5000/covers/The Godfather_1969.jpg" alt=""/> */}
       </div>
     );
   }

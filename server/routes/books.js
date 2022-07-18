@@ -7,9 +7,6 @@ const {generalAuth, adminAuth} = require("../middleware/auth");
 
 let Book = require('../models/book.model');
 
-const app = express();
-app.use(express.static('files'));
-
 ///Book list generation
 // router.route('/').get((req, res) => {
 router.get("/", generalAuth, function(req, res, next){
@@ -49,7 +46,7 @@ const upload = multer({ storage: storage });
 //   res.json({messsage: "ok"});
 // })
 
-router.post("/add", adminAuth, upload.any(), function(req, res, next){
+router.post("/add", upload.any(), function(req, res, next){
 
   const title = req.body.title;
   const isbn = req.body.isbn;
