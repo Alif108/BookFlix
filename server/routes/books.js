@@ -103,4 +103,12 @@ router.route('/update/:id').post((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+
+///delete book
+router.route('/remove/:id').delete((req, res) => {
+  Book.findByIdAndDelete(req.params.id)
+    .then(() => res.json('Book deleted.'))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
 module.exports = router;

@@ -20,6 +20,7 @@ export default class AddBook extends Component{
         // this.saveCover = this.saveCover.bind(this);
         // this.savePdf = this.savePdf.bind(this);
         this.addBook = this.addBook.bind(this);
+        this.remove = this.remove.bind(this);
 
         this.state = {
           title: "",
@@ -142,6 +143,19 @@ export default class AddBook extends Component{
             });
     }
 
+    remove(e) {
+        axios.delete('http://localhost:5000/books/remove/'+this.state.id)
+          .then(response => { 
+            console.log(response.data);
+            window.alert("Book Removed");
+            window.location = "/books/";
+        });
+    
+        // this.setState({
+        //   exercises: this.state.exercises.filter(el => el._id !== id)
+        // })
+      }
+
     render() {
         return(
             <div>
@@ -214,7 +228,8 @@ export default class AddBook extends Component{
                             </Row>
                             <Row className='mt-2'>
                                 <Col>
-                                <Button className="float-end" size="sm" variant="info" onClick={this.addBook}>Update</Button>
+                                <Button className="float-end" size="sm" variant="info" onClick={this.addBook}>Update</Button>{"   "}
+                                <Button className="float-end" size="sm" variant="danger" onClick={this.remove}>Remove</Button>
                                 </Col>
                             </Row>
                         </Col>

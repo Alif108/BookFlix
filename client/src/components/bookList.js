@@ -11,7 +11,7 @@ const Book = props => (
       <Card style={{ width: '15rem' }}>
         <Card.Body>
           <Card.Img variant="top" src= { 'localhost:5000'+props.book.coverLocation } />
-          <h4>{ props.book.title }</h4>
+          <Card.Title>{ props.book.title }</Card.Title>
           <Card.Title>{ props.book.author }</Card.Title>
           <Card.Subtitle className="mb-2 text-muted">{ props.book.genre }</Card.Subtitle>
         </Card.Body>
@@ -29,7 +29,7 @@ export default class BookList extends Component{
     };
   }
 
-  componentDidMount(){
+  async componentDidMount(){
     axios.get('http://localhost:5000/books/')
       .then(response => {
         this.setState({
@@ -52,9 +52,7 @@ export default class BookList extends Component{
     return (
       <div>
         <Row xs={1} md={5} className="g-4">
-          {Array.from({ length: this.state.books.length/2 }).map((_, idx) => (
-              this.bookList()
-          ))}
+            {this.bookList()}
         </Row>
         <img src="localhost:5000/covers/The Godfather_1969.jpg" alt=""/>
       </div>

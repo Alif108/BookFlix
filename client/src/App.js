@@ -2,7 +2,7 @@ import React from 'react'
 import "bootstrap/dist/css/bootstrap.min.css";
 
 // We use Route in order to define the different routes
-import { Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 // We import all the components we need in our app
 import Home from "./components/Home"
@@ -20,8 +20,10 @@ import BookProfile from "./components/book-profile";
 
 const App = () => {
 	return (
+    // <Router>
+    
 		<div>
-			<Navbar />
+      <Navbar />	
 			<Routes>
 				<Route path="/" exact element={<Home />} />
 				<Route path="/register" exact element={<Register />} />
@@ -36,6 +38,7 @@ const App = () => {
 				<Route path="/books/edit/:id" element={< EditBook/> }/>
 			</Routes>
 		</div>
+    // </Router>
 	);
 };
 

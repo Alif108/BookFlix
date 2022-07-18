@@ -33,12 +33,9 @@ export default class Book extends Component{
     if (true) {
       return (
         <div>
+          {/* button to go to /books/edit */}
           <Link to={'/books/edit/'+this.state.book._id}>
             Edit
-          </Link>
-          <br/>
-          <Link to={'/admin/addbook'}>
-            Remove
           </Link>
       </div>
       );
