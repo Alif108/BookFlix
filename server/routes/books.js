@@ -80,4 +80,27 @@ router.post("/add", upload.any(), function(req, res, next){
     .catch(err => console.log(err));
 });
 
+
+///book update
+router.route('/update/:id').post((req, res) => {
+  console.log(res.body);
+  Book.findById(req.params.id)
+    .then(book => {
+      console.log(req.body);
+      book.title = req.body.title;
+      book.isbn = req.body.isbn;
+      book.author = req.body.author;
+      book.publisher = req.body.publisher;
+      book.year = req.body.year;
+      book.genre = req.body.genre;
+      book.numPage = req.body.numPage;
+      book.description = req.body.description;
+
+      book.save()
+        .then(() => res.json('Book updated!'))
+        .catch(err => res.status(400).json('Error: ' + err));
+    })
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
 module.exports = router;

@@ -17,21 +17,37 @@ export default class AddBook extends Component{
         this.onChangeGenre = this.onChangeGenre.bind(this);
         this.onChangeNumPage = this.onChangeNumPage.bind(this);
         this.onChangeDescription = this.onChangeDescription.bind(this);
-        this.saveCover = this.saveCover.bind(this);
-        this.savePdf = this.savePdf.bind(this);
+        // this.saveCover = this.saveCover.bind(this);
+        // this.savePdf = this.savePdf.bind(this);
         this.addBook = this.addBook.bind(this);
 
         this.state = {
+          title: "",
+          isbn: "",
+          author: "",
+          publisher: "",
+          year: "",
+          genre: "",
+          numPage: "",
+          description: "",
           book: [],
           id: window.location.pathname.split('/')[window.location.pathname.split('/').length - 1],
         }
     }
 
     componentDidMount(){
-      axios.get('http://localhost:5000/books/update/'+this.state.id)
+      axios.get('http://localhost:5000/books/'+this.state.id)
         .then(response => {
           this.setState({
-            books: response.data,
+            book: response.data,
+            title: response.data.title,
+            isbn: response.data.isbn,
+            author: response.data.author,
+            publisher: response.data.publisher,
+            year: response.data.publishingYear,
+            genre: response.data.genre,
+            numPage: response.data.numPage,
+            description: response.data.description,
           });
         })
         .catch(function(error){
@@ -45,6 +61,7 @@ export default class AddBook extends Component{
         this.setState({
           title: e.target.value
         });
+        //console.log(this.state.title);
     };
 
     onChangeISBN(e) {
@@ -89,45 +106,40 @@ export default class AddBook extends Component{
         });
     };
 
-    saveCover(e) {
-        this.setState({
-            cover: e.target.files[0],
-            coverName: e.target.files[0].name
-        });  
-    };
+    // saveCover(e) {
+    //     this.setState({
+    //         cover: e.target.files[0],
+    //         coverName: e.target.files[0].name
+    //     });  
+    // };
 
-    savePdf(e) {
-        this.setState({
-            pdf: e.target.files[0],
-            pdfName: e.target.files[0].name
-        });
-    };
+    // savePdf(e) {
+    //     this.setState({
+    //         pdf: e.target.files[0],
+    //         pdfName: e.target.files[0].name
+    //     });
+    // };
 
     async addBook(e) {
         e.preventDefault();
 
-        const formData = new FormData();
-
-        formData.append("title", this.state.title);
-        formData.append("isbn", this.state.isbn);
-        formData.append("author", this.state.author);
-        formData.append("publisher", this.state.publisher);
-        formData.append("year", this.state.year);
-        formData.append("genre", this.state.genre);
-        formData.append("numPage", this.state.numPage);
-        formData.append("description", this.state.description);
-        formData.append("cover", this.state.cover, this.state.coverName);
-        formData.append("pdf", this.state.pdf, this.state.pdfName);
-
-
-
-        try {
-            axios.post("http://localhost:5000/books/update/"+this.state.book._id, formData, {headers:{'Content-type': this.state.cover.type}})
-                .then(res => console.log(res.data));
-            window.alert("Book Added");
-        } catch (err) {
-            console.log(err);
+        const book = {
+            title: this.state.title,
+            isbn: this.state.isbn,
+            author: this.state.author,
+            publisher: this.state.publisher,
+            publishingYear: this.state.year,
+            genre: this.state.genre,
+            numPage: this.state.numPage,
+            description: this.state.description,
         }
+
+        axios.post("http://localhost:5000/books/update/"+this.state.id, book)
+            .then(res => {
+                console.log(res.data);
+                window.alert("Book updated successfully");
+                window.location = "/books/";
+            });
     }
 
     render() {
@@ -139,70 +151,70 @@ export default class AddBook extends Component{
                         <Col></Col>
                         <Col xs={3}>
                             <Row>
-                                <Form.Group controlId="formFileSm" className="mb-3">
+                                {/* <Form.Group controlId="formFileSm" className="mb-3">
                                     <Form.Label>Upload book cover</Form.Label>
                                     <Form.Control id="cover" className="w-75" type="file" size="sm" onChange={this.saveCover} ref={ref=> this.fileInput = ref}/>
-                                </Form.Group>
+                                </Form.Group> */}
                             </Row>
                             <Row>
-                                <Form.Group controlId="formFileSm" className="mb-3">
+                                {/* <Form.Group controlId="formFileSm" className="mb-3">
                                     <Form.Label>Upload PDF</Form.Label>
                                     <Form.Control id="pdf" className="w-75" type="file" size="sm" onChange={this.savePdf}/>
-                                </Form.Group>
+                                </Form.Group> */}
                             </Row>
                         </Col>
                         <Col xs={5}>
                             <Row>
                                 <Form.Label column="sm" lg={2}>Title:</Form.Label>
                                 <Col>
-                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeTitle} value={this.state.title} placeholder="Title of the book" />
+                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeTitle} value={this.state.title}/>
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
                                 <Form.Label column="sm" lg={2}>Author:</Form.Label>
                                 <Col>
-                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeAuthor} value={this.state.author} placeholder="Author of the book" />
+                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeAuthor} value={this.state.author}/>
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
                                 <Form.Label column="sm" lg={2}>ISBN:</Form.Label>
                                 <Col>
-                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeISBN} value={this.state.isbn} placeholder="ISBN of the book" />
+                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeISBN} value={this.state.isbn} />
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
                                 <Form.Label column="sm" lg={2}>Publisher:</Form.Label>
                                 <Col>
-                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangePublisher} value={this.state.publisher} placeholder="Publisher" />
+                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangePublisher} value={this.state.publisher} />
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
                                 <Form.Label column="sm" lg={2}>Publishing Year:</Form.Label>
                                 <Col>
-                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeYear} value={this.state.year} placeholder="" />
+                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeYear} value={this.state.year} />
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
                                 <Form.Label column="sm" lg={2}>Genre:</Form.Label>
                                 <Col>
-                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeGenre} value={this.state.genre} placeholder="" />
+                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeGenre} value={this.state.genre} />
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
                                 <Form.Label column="sm" lg={2}>Total pages:</Form.Label>
                                 <Col>
-                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeNumPage} value={this.state.numPage} placeholder="" />
+                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeNumPage} value={this.state.numPage} />
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
                                 <Form.Label column="sm" lg={2}>Description:</Form.Label>
                                 <Col>
-                                    <Form.Control className="w-100" size="sm" as="textarea" onChange={this.onChangeDescription} value={this.state.description} placeholder="" />
+                                    <Form.Control className="w-100" size="sm" as="textarea" onChange={this.onChangeDescription} value={this.state.description}/>
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
                                 <Col>
-                                <Button className="float-end" size="sm" variant="info" onClick={this.addBook}>Add Book</Button>
+                                <Button className="float-end" size="sm" variant="info" onClick={this.addBook}>Update</Button>
                                 </Col>
                             </Row>
                         </Col>
