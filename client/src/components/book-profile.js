@@ -13,24 +13,32 @@ export default class Book extends Component{
     this.state = {
       book: [],
       id: window.location.pathname.split('/')[window.location.pathname.split('/').length - 1],
+      user: ""
     };
   }
 
   componentDidMount(){
-    axios.get('http://localhost:5000/books/'+this.state.id)
+    axios.get('http://localhost:5000/books/'+this.state.id, {
+      method: 'GET',
+      headers: {
+        'token': localStorage.getItem('token'),
+      },
+    })
       .then(response => {  
         this.setState({
-          book: response.data,
+          user: response.data.user,
+          book: response.data.book,
         });
+        console.log(response.data);
       })
       .catch(function(error){
         console.log(error);
       }
     );
   }
-
+  
   renderButton(){
-    if (true) {
+    if (this.state.user.role === "Admin") {
       return (
         <div>
           {/* button to go to /books/edit */}

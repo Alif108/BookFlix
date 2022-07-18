@@ -8,14 +8,30 @@ export default class Navbar extends Component {
   constructor(props){
     super(props);
     this.state = {
-      loggedIn: true,
-      role: "admin",
+      loggedIn: false,
+      role: "",
     };
   }
 
+//   componentDidMount() {
+  
+//     axios.get('http://localhost:5000/navbar', {
+//       method: 'GET',
+//       headers: {
+//         'token': localStorage.getItem('token'),
+//       },
+//     })
+//       .then(res => {
+//         this.setState({user: res.data.user})
+//       })
+//       .catch(err =>{
+//         console.log('Error from adminHome');
+//       });
+// }
+
   render() {
     if (this.state.loggedIn === true){
-      if(this.state.role === "admin"){
+      if(this.state.role === "Admin"){
         return (
           <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
             <Link to="/" className="navbar-brand">BookFlix</Link>

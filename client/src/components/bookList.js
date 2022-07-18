@@ -30,7 +30,12 @@ export default class BookList extends Component{
   }
 
   async componentDidMount(){
-    axios.get('http://localhost:5000/books/')
+    axios.get('http://localhost:5000/books/', {
+      method: 'GET',
+      headers: {
+        'token': localStorage.getItem('token'),
+      },
+    })
       .then(response => {
         this.setState({
           books: response.data,

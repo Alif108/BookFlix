@@ -3,13 +3,16 @@ const router = require('express').Router();
 const multer = require('multer');
 const path = require('path');
 
+const {generalAuth, adminAuth} = require("../middleware/auth");
+
 let Book = require('../models/book.model');
 
 const app = express();
 app.use(express.static('files'));
 
 ///Book list generation
-router.route('/').get((req, res) => {
+// router.route('/').get((req, res) => {
+router.get("/", generalAuth, function(req, res, next){
   Book.find()
     .then(books => res.json(books))
     .catch(err => res.status(400).json('Error: ' + err));
@@ -17,9 +20,10 @@ router.route('/').get((req, res) => {
 
 
 ///book profile generation
-router.route('/:id').get((req, res) => {
+// router.route('/:id').get((req, res) => {
+router.get("/:id", generalAuth, function(req, res, next){
   Book.findById(req.params.id)
-    .then(book => res.json(book))
+    .then(book => res.json({user: req.session.user, book}))
     .catch(err => res.status(400).json('Error: ' + err));
 })
 
@@ -41,7 +45,11 @@ var storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.post("/add", upload.any(), function(req, res, next){
+// router.get("/add", adminAuth, function(req, res){
+//   res.json({messsage: "ok"});
+// })
+
+router.post("/add", adminAuth, upload.any(), function(req, res, next){
 
   const title = req.body.title;
   const isbn = req.body.isbn;
@@ -102,7 +110,6 @@ router.route('/update/:id').post((req, res) => {
     })
     .catch(err => res.status(400).json('Error: ' + err));
 });
-
 
 ///delete book
 router.route('/remove/:id').delete((req, res) => {

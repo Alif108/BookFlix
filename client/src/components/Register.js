@@ -43,12 +43,20 @@ export default function Register() {
 			return;
 		  });
 
-        // extract the JSON object from fetch response
-		const data = await response.json()
 
-		if (data.user) {
-			navigate("/userlist");
-		}
+		  alert("Registration Successful");
+		  window.location.href = "/login";
+
+        // extract the JSON object from fetch response
+		// const data = await response.json()
+
+		// console.log(data.user);
+
+		// if (data.user) {
+		// 	alert("Registration Successful");
+		// 	window.location.href = "/user";
+		// 	// navigate("/user");
+		// }
 	}
 
 	return (

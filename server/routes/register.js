@@ -41,10 +41,10 @@ router.post("/register", (req, res) => {
                 );
 
                 // After the token is generated, send it as a cookie to the client
-                res.cookie("jwt", token, {
-                    httpOnly: true,
-                    maxAge: token_age * 1000, // 3hrs in ms
-                });
+                // res.cookie("jwt", token, {
+                //     httpOnly: true,
+                //     maxAge: token_age * 1000, // 3hrs in ms
+                // });
                 res.status(201).json({
                     message: "User successfully Registered",
                     user: user._id,

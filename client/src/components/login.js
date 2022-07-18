@@ -39,7 +39,6 @@ export default function Login() {
 		if(data.user)
         {
             localStorage.setItem('token', data.token);
-            alert("Login Successful");
 			console.log("Login Successful");
 			console.log(data.token);
 
