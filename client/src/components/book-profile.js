@@ -11,6 +11,7 @@ export default class Book extends Component{
     super(props);
 
     this.state = {
+      imgg: '',
       book: [],
       id: window.location.pathname.split('/')[window.location.pathname.split('/').length - 1],
       user: ""
@@ -35,6 +36,10 @@ export default class Book extends Component{
         console.log(error);
       }
     );
+
+    console.log(this.state.book.coverLocation);
+    console.log(this.state.book);
+
   }
   
   renderButton(){

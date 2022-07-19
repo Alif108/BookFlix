@@ -8,6 +8,7 @@ require("dotenv").config({ path: "./config.env" });
 
 app.use(cors());
 app.use(cookieParser());
+app.use(express.static("files"));
 
 app.use(express.static('files'));
 
