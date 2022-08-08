@@ -37,21 +37,6 @@ export default class AddBook extends Component{
         }
     }
 
-    // componentDidMount() {
-    //     axios.get('http://localhost:5000/books/add', {
-    //       method: 'GET',
-    //       headers: {
-    //         'token': localStorage.getItem('token'),
-    //       },
-    //     })
-    //       .then(res => {
-    //         console.log(res.data);
-    //       })
-    //       .catch(err =>{
-    //         console.log('Error from adminHome');
-    //       });
-    // }
-
     onChangeTitle(e) {
         this.setState({
           title: e.target.value
@@ -129,7 +114,6 @@ export default class AddBook extends Component{
         formData.append("description", this.state.description);
         formData.append("cover", this.state.cover, this.state.coverName);
         formData.append("pdf", this.state.pdf, this.state.pdfName);
-
 
         try {
             axios.post("http://localhost:5000/books/add", formData, 
@@ -247,7 +231,7 @@ export default class AddBook extends Component{
     
 }
 
-//center the motherfucking h3
+//center the h3
 //fix labels of the inputs
 //add validations
 //add admin role base

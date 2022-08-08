@@ -6,6 +6,8 @@ const path = require('path');
 const {generalAuth, adminAuth} = require("../middleware/auth");
 
 let Book = require('../models/book.model');
+let Review = require('../models/review.model');
+let User = require('../models/user.model');
 
 ///Book list generation
 // router.route('/').get((req, res) => {
@@ -24,6 +26,38 @@ router.get("/:id", generalAuth, function(req, res, next){
     .catch(err => res.status(400).json('Error: ' + err));
 })
 
+///adding review
+router.post ("/addReview", generalAuth, function(req, res, next){
+  const review = new Review({
+    bookID: req.body.bookID,
+    userID: req.body.userID,
+    rating: req.body.rating,
+    description: req.body.description,
+    timestamp: new Date(),
+  });
+
+  review.save();
+  res.json({message: "Review added successfully"});
+})
+
+
+///Fetching Review
+router.get("/reviews/:id", generalAuth, function(req, res, next){
+  Review.find({bookID: req.params.id})
+    .then(
+      //get username from userID
+      reviews => {
+        for (let i = 0; i < reviews.length; i++) {
+          User.findById(reviews[i].userID)
+            .then(user => {
+              reviews[i].username = user.username;
+            }).catch(err => console.log(err));
+        }
+        res.json(reviews);
+      }
+    )
+    .catch(err => res.status(400).json('Error: ' + err));
+})
 
 ///File upload + database insertion
 var storage = multer.diskStorage({
