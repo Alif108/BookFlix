@@ -1,14 +1,14 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const bookSchema = new Schema({
-    bookID: {type: String, required: true},
-    userID: {type: String, required: true},
+const reviewSchema = new Schema({
+    bookID: {type: mongoose.Types.ObjectId, ref:"Book", required: true},
+    userID: {type: mongoose.Types.ObjectId, ref: "User", required: true},
     rating: {type: Number, required: true, default: 0},
     description: {type: String, required: true},
     timestamp: {type: Date, required: true},
 });
 
-const Review = mongoose.model("reviews", bookSchema);
+const Review = mongoose.model("reviews", reviewSchema);
 
 module.exports = Review;

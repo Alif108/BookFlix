@@ -198,7 +198,7 @@ export default class Book extends Component{
               return (
                 <Row>
                   <Col>
-                    <h5>User: {review.username}</h5>
+                    <h5>User: {review.userID.username}</h5>
                     <h5>Rating: {review.rating}</h5>
                     <h5>Description: {review.description}</h5>
                   </Col>

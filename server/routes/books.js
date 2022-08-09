@@ -43,20 +43,13 @@ router.post ("/addReview", generalAuth, function(req, res, next){
 
 ///Fetching Review
 router.get("/reviews/:id", generalAuth, function(req, res, next){
+  //for each review get username too
   Review.find({bookID: req.params.id})
-    .then(
-      //get username from userID
-      reviews => {
-        for (let i = 0; i < reviews.length; i++) {
-          User.findById(reviews[i].userID)
-            .then(user => {
-              reviews[i].username = user.username;
-            }).catch(err => console.log(err));
-        }
-        res.json(reviews);
-      }
-    )
-    .catch(err => res.status(400).json('Error: ' + err));
+  .populate('userID', "username")
+  .then(reviews => {
+    res.json(reviews);
+  })
+  .catch(err => res.status(400).json('Error: ' + err));
 })
 
 ///File upload + database insertion
