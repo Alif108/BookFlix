@@ -2,7 +2,8 @@
 /// if logged in it changes depending on the role of user
 
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import { createBrowserHistory } from 'history'
 import axios from "axios";
 
 import logout from "./LogOut";
@@ -13,6 +14,7 @@ export default class Navbar extends Component {
     this.state = {
       loggedIn: false,
       role: "",
+      query: "",
     };
   }
 
@@ -32,59 +34,76 @@ export default class Navbar extends Component {
 }
 
 handleClick(event)
+{
+  logout.LogOut();
+}
+
+render() {
+
+  // link to addBook page if user is admin
+  let addBookLink, managePacksLink;
+  if (this.state.role === "Admin") 
   {
-    logout.LogOut();
+    addBookLink = <Link to="/admin/addbook" className="nav-link">Add Book</Link>;
+    managePacksLink = <Link to="/admin/managePacks" className="nav-link"> Manage Packs </Link>;
+  } 
+  else {
+    addBookLink = "";
+    managePacksLink = "";
   }
 
-  render() {
+  // link to logout if user is logged in
+  let logoutButton;
+  logoutButton = <button onClick={this.handleClick}>Logout</button>;
 
-    let link;
-    if (this.state.role === "Admin") {
-      link = <Link to="/admin/addbook" className="nav-link">Add Book</Link>;
-    } else {
-      link = "";
+  // navbar if user is logged in
+  if (this.state.loggedIn === true){
+      return (
+        <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
+          <Link to="/" className="navbar-brand">BookFlix</Link>
+          <div className="collpase navbar-collapse">
+          
+          <ul className="navbar-nav mr-auto">
+            <li className="navbar-item">
+              <Link to="/books/" className="nav-link">books</Link>
+            </li>
+            
+            <li className="navbar-item">
+              {addBookLink}
+            </li>
+
+            <li className="navbar-item">
+              {managePacksLink}
+            </li>
+            
+            <li className="navbar-item">
+            {logoutButton}
+            </li>
+          
+          </ul>
+          </div>
+        </nav>
+      );
     }
 
-    let logoutButton;
-    logoutButton = <button onClick={this.handleClick}>Logout</button>;
-
-    if (this.state.loggedIn === true){
-        return (
+  // navbar if user is not logged in
+  else
+  {
+      return (
           <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
             <Link to="/" className="navbar-brand">BookFlix</Link>
-            <div className="collpase navbar-collapse">
-            <ul className="navbar-nav mr-auto">
-              <li className="navbar-item">
-              <Link to="/books/" className="nav-link">books</Link>
-              </li>
-              <li className="navbar-item">
-              {link}
-              </li>
-              <li className="navbar-item">
-              {logoutButton}
-              </li>
-            </ul>
-            </div>
-          </nav>
-        );
-      }
-    else
-    {
-        return (
-            <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
-            <Link to="/" className="navbar-brand">BookFlix</Link>
-            <div className="collpase navbar-collapse">
-            <ul className="navbar-nav mr-auto">
-              <li className="navbar-item">
+          <div className="collpase navbar-collapse">
+          <ul className="navbar-nav mr-auto">
+            <li className="navbar-item">
               <Link to="/register/" className="nav-link">Register</Link>
-              </li>
-              <li className="navbar-item">
+            </li>
+            <li className="navbar-item">
               <Link to="/login/" className="nav-link">Login</Link>
-              </li>
-            </ul>
-            </div>
-          </nav>
-        );
-    }
-    }
+            </li>
+          </ul>
+          </div>
+        </nav>
+      );
+  }
+  }
 }

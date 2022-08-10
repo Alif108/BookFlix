@@ -8,7 +8,6 @@ require("dotenv").config({ path: "./config.env" });
 
 app.use(cors());
 app.use(cookieParser());
-app.use(express.static("files"));
 
 app.use(express.static('files'));
 
@@ -24,7 +23,7 @@ app.use(session({
 // whatever comes in req.body is in json format
 app.use(express.json());
 
-// import routes
+// ------------------------ import routes --------------------- //
 app.use(require("./routes/register"));
 app.use(require("./routes/login"));
 app.use(require("./routes/userList"));
@@ -32,18 +31,24 @@ app.use(require("./routes/adminHome"));
 app.use(require("./routes/userHome"));
 app.use(require("./routes/logout"));
 app.use(require("./routes/navbar"));
-
+// book routes
 const bookRouter = require("./routes/books");
 app.use("/books", bookRouter);
+// package routes
+const packageRouter = require("./routes/packages");
+app.use("/packages", packageRouter);
 
-// home page of server
+
+
+
+// ------------ home page of server --------------- //
 app.get('/', (req, res) => {
     res.send("Haha Vodox");
 });
 
 const port = process.env.PORT || 5000;
 
-// connecting to database
+// ------------ connecting to database ------------------- //
 mongoose.connect(process.env.ATLAS_URI, {dbName: "BookFlix", useNewUrlParser: true, useUnifiedTopology: true})
   .then( ()=> {
     console.log("Successfully connected to MongoDB.")

@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component }  from "react";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
@@ -25,8 +24,11 @@ export default class BookList extends Component{
     super(props);
 
     this.state = {
+      query: "",
       books: [],
     };
+
+    this.searchBook = this.searchBook.bind(this);
   }
 
   async componentDidMount(){
@@ -47,19 +49,67 @@ export default class BookList extends Component{
     );
   }
 
+  async searchBook(event)
+  {
+    event.preventDefault();
+    this.setState({query: event.target.value});
+    console.log(this.state.query);
+
+    if(this.state.query === ""){
+      alert("Please enter a valid Query");
+    }
+
+    axios.get('http://localhost:5000/books/searchBook/'+this.state.query, {
+      method: 'GET',
+      headers: {
+        'token': localStorage.getItem('token'),
+      },
+    })
+      .then(response => {
+        // console.log(response.data);
+        if(response.data.length === 0){
+          alert("No book found");
+        }
+        else
+          this.setState({
+            books: response.data,
+          });
+      })
+      .catch(function(error){
+        console.log(error);
+      }
+    );
+  }
+
   bookList(){
     return this.state.books.map(currentbook => {
       return <Book book={currentbook} key={currentbook._id}/>;
     })
   }
 
+  showBookList(){
+    if(this.state.books.length > 0){
+      return (
+        <div>
+          <Row xs={1} md={5} className="g-4">
+              {this.bookList()}
+          </Row>
+        </div>
+      );
+    }
+  }
+
   render(){
     return (
       <div>
-        <Row xs={1} md={5} className="g-4">
-            {this.bookList()}
-        </Row>
-        {/* <img src="http://localhost:5000/covers/The Godfather_1969.jpg" alt=""/> */}
+
+        <form onSubmit={this.searchBook}>
+          <input id="query" placeholder="Title or Author or Genre" type="text" onChange={event => this.setState({query: event.target.value})} value={this.state.query}/>
+          <button type="submit">Search</button>
+        </form>
+
+        {this.showBookList()}
+        
       </div>
     );
   }

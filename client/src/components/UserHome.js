@@ -30,11 +30,6 @@ class UserHome extends Component {
         return (
             <div className="UserHome">
             <div className="container">
-                <div>
-                    <h1>
-                        BookFlix
-                    </h1>
-                </div>
                 <div className="user">
                 <h3>
                     {user.username}  
@@ -42,6 +37,9 @@ class UserHome extends Component {
                 </div>
                 <div>
                     <a href='/books'>Books</a>
+                </div>
+                <div>
+                    <a href='/packages'>Packages</a>
                 </div>
             </div>
             </div>

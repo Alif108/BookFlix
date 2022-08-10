@@ -44,7 +44,6 @@ export default function Login() {
 
             // redirect here
 			// navigate("/userlist");
-			console.log(data.user.role);
 			if(data.user.role === "Admin")
 				window.location.href = "/admin";
 			else

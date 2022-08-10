@@ -13,9 +13,7 @@ const bookSchema = new Schema({
     numPage: {type: Number, required: true},
     coverLocation: {type: String, required: false},
     pdfLocation: {type: String, required: true},
-},{
-    timestamp: true,
-});
+},);
 
 const Book = mongoose.model("books", bookSchema);
 
