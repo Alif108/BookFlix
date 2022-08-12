@@ -128,6 +128,7 @@ export default class Book extends Component{
         'token': localStorage.getItem('token'),
       },
     }).then(response => {
+      console.log(response.data);
       this.setState({
         reviews: response.data,
 
@@ -282,10 +283,6 @@ export default class Book extends Component{
           <Col></Col>
           <Col>
             <img src= {"http://localhost:5000" + this.state.book.coverLocation} alt="" height='350px' width='250px'/>
-            <div>
-              <Link to={'/books/'+this.state.book._id+'/read'}>Read</Link>
-            </div>
-            {/* button to go to /books/edit */}
             { this.renderEditButton() }
           </Col>
           <Col>
