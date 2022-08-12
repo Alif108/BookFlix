@@ -17,6 +17,7 @@ import AddBook from "./components/addBook";
 import BookList from "./components/bookList";
 import EditBook from "./components/editBook";
 import BookProfile from "./components/book-profile";
+import ReadBook from "./components/readBook";
 
 import AddPackage from './components/AddPackage';
 import AdminManagePacks from "./components/AdminManagePacks";
@@ -38,6 +39,7 @@ const App = () => {
 
 				<Route path="/books" element={< BookList/> }/>
 				<Route path="/books/:id" element={< BookProfile/> }/>
+				<Route path="/books/:id/read" element={< ReadBook/> }/>
 				<Route path="/books/edit/:id" element={< EditBook/> }/>
 
 				<Route path="/admin/userlist" exact element={<UserList />} />
