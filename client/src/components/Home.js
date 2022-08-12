@@ -1,8 +1,7 @@
-
 import React, { Component } from 'react';
-import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
+
 
 const backdrop = {
   display:"flex",
@@ -77,7 +76,7 @@ class Home extends Component {
           <br/><br/>
           <div className="container">
               <div style={{display:"flex",alignItems: "center",justifyContent:"center"}}> 
-                <ControlledCarousel />
+                {/* <ControlledCarousel /> */}
               </div>
                 <br/><br/>
               <div>

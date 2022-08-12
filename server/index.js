@@ -29,7 +29,6 @@ app.use(require("./routes/login"));
 app.use(require("./routes/userList"));
 app.use(require("./routes/adminHome"));
 app.use(require("./routes/userHome"));
-app.use(require("./routes/home"));
 app.use(require("./routes/logout"));
 app.use(require("./routes/navbar"));
 // book routes

@@ -16,7 +16,7 @@ export default function AddPackage() {
         // syntax : const response = await fetch(resource[, options]);
         // resource: the URL string, or a Request object
         // options: the configuration object with properties like method, headers, body, credentials, and more
-		await fetch("http://localhost:5000/packages/add", {
+		await fetch("http://localhost:5000/packages/addPackage", {
 			method: 'POST',
 
             // send as json

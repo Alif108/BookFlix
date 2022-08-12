@@ -1,11 +1,9 @@
-const express = require('express');
 const router = require('express').Router();
-const multer = require('multer');
-const path = require('path');
 
-const {generalAuth, adminAuth} = require("../middleware/auth");
+const {generalAuth, adminAuth, userAuth} = require("../middleware/auth");
 
 let Package = require('../models/packages.model');
+let Transaction = require('../models/transaction.model');
 
 ///Package list generation
 router.get("/", generalAuth, function(req, res){
@@ -15,12 +13,28 @@ router.get("/", generalAuth, function(req, res){
 });
 
 // get package by id
-router.get("/:id", function(req, res){
+router.get("/:id", generalAuth, function(req, res){
   Package.findById(req.params.id)
     .then(pack => res.json({user: req.session.user, pack}))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+
+router.get("/user/myPackage", userAuth, function(req, res){
+
+  console.log("Here");
+
+  Transaction.find({userID: req.session.user.id})
+    .then(transaction => 
+      {
+        Package.findById(transaction[0].packageID)
+          .then(package => {
+            res.json({user: req.session.user, package});
+          })
+          .catch(err => res.status(400).json('Error: ' + err));
+      })
+    .catch(err => res.status(400).json('Error: ' + err));
+});
 
 ///book update
 router.route('/update/:id').post((req, res) => {
@@ -42,14 +56,14 @@ router.route('/update/:id').post((req, res) => {
 
 
 ///delete package
-// router.route('/remove/:id').delete((req, res) => {
 router.delete("/remove/:id", adminAuth, function(req, res){
   Package.findByIdAndDelete(req.params.id)
     .then(() => res.json({success: true}))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.post("/add", adminAuth, function(req, res){
+// add package
+router.post("/addPackage", adminAuth, function(req, res){
 
   const plan_name = req.body.plan_name;
   const price = req.body.price;
@@ -69,6 +83,36 @@ router.post("/add", adminAuth, function(req, res){
         res.json({success: true});
     })
     .catch(err => console.log(err));
+});
+
+// subscription
+router.post("/getPackage/:id", userAuth, function(req, res){
+
+  const user_ID = req.body.user_ID;
+  const package_ID = req.body.package_ID;
+  const amount = req.body.amount;
+  const name = req.body.name;
+  const contact = req.body.contact;
+  const bkash = req.body.bkash;
+  const address = req.body.address;
+  
+  const transaction = new Transaction({
+    userID: user_ID,
+    packageID: package_ID,
+    amount: amount,
+    date: Date.now(),
+    subscriber_name: name,
+    contact_number: contact,
+    bkash_number: bkash,
+    address: address,
+  });
+
+  transaction.save()
+  .then(() => {
+    console.log("Subscription added");
+    res.json({success: true});
+  })
+  .catch(err => console.log(err));
 });
 
 module.exports = router;

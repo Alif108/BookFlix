@@ -26,7 +26,6 @@ class adminHome extends Component {
   
     render() {
       const user = this.state.user;
-      console.log(user);
       if(user)
         return (
             <div className="adminHome">
@@ -55,7 +54,7 @@ class adminHome extends Component {
                     <h1>Error</h1>
                 </div>
             );
-        }
+    }
   }
   
   export default adminHome;
