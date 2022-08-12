@@ -132,9 +132,11 @@
 
 
 const express = require('express');
+const { fstat } = require('fs');
 const router = require('express').Router();
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
 const {generalAuth, adminAuth} = require("../middleware/auth");
 
@@ -218,24 +220,15 @@ const upload = multer({ storage: storage });
 
 router.post("/add", upload.any(), function(req, res, next){
 
-  const title = req.body.title;
-  const isbn = req.body.isbn;
-  const author = req.body.author;
-  const publisher = req.body.publisher;
-  const year = req.body.year;
-  const genre = req.body.genre;
-  const numPage = req.body.numPage;
-  const description = req.body.description;
-
   const book = new Book({
-    title: title,
-    isbn: isbn,
-    author: author,
-    publisher: publisher,
-    publishingYear: year,
-    genre: genre,
-    numPage: numPage,
-    description: description,
+    title: req.body.title,
+    isbn: req.body.isbn,
+    author: req.body.author,
+    publisher: req.body.publisher,
+    publishingYear: req.body.year,
+    genre: req.body.genre,
+    numPage: req.body.numPage,
+    description: req.body.description,
   });
 
   const coverDest = '/covers/'+req.body.title+"_"+req.body.year
@@ -280,9 +273,25 @@ router.route('/update/:id').post((req, res) => {
 
 ///delete book
 router.route('/remove/:id').delete((req, res) => {
-  Book.findByIdAndDelete(req.params.id)
-    .then(() => res.json('Book deleted.'))
-    .catch(err => res.status(400).json('Error: ' + err));
-});
+  let coverDest = "ss";
+  let pdfDest = "ss";
+  Book.findById(req.params.id)
+    .then(book => {
+      coverDest = book.coverLocation;
+      pdfDest = book.pdfLocation;
+      book.remove()
+        .then(() => {
+          fs.unlink(path.join(__dirname, '../files'+coverDest), (err) => {
+            if (err) throw err;
+            console.log('successfully deleted cover');
+          }),
+          fs.unlink(path.join(__dirname, '../files'+pdfDest), (err) => {
+            if (err) throw err;
+            console.log('successfully deleted pdf');
+          }),
+          res.json('Book deleted!')
+        }).catch(err => res.status(400).json('Error: ' + err));
+    }).catch(err => res.status(400).json('Error: ' + err));
+}),
 
 module.exports = router;

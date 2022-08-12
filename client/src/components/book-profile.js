@@ -223,10 +223,40 @@ export default class Book extends Component{
   }
 
 
+  renderReviews(){
+    if(this.state.reviews.length > 0){
+      return (
+        <div>
+          {this.state.reviews.map((review) => {
+            return (
+              <Row>
+                <Col>
+                  <h5><b>{review.userID.username}</b> {review.rating}/5</h5>
+                  <h5>{review.description}</h5>
+                  <h5>{(new Date(review.timestamp).toLocaleDateString())}</h5>
+                  <hr/>
+                </Col>
+              </Row>
+            );
+          }
+          )}
+        </div>
+      );
+    }
+    else{
+      return (
+        <div>
+          <h5>No Reviews yet</h5>
+        </div>
+      );
+    }
+  }
+
   renderReviewBox(){
     if (this.state.user.role === "Basic") {
       return (
         <div>
+          <h3>Add Review</h3>
           <Form.Label column="sm" lg={2}>Rating:</Form.Label>
           <Form.Control className="w-100" size="sm" as="select" onChange={this.onChangeRating} value={this.state.rating}>
             <option>0</option>
@@ -269,20 +299,11 @@ export default class Book extends Component{
           <Col>
           <div>
             <h3>Reviews</h3>
-            {this.state.reviews.map((review) => {
-              return (
-                <Row>
-                  <Col>
-                    <h5>User: {review.userID.username}</h5>
-                    <h5>Rating: {review.rating}</h5>
-                    <h5>Description: {review.description}</h5>
-                  </Col>
-                </Row>
-              );
-            }
-            )} 
+            <br/>
+            {this.renderReviews()} 
           </div>
           <div >
+            <br/>
             { this.renderReviewBox() }
           </div>
           </Col>

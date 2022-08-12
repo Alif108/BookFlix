@@ -155,10 +155,6 @@ export default class AddBook extends Component{
             window.alert("Book Removed");
             window.location = "/books/";
         });
-    
-        // this.setState({
-        //   exercises: this.state.exercises.filter(el => el._id !== id)
-        // })
       }
 
     render() {
