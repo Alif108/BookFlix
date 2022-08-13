@@ -6,9 +6,9 @@ const {generalAuth} = require("../middleware/auth");
 const navBar = (req, res) => {
     console.log(req.session.user);
     if(req.session.user)
-        res.json({user: true, role: req.session.user.role});
+        res.json({user: true, role: req.session.user.role, username: req.session.user.username});
     else
-        res.json({user: false, role: ""});
+        res.json({user: false, role: "", username: ""});
 }
 
 router.get('/navbar', generalAuth, navBar);

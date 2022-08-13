@@ -3,8 +3,14 @@
 
 import React, { Component } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import { createBrowserHistory } from 'history'
+import { createBrowserHistory } from 'history';
 import axios from "axios";
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Nav from 'react-bootstrap/Nav';
 
 import logout from "./LogOut";
 
@@ -15,6 +21,7 @@ export default class Navbar extends Component {
       loggedIn: false,
       role: "",
       query: "",
+      username: "",
     };
   }
 
@@ -26,7 +33,7 @@ export default class Navbar extends Component {
       },
     })
       .then(res => {
-        this.setState({loggedIn: true, role: res.data.role})
+        this.setState({loggedIn: true, role: res.data.role, username: res.data.username })
       })
       .catch(err =>{
         console.log('Error from navbar');
@@ -40,70 +47,68 @@ handleClick(event)
 
 render() {
 
-  // link to addBook page if user is admin
-  let addBookLink, managePacksLink;
-  if (this.state.role === "Admin") 
-  {
-    addBookLink = <Link to="/admin/addbook" className="nav-link">Add Book</Link>;
-    managePacksLink = <Link to="/admin/managePacks" className="nav-link"> Manage Packs </Link>;
-  } 
-  else {
-    addBookLink = "";
-    managePacksLink = "";
-  }
-
-  // link to logout if user is logged in
+  // navbar if user is logged in
+  if (this.state.loggedIn) {
+    
+    // link to logout if user is logged in
   let logoutButton;
   logoutButton = <button onClick={this.handleClick}>Logout</button>;
 
-  // navbar if user is logged in
-  if (this.state.loggedIn === true){
-      return (
-        <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
-          <Link to="/" className="navbar-brand">BookFlix</Link>
-          <div className="collpase navbar-collapse">
-          
+  let link1, link2, link3, link4;
+  let username = this.state.username;
+  if (this.state.role === "Admin") {
+    link1 = <Link to="/admin/stats" className="nav-link">Stats</Link>;
+    link2 = <Link to="/admin/addbook" className="nav-link">Add Book</Link>;
+    link3 = <Link to="/admin/managepacks" className="nav-link">Manage Packs</Link>;
+    link4 = <Link to="/admin/requests" className="nav-link">Requests</Link>;
+  } else {
+    link1 = <Link to="/user/" className="nav-link">Home</Link>;
+    link2 = <Link to="/books/" className="nav-link">Books</Link>;
+    link3 = <Link to="/books/" className="nav-link">My List</Link>;
+    link4 = "";
+  } 
+    
+  return(
+    <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
+    <Link to="/" className="navbar-brand"><img src="http://localhost:5000/images/logo.png" alt="BOOKFLIX" height='40px' width='120px'/></Link>
+    <div className="collpase navbar-collapse">
+      <Container>
+        <Row>
+        <Col>
           <ul className="navbar-nav mr-auto">
             <li className="navbar-item">
-              <Link to="/books/" className="nav-link">books</Link>
+            {link1}
             </li>
-            
             <li className="navbar-item">
-              {addBookLink}
+            {link2}
             </li>
-
             <li className="navbar-item">
-              {managePacksLink}
+            {link3}
             </li>
-            
             <li className="navbar-item">
-            {logoutButton}
+            {link4}
             </li>
-          
           </ul>
-          </div>
-        </nav>
-      );
+        </Col>
+        <Col  style={{display:"flex",flexDirection: "row",justifyContent:"flex-end"}}>
+          <Form class="form-inline my-2 my-lg-0" style={{display:"flex",flexDirection: "row"}}>
+            <input class="form-control mr-sm-2" type="search" placeholder="Search by title, author or genre" aria-label="Search" onChange={event => this.setState({query: event.target.value})} value={this.state.query}/>
+            <Button variant='btn btn-outline-warning my-2 my-sm-0' type="submit" onClick={this.searchBook}>Search</Button>
+          </Form>
+          
+          <i class="text-white">{username}</i>
+          <Button variant="outline-warning" onClick={this.handleClick}><img src="http://localhost:5000/images/bell.png" alt="notification" height='25px'/></Button>
+          <Button variant="outline-primary" onClick={this.handleClick}><img src="http://localhost:5000/images/logout.png" alt="logout" height='25px'/></Button>
+        </Col>
+        </Row>
+      </Container> 
+    </div>
+    </nav>
+
+    );
     }
-
-  // navbar if user is not logged in
-  else
-  {
-      return (
-          <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
-            <Link to="/" className="navbar-brand">BookFlix</Link>
-          <div className="collpase navbar-collapse">
-          <ul className="navbar-nav mr-auto">
-            <li className="navbar-item">
-              <Link to="/register/" className="nav-link">Register</Link>
-            </li>
-            <li className="navbar-item">
-              <Link to="/login/" className="nav-link">Login</Link>
-            </li>
-          </ul>
-          </div>
-        </nav>
-      );
-  }
+    else{
+      return (null);
+    }
   }
 }

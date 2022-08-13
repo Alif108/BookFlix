@@ -148,8 +148,9 @@ export default class AddBook extends Component{
 
     render() {
         return(
-            <div>
-                <h3>Add New Book</h3>
+            <div><br/><br/>
+                <h3  class="text-warning" style={{display:"flex",alignItems:"center",justifyContent:"center"}}><i>Add New Book</i></h3>
+                <br/><br/>
                 <div>
                     <Row>
                         <Col></Col>
@@ -218,7 +219,7 @@ export default class AddBook extends Component{
                             </Row>
                             <Row className='mt-2'>
                                 <Col>
-                                <Button className="float-end" size="sm" variant="info" onClick={this.addBook}>Add Book</Button>
+                                <Button className="float-end" size="sm" variant="warning" onClick={this.addBook}>Add Book</Button>
                                 </Col>
                             </Row>
                         </Col>

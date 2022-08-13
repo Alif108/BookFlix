@@ -24,6 +24,7 @@ import PackageList from './components/PackageList';
 import EditPackage from './components/EditPackage';
 import RemovePackage from './components/RemovePackage';
 import GetPackage from './components/GetPackage';
+import MyPackage from './components/MyPackage';
 
 const App = () => {
 	return (
@@ -48,7 +49,8 @@ const App = () => {
 
 				<Route path='/packages' element={< PackageList/> }/>
 				<Route path='/admin/editPackage/:id' element={< EditPackage/> }/>
-				<Route path='/user/getPackage/:id' element={< GetPackage/> }/>
+				<Route path='/packages/getPackage/:id' element={< GetPackage/> }/>
+				<Route path='/packages/myPackage' element={< MyPackage/> }/>
 			</Routes>
 		</div>
 	);

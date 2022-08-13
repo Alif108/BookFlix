@@ -40,7 +40,7 @@ export default class PackageList extends Component{
       .then(response => {
         this.setState({
             user: response.data.user,
-          packages: response.data.packages,
+            packages: response.data.packages,
         });
       })
       .catch(function(error){
@@ -65,7 +65,7 @@ export default class PackageList extends Component{
         if(this.state.user.role === "Basic")
             return (
             <div>
-                <Link to={"/user/buyPackage/"+currentPackage._id} className="nav-link" >Get Package</Link>
+                <Link to={"/packages/getPackage/"+currentPackage._id} className="nav-link" >Get Package</Link>
             </div>
             );
     }

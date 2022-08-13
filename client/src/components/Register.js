@@ -59,9 +59,26 @@ export default function Register() {
 		}
 	}
 
+
+	const backdrop = {
+		display:"flex",
+		flexDirection: "column",
+		alignItems: "center",
+		justifyContent:"center",
+		backgroundImage: 'url("http://localhost:5000/images/backdrop.png")',
+		backgroundPosition: 'center',
+		backgroundSize: 'cover',
+		backgroundRepeat: 'no-repeat',
+		width: '100vw',
+		height: '100vh',
+	  };
+
 	return (
-		<div>
-			<h1>Register</h1>
+		<div style={backdrop}>
+
+			<img src="http://localhost:5000/images/logo.png" alt='BOOKFLIX'></img>
+			<br/>
+			<h2>Register</h2><br/>
 			<form onSubmit={registerUser}>
 				
 				{/* Name */}
