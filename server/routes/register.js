@@ -35,7 +35,7 @@ router.post("/register", (req, res) => {
 
                 const token_age = 3 * 60 * 60;
                 const token = jwt.sign(
-                    {id: user._id, username: user.username, role: user.role},
+                    {id: user._id, username: user.username, role: user.role, subscribed: false},
                     jwtSecret,
                     {expiresIn: token_age}
                 );

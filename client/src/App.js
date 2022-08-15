@@ -26,6 +26,8 @@ import EditPackage from './components/EditPackage';
 import RemovePackage from './components/RemovePackage';
 import GetPackage from './components/GetPackage';
 import MyPackage from './components/MyPackage';
+import MyList from './components/MyList';
+import RemoveMyList from './components/RemoveMyList';
 
 const App = () => {
 	return (
@@ -42,17 +44,20 @@ const App = () => {
 				<Route path="/books/:id" element={< BookProfile/> }/>
 				<Route path="/books/:id/read" element={< ReadBook/> }/>
 				<Route path="/books/edit/:id" element={< EditBook/> }/>
+				<Route path='/books/user/getMyList' element={< MyList/> }/>
 
 				<Route path="/admin/userlist" exact element={<UserList />} />
 				<Route path="/admin/addbook" element={< AddBook/> }/>
 				<Route path="/admin/addpackage" element={< AddPackage/> }/>
 				<Route path="/admin/managePacks" element={< AdminManagePacks/> }/>
 				<Route path="/admin/removePackage/:id" element={< RemovePackage/> }/>
+				<Route path='/admin/editPackage/:id' element={< EditPackage/> }/>
 
 				<Route path='/packages' element={< PackageList/> }/>
-				<Route path='/admin/editPackage/:id' element={< EditPackage/> }/>
 				<Route path='/packages/getPackage/:id' element={< GetPackage/> }/>
 				<Route path='/packages/myPackage' element={< MyPackage/> }/>
+
+				<Route path='/books/removeMyList/:id' element={< RemoveMyList/> }/>
 			</Routes>
 		</div>
 	);

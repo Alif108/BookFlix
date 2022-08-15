@@ -33,16 +33,27 @@ export default class Navbar extends Component {
       },
     })
       .then(res => {
-        this.setState({loggedIn: true, role: res.data.role, username: res.data.username })
+        this.setState({loggedIn: res.data.loggedIn, role: res.data.role, username: res.data.username })
       })
       .catch(err =>{
-        console.log('Error from navbar');
+        console.log('Error from navbar' + err);
       });
 }
 
 handleClick(event)
 {
   logout.LogOut();
+}
+
+renderHomeLogo() {
+  if(this.state.loggedIn) {
+    if(this.state.role === "Admin")
+      return <Link to="/admin" className="navbar-brand"><img src="http://localhost:5000/images/logo.png" alt="BOOKFLIX" height='40px' width='120px'/></Link>
+    else if(this.state.role === "Basic")
+      return <Link to="/user" className="navbar-brand"><img src="http://localhost:5000/images/logo.png" alt="BOOKFLIX" height='40px' width='120px'/></Link>
+  }
+  else
+    return <Link to="/" className="navbar-brand"><img src="http://localhost:5000/images/logo.png" alt="BOOKFLIX" height='40px' width='120px'/></Link>
 }
 
 render() {
@@ -62,15 +73,14 @@ render() {
     link3 = <Link to="/admin/managepacks" className="nav-link">Manage Packs</Link>;
     link4 = <Link to="/admin/requests" className="nav-link">Requests</Link>;
   } else {
-    link1 = <Link to="/user/" className="nav-link">Home</Link>;
     link2 = <Link to="/books/" className="nav-link">Books</Link>;
-    link3 = <Link to="/books/" className="nav-link">My List</Link>;
+    link3 = <Link to="/books/user/getMyList/" className="nav-link">My List</Link>;
     link4 = "";
   } 
     
   return(
     <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
-    <Link to="/" className="navbar-brand"><img src="http://localhost:5000/images/logo.png" alt="BOOKFLIX" height='40px' width='120px'/></Link>
+    {this.renderHomeLogo()}
     <div className="collpase navbar-collapse">
       <Container>
         <Row>

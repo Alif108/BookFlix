@@ -6,7 +6,6 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 
-
 export default class Book extends Component{
   constructor(props){
     super(props);
@@ -16,6 +15,7 @@ export default class Book extends Component{
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.calc_rating = this.calc_rating.bind(this);
     this.addReview = this.addReview.bind(this);
+    this.addToMyList = this.addToMyList.bind(this);
 
     this.state = {
       imgg: '',
@@ -53,6 +53,7 @@ export default class Book extends Component{
         'token': localStorage.getItem('token'),
       },
     }).then(response => {
+      console.log(response.data);
       this.setState({
         reviews: response.data,
 
@@ -113,15 +114,52 @@ export default class Book extends Component{
     });
   }
 
+  addToMyList(e){
+    const user = {userID: this.state.user.id};
+    axios.post('http://localhost:5000/books/addToMyList/'+this.state.id, user, {
+      method: 'POST',
+      headers: {
+        'token': localStorage.getItem('token'),
+      },
+    })
+      .then(response => {  
+        window.alert(response.data.message);
+      })
+      .catch(function(error){
+        console.log(error);
+      }
+    );
+  }
+
   renderEditButton(){
     if (this.state.user.role === "Admin") {
       return (
         <div>
-          {/* button to go to /books/edit */}
           <Link to={'/books/edit/'+this.state.book._id}>
             Edit
           </Link>
       </div>
+      );
+    }
+  }
+
+  renderMyListButton(){
+    if(this.state.user.role === "Basic" && this.state.user.subscription){
+      return (
+        <div>
+          <Button className="float-end" size="sm" variant="info" onClick={this.addToMyList}>Add to My List</Button>
+        </div>
+      );
+    }
+  }
+
+  renderReadButton()
+  {
+    if(this.state.user.role === "Basic" && this.state.user.subscription){
+      return (
+        <div>
+          <Link to={'/books/'+this.state.book._id+'/read'}>Read</Link>
+        </div>
       );
     }
   }
@@ -148,7 +186,7 @@ export default class Book extends Component{
 
 
   renderReviewBox(){
-    if (this.state.user.role === "Basic") {
+    if (this.state.user.role === "Basic" && this.state.user.subscription) {
       return (
         <div>
           <Form.Label column="sm" lg={2}>Rating:</Form.Label>
@@ -177,9 +215,7 @@ export default class Book extends Component{
           <Col></Col>
           <Col>
             <img src= {"http://localhost:5000" + this.state.book.coverLocation} alt="" height='350px' width='250px'/>
-            <div>
-                <Link to={'/books/'+this.state.book._id+'/read'}>Read</Link>
-            </div>
+            { this.renderReadButton() }
             { this.renderEditButton() }
           </Col>
           <Col>
@@ -188,6 +224,9 @@ export default class Book extends Component{
             <h3>{this.state.book.author}</h3>
             <h5>{this.state.book.genre}</h5>
             <p>{this.state.book.description}</p>
+          </Col>
+          <Col>
+            {this.renderMyListButton()}
           </Col>
           <Col></Col>
         </Row>

@@ -17,23 +17,44 @@ const router = express.Router();
 
 // the collection that will be needed
 const User = require("../models/user.model");
+let Package = require('../models/packages.model');
+let Transaction = require('../models/transaction.model');
+
+// check if the user is a subscriber or not
+async function isSubscribedUser(uid)
+{
+    transaction = await Transaction.find({userID: uid.toString()});
+    if(transaction.length > 0)
+    {
+        pack = await Package.findById(transaction[0].packageID);
+        if(pack)
+        {
+            // check if subscription is expired
+            dayDiff = (new Date().getTime() - new Date(transaction[0].date).getTime()) / (1000 * 3600 * 24);
+            if(dayDiff < pack.duration)
+                return true;
+        }
+    }
+    return false;
+}
 
 // function for page "bookflix/login"
-router.post("/login", (req, res) => {
+router.post("/login", async (req, res) => {
     try{
-        User.findOne({email: req.body.email}, function(err, data){
+        User.findOne({email: req.body.email}, async function(err, data){
             if(err){
                 console.log(err);
                 return handleError(err);
+              
                 // return res.json({ status: "error", error: err, user: false} );
             }
             if(data != null){
-
-                bcrypt.compare(req.body.password, data.password).then(function (result)
+                bcrypt.compare(req.body.password, data.password).then(async function (result)
                 {
                     if(result)
                     {
-                        const payload = {id: data._id, username: data.username, role: data.role};
+                        let isSubscribed = await isSubscribedUser(data._id);
+                        const payload = {id: data._id, username: data.username, role: data.role, subscription: isSubscribed};
                         const token_age = 3 * 60 * 60; // 3hrs in sec
 
                         const token = jwt.sign(

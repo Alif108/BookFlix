@@ -15,7 +15,7 @@ const User = new mongoose.Schema(
         number_of_total_review: {type: Number, default: 0},
         role: {type: String, default:"Basic", required: true},
     },
-    { collection: 'user' }
+    { collection: 'user' }      // collection name in the database
 )
 
 const model = mongoose.model('User', User)

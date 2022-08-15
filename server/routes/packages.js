@@ -21,9 +21,6 @@ router.get("/:id", generalAuth, function(req, res){
 
 
 router.get("/user/myPackage", userAuth, function(req, res){
-
-  console.log("Here");
-
   Transaction.find({userID: req.session.user.id})
     .then(transaction => 
       {
@@ -88,31 +85,43 @@ router.post("/addPackage", adminAuth, function(req, res){
 // subscription
 router.post("/getPackage/:id", userAuth, function(req, res){
 
-  const user_ID = req.body.user_ID;
-  const package_ID = req.body.package_ID;
-  const amount = req.body.amount;
-  const name = req.body.name;
-  const contact = req.body.contact;
-  const bkash = req.body.bkash;
-  const address = req.body.address;
-  
-  const transaction = new Transaction({
-    userID: user_ID,
-    packageID: package_ID,
-    amount: amount,
-    date: Date.now(),
-    subscriber_name: name,
-    contact_number: contact,
-    bkash_number: bkash,
-    address: address,
-  });
+  // console.log(req.session.user);
 
-  transaction.save()
-  .then(() => {
-    console.log("Subscription added");
-    res.json({success: true});
-  })
-  .catch(err => console.log(err));
+  if(req.session.user.subscription)
+  {
+    return res.json({success: false, message: "You already have a subscription"});
+  }
+  else
+  {
+    const user_ID = req.body.user_ID;
+    const package_ID = req.body.package_ID;
+    const amount = req.body.amount;
+    const name = req.body.name;
+    const contact = req.body.contact;
+    const bkash = req.body.bkash;
+    const address = req.body.address;
+
+    const transaction = new Transaction({
+      userID: user_ID,
+      packageID: package_ID,
+      amount: amount,
+      date: new Date(),
+      subscriber_name: name,
+      contact_number: contact,
+      bkash_number: bkash,
+      address: address,
+    });
+
+    transaction.save()
+    .then(() => {
+      req.session.user.subscription = true;
+      // console.log(req.session.user);
+      res.json({success: true, message: "Subscription Successful"});
+    })
+    .catch(err => {
+      res.json({success: false, message: "Subscription failed"});
+    });
+  }
 });
 
 module.exports = router;

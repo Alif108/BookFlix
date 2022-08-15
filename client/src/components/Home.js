@@ -24,28 +24,26 @@ class Home extends Component {
     this.state = {user:""};
   }
 
-  componentDidMount() {
-    axios.get('http://localhost:5000/home', {
-      method: 'GET',
-      headers: {
-        'token': localStorage.getItem('token'),
-      },
-    })
-      .then(res => {
-        this.setState({user: res.data.user})
-      })
-      .catch(err =>{
-        console.log('Error from Home');
-      });
-  }
+  // componentDidMount() {
+  //   axios.get('http://localhost:5000/home', {
+  //     method: 'GET',
+  //     headers: {
+  //       'token': localStorage.getItem('token'),
+  //     },
+  //   })
+  //     .then(res => {
+  //       this.setState({user: res.data.user})
+  //     })
+  //     .catch(err =>{
+  //       console.log('Error from Home');
+  //     });
+  // }
 
 
   render() {
 
     const user = this.state.user;
     const role = this.state.user.role;
-    console.log(user);
-    console.log(role);
 
     if (role === "Admin" ) {
       return (
@@ -87,7 +85,6 @@ class Home extends Component {
       );
     }
     else{
-      console.log("else");
       return (
         <div style={backdrop}>
           <img src="http://localhost:5000/images/logo.png" alt='BOOKFLIX' height={"80vh"}></img>

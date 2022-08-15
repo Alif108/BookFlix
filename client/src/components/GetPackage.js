@@ -110,10 +110,7 @@ export default class GetPackage extends Component{
                 },
               })
                 .then(res => {
-                    if(res.data.success)
-                        window.alert("Subscription successful");
-                    else
-                        window.alert("Subscription failed");
+                    window.alert(res.data.message);
                 });
         } catch (err) {
             console.log(err);

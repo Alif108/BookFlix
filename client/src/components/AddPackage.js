@@ -9,13 +9,7 @@ export default function AddPackage() {
     const [max_books_limit, setMaxBooksLimit] = useState('');
 
 	async function addNewPackage(event) {
-
-		// The preventDefault() method cancels the event if it is cancelable
-        // event.preventDefault()
-
-        // syntax : const response = await fetch(resource[, options]);
-        // resource: the URL string, or a Request object
-        // options: the configuration object with properties like method, headers, body, credentials, and more
+		
 		await fetch("http://localhost:5000/packages/addPackage", {
 			method: 'POST',
 
