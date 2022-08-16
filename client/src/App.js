@@ -9,7 +9,7 @@ import Home from "./components/Home"
 import Register from "./components/Register"
 import Login from "./components/Login"
 import UserList from "./components/UserList"
-import Navbar from "./components/navbar";
+import NavigationBar from "./components/navbar";
 import AdminHome from "./components/AdminHome"
 import UserHome from "./components/UserHome"
 
@@ -26,10 +26,16 @@ import RemovePackage from './components/RemovePackage';
 import GetPackage from './components/GetPackage';
 import MyPackage from './components/MyPackage';
 
+import StatsBooks from './components/StatsBooks';
+import StatsUsers from './components/StatsUsers';
+import StatsFinance from './components/StatsFinance';
+
 const App = () => {
 	return (
 		<div>
-			<Navbar />
+
+			<NavigationBar />
+			
 			<Routes>
 				<Route path="/" exact element={<Home />} />
 				<Route path="/register" exact element={<Register />} />
@@ -51,7 +57,13 @@ const App = () => {
 				<Route path='/admin/editPackage/:id' element={< EditPackage/> }/>
 				<Route path='/packages/getPackage/:id' element={< GetPackage/> }/>
 				<Route path='/packages/myPackage' element={< MyPackage/> }/>
+
+				<Route path='/admin/stats/books' element={< StatsBooks/> }/>
+				<Route path='/admin/stats/users' element={< StatsUsers/> }/>
+				<Route path='/admin/stats/finance' element={< StatsFinance/> }/>
 			</Routes>
+
+			
 		</div>
 	);
 };

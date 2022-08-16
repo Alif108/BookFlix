@@ -3,20 +3,28 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import axios from 'axios';
+import { Container } from "@mui/material";
 
 const Book = props => (
   <Col>
-    <div onClick={() => window.location.href = '/books/'+props.book._id}>
-      <Card style={{ width: '15rem' }}>
-        <Card.Body>
-          <Card.Img variant="top" src= { 'http://localhost:5000'+props.book.coverLocation } />
-          <Card.Title>{ props.book.title }</Card.Title>
-          <Card.Title>{ props.book.author }</Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">{ props.book.genre }</Card.Subtitle>
-        </Card.Body>
-      </Card>
-    </div>
+  <Container style={{backgroundColor:"white", borderRadius:20, margin:20, padding:20 }} onClick={() => window.location.href = '/books/'+props.book._id} fluid>
+
+      <Row>
+        <img src= { 'http://localhost:5000'+props.book.coverLocation } style={{height:280, width:200}}/>
+      </Row>
+      <Row>
+        <h4>{props.book.title} </h4>
+      </Row>
+      <Row>
+        <h6> {props.book.author}</h6>
+      </Row>
+      <Row>
+        <h6>{props.book.genre}</h6>
+      </Row>
+
+  </Container>
   </Col>
+
 )
 
 export default class BookList extends Component{
@@ -101,16 +109,18 @@ export default class BookList extends Component{
 
   render(){
     return (
-      <div>
 
+
+      <Container style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent:"center", backgroundColor:"#fff0cc"}}>
+        <br />
         <form onSubmit={this.searchBook}>
           <input id="query" placeholder="Title or Author or Genre" type="text" onChange={event => this.setState({query: event.target.value})} value={this.state.query}/>
           <button type="submit">Search</button>
         </form>
-
+        <br />
         {this.showBookList()}
         
-      </div>
+      </Container>
     );
   }
 }

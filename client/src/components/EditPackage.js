@@ -1,6 +1,9 @@
 import React, { Component }  from "react";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+
+import { Link } from 'react-router-dom';
+import Container from "react-bootstrap/esm/Container";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from "axios";
@@ -107,9 +110,23 @@ export default class EditPackage extends Component{
 
     render() {
         return(
-            <div>
-                <h3>Edit Book</h3>
-                <div>
+
+
+        <Container style={{display: "flex", flexDirection: "row", height:"100vh", padding:0}} fluid> 
+          <Container style={{ flex: 1,  flexDirection: "column", backgroundColor: "orange", padding: '3vh'}} >
+
+          <Link style={{textDecoration:"none", color:"white",fontSize:20}} to='/admin/addpackage'>
+          Add New Package
+          </Link>
+          <br />
+          <Link style={{textDecoration:"none", color:"white",fontSize:20}} to='/packages'>
+          Packages
+          </Link>
+
+          </Container>
+          <Container style={{ flex: 6, backgroundColor: "#fff0cc" , padding: '5vh'}} >
+
+
                     <Row>
                         <Col></Col>
                         <Col xs={5}>
@@ -147,8 +164,12 @@ export default class EditPackage extends Component{
                         </Col>
                         <Col></Col>
                     </Row>
-                </div>
-            </div>
+
+
+
+            </Container>
+
+</Container>
         )
     }
     
