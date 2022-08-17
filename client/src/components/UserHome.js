@@ -60,10 +60,13 @@
 
 
 ///Home page if logged in as admin
+
 import React, { Component } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 import Carousel from 'react-bootstrap/Carousel';
+import { Container } from '@mui/material';
+
 
 function ControlledCarousel() {
   const [index, setIndex] = useState(0);
@@ -129,11 +132,12 @@ class UserHome extends Component {
     render() {
 
       
+      
       const user = this.state.user;
       let role = this.state.user.role;
       if(role === "Basic")
         return (
-            <div className="UserHome">
+            <Container className="UserHome" fluid>
               <br/><br/>
               <div className="container">
                   <div style={{display:"flex",alignItems: "center",justifyContent:"center"}}> 
@@ -157,7 +161,7 @@ class UserHome extends Component {
                       </div>
                     </div>
               </div>
-            </div>
+            </Container>
         );
         else
             return(

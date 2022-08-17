@@ -200,10 +200,12 @@ export default class readBook extends Component{
     this.buildWebViewer();
     return (
       <div className="MyComponent">
+        <div>
         <Container>
           <div className="header">{this.state.book.title}</div>
           <div className="webviewer" style={ reader } ref={this.state.viewer}></div>
         </Container>
+      </div>
       </div>
     );
   }

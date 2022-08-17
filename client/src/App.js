@@ -9,7 +9,7 @@ import Home from "./components/Home"
 import Register from "./components/Register"
 import Login from "./components/Login"
 import UserList from "./components/UserList"
-import Navbar from "./components/navbar";
+import NavigationBar from "./components/navbar";
 import AdminHome from "./components/AdminHome"
 import UserHome from "./components/UserHome"
 
@@ -29,10 +29,16 @@ import MyPackage from './components/MyPackage';
 import MyList from './components/MyList';
 import RemoveMyList from './components/RemoveMyList';
 
+import StatsBooks from './components/StatsBooks';
+import StatsUsers from './components/StatsUsers';
+import StatsFinance from './components/StatsFinance';
+
 const App = () => {
 	return (
 		<div>
-			<Navbar />
+
+			<NavigationBar />
+			
 			<Routes>
 				<Route path="/" exact element={<Home />} />
 				<Route path="/register" exact element={<Register />} />
@@ -45,6 +51,7 @@ const App = () => {
 				<Route path="/books/:id/read" element={< ReadBook/> }/>
 				<Route path="/books/edit/:id" element={< EditBook/> }/>
 				<Route path='/books/user/getMyList' element={< MyList/> }/>
+				<Route path='/books/removeMyList/:id' element={< RemoveMyList/> }/>
 
 				<Route path="/admin/userlist" exact element={<UserList />} />
 				<Route path="/admin/addbook" element={< AddBook/> }/>
@@ -57,8 +64,11 @@ const App = () => {
 				<Route path='/packages/getPackage/:id' element={< GetPackage/> }/>
 				<Route path='/packages/myPackage' element={< MyPackage/> }/>
 
-				<Route path='/books/removeMyList/:id' element={< RemoveMyList/> }/>
+				<Route path='/admin/stats/books' element={< StatsBooks/> }/>
+				<Route path='/admin/stats/users' element={< StatsUsers/> }/>
+				<Route path='/admin/stats/finance' element={< StatsFinance/> }/>
 			</Routes>
+			
 		</div>
 	);
 };

@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
+import Container from 'react-bootstrap/esm/Container';
+import Typography from '@mui/material/Typography';
+import Rating from '@mui/material/Rating';
 
+const NavbarHeight = '60px'
 export default class Book extends Component{
+  
   constructor(props){
     super(props);
 
@@ -76,6 +81,10 @@ export default class Book extends Component{
     });
   }
 
+  editBookPage() {
+    let path = 'http://localhost:5000/books/edit/' + this.state.book._id;
+    Navigate(path); 
+  }
 
   async addReview(e) {
     e.preventDefault();
@@ -134,11 +143,12 @@ export default class Book extends Component{
   renderEditButton(){
     if (this.state.user.role === "Admin") {
       return (
-        <div>
-          <Link to={'/books/edit/'+this.state.book._id}>
-            Edit
+        <Container>
+          {/* button to go to /books/edit */}
+          <Link className='btn btn-danger' to={'/books/edit/'+this.state.book._id}>
+            Edit Book
           </Link>
-      </div>
+        </Container>
       );
     }
   }
@@ -176,7 +186,7 @@ export default class Book extends Component{
 
   renderReviews(){
       return (
-        <div>
+        <Container>
           <h3>Reviews</h3>
           {this.state.reviews.map((review) => {
             return (
@@ -189,7 +199,7 @@ export default class Book extends Component{
             );
           }
           )}
-        </div>
+        </Container>
       );
   }
 
@@ -219,6 +229,44 @@ export default class Book extends Component{
 
   render(){
     return (
+
+      <Container style={{display: "flex", flexDirection:"row", backgroundColor:"#fff0cc", height:'calc(100vh - 70px)'}} fluid>
+        <Container style={{flex:2 , display:"flex", flexDirection:"column", alignItems: "center", justifyContent:"center", backgroundColor:"#ffe3a1", margin:"20px"}} fluid>
+          <img src= {"http://localhost:5000" + this.state.book.coverLocation} alt="" height='85%' margin='20px'/>
+           <br />
+          {this.renderEditButton()}
+        </Container>
+        <Container style={{flex:3 , display:"flex", flexDirection:"column", marginTop:20, marginBottom:20}} fluid>
+          <Container style={{backgroundColor:"#ffe3a1", borderRadius:5, margin:5, padding:20}} fluid>
+            <Typography style={{fontSize:40, fontFamily:'Roboto'}}>{this.state.book.title}</Typography>
+            <Typography style={{fontSize:16, color:"brown", margin:5}}><b>{this.state.book.author}</b></Typography>
+
+            
+          </Container>
+          <Container style={{backgroundColor:"#dedede", borderRadius:5, margin:5, padding:5, paddingLeft:20}} fluid>
+            <Rating name="read-only" value={this.state.book.rating} size="large" readOnly />
+          </Container>
+          <Container style={{backgroundColor:"#ffe3a1", borderRadius:5, margin:5, padding:20}} fluid>
+            <Typography style={{fontSize:14, fontFamily:'Roboto'}}>{this.state.book.description}</Typography>
+          </Container>
+          <Container style={{display:"flex", flexDirection:"row", backgroundColor:"#dedede", borderRadius:5, margin:5, padding:5, paddingLeft:20}} fluid>
+            <Typography style={{color:"white", backgroundColor:"grey", borderRadius:20, margin:5, padding:5, paddingLeft:10, paddingRight:10}}>
+              Category
+            </Typography>
+          </Container>
+          <Container style={{backgroundColor:"#ffe3a1", borderRadius:5, margin:5, padding:20}} fluid>
+            {this.renderReviewBox}
+          </Container>
+
+
+        </Container>
+
+      </Container>
+
+
+
+/*
+    
       <div>
         <Row>
           <Col></Col>
@@ -264,6 +312,9 @@ export default class Book extends Component{
           <Col></Col>
         </Row>
       </div>
+
+
+          */
     );
   }
 }
