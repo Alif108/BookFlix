@@ -155,7 +155,16 @@ export default class Book extends Component{
 
   renderReadButton()
   {
-    if(this.state.user.role === "Basic" && this.state.user.subscription){
+    if(this.state.user.role === "Basic" && !this.state.user.subscription){
+      return (
+        <div>
+          You are not subscribed.<br/>
+          <Link to={'/packages'}>Subscribe Now!</Link>
+        </div>
+      );
+    }
+
+    else {
       return (
         <div>
           <Link to={'/books/'+this.state.book._id+'/read'}>Read</Link>

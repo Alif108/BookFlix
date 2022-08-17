@@ -88,9 +88,14 @@ import React, { useEffect, useRef } from "react";
 import { Component } from "react";
 import WebViewer from '@pdftron/pdfjs-express-viewer';
 import axios from 'axios';
+import { Container } from "react-bootstrap";
 
 
-// const MyComponent = () => {
+const reader = {
+  width: '100%',
+  height: '100vh',
+};
+
 
 export default class readBook extends Component{
 
@@ -195,8 +200,10 @@ export default class readBook extends Component{
     this.buildWebViewer();
     return (
       <div className="MyComponent">
-        <div className="header">{this.state.book.title}</div>
-        <div className="webviewer" ref={this.state.viewer}></div>
+        <Container>
+          <div className="header">{this.state.book.title}</div>
+          <div className="webviewer" style={ reader } ref={this.state.viewer}></div>
+        </Container>
       </div>
     );
   }
