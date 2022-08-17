@@ -2,14 +2,9 @@
 /// if logged in it changes depending on the role of user
 
 import React, { Component } from 'react';
-import { Link, Navigate } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
+import { Link } from 'react-router-dom';
 import axios from "axios";
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -42,20 +37,46 @@ export default class NavigationBar extends Component {
       });
 }
 
-handleClick(event)
+handleClickLogout(event)
 {
   logout.LogOut();
 }
 
+// renderHomeLogo() {
+//   if(this.state.loggedIn) {
+//     if(this.state.role === "Admin")
+//       return <Link to="/admin" className="navbar-brand"><img src="http://localhost:5000/images/logo.png" alt="BOOKFLIX" height='40px' width='120px'/></Link>
+//     else if(this.state.role === "Basic")
+//       return <Link to="/user" className="navbar-brand"><img src="http://localhost:5000/images/logo.png" alt="BOOKFLIX" height='40px' width='120px'/></Link>
+//   }
+//   else
+//     return <Link to="/" className="navbar-brand"><img src="http://localhost:5000/images/logo.png" alt="BOOKFLIX" height='40px' width='120px'/></Link>
+// }
 renderHomeLogo() {
-  if(this.state.loggedIn) {
+  if(this.state.loggedIn){
     if(this.state.role === "Admin")
-      return <Link to="/admin" className="navbar-brand"><img src="http://localhost:5000/images/logo.png" alt="BOOKFLIX" height='40px' width='120px'/></Link>
+    {
+      return(<Navbar.Brand href="/admin" style={{paddingLeft:'2vw',paddingRight:'2vw'}}>
+      <img
+        alt="BOOKFLIX"
+        src="http://localhost:5000/images/logo.png"
+        height="50px"
+      />
+    </Navbar.Brand>);
+    }
     else if(this.state.role === "Basic")
-      return <Link to="/user" className="navbar-brand"><img src="http://localhost:5000/images/logo.png" alt="BOOKFLIX" height='40px' width='120px'/></Link>
+    {
+      return(
+        <Navbar.Brand href="/books" style={{paddingLeft:'2vw',paddingRight:'2vw'}}>
+          <img
+            alt="BOOKFLIX"
+            src="http://localhost:5000/images/logo.png"
+            height="50px"
+          />
+        </Navbar.Brand>
+      );
+    }
   }
-  else
-    return <Link to="/" className="navbar-brand"><img src="http://localhost:5000/images/logo.png" alt="BOOKFLIX" height='40px' width='120px'/></Link>
 }
 
 render() {
@@ -65,7 +86,7 @@ render() {
     
     // link to logout if user is logged in
   let logoutButton;
-  logoutButton = <button onClick={this.handleClick}>Logout</button>;
+  logoutButton = <button onClick={this.handleClickLogout}>Logout</button>;
 
   let link1, link2, link3, link4;
   let username = this.state.username;
@@ -73,12 +94,12 @@ render() {
     link1 = <Link to="/admin/stats/books" className="nav-link">Stats</Link>;
     link2 = <Link to="/admin/addbook" className="nav-link">Add Book</Link>;
     link3 = <Link to="/admin/managepacks" className="nav-link">Manage Packs</Link>;
-    link4 = <Link to="/admin/requests" className="nav-link">Requests</Link>;
-  } else {
-    link2 = <Link to="/books/" className="nav-link">Books</Link>;
-    link3 = <Link to="/books/user/getMyList/" className="nav-link">My List</Link>;
-    link4 = "";
-  } 
+    link4 = <Link to="/requestBook/requests" className="nav-link">Requests</Link>;	
+  } else {	
+    link2 = <Link to="/books/" className="nav-link">Books</Link>;	
+    link3 = <Link to="/books/user/getMyList/" className="nav-link">My List</Link>;	
+    link4 = <Link to="/requestBook/" className="nav-link">Request a Book</Link>;
+  }
     
   return(
 
@@ -87,13 +108,8 @@ render() {
     
         
         <Container fluid>
-          <Navbar.Brand href="/" style={{paddingLeft:'2vw',paddingRight:'2vw'}}>
-            <img
-              alt="BOOKFLIX"
-              src="http://localhost:5000/images/logo.png"
-              height="50px"
-            />
-          </Navbar.Brand>
+          {this.renderHomeLogo()}
+
           <Nav className="me-auto">
 
 
@@ -119,23 +135,19 @@ render() {
               <NavDropdown.Item href="#" style={{color: "#ff7700"}}>View Profile</NavDropdown.Item>
               <NavDropdown.Item href="#" style={{color: "#ff7700"}}>Notifications</NavDropdown.Item>
               <NavDropdown.Item href="#" style={{color: "#ff7700"}}>Settings</NavDropdown.Item>
+              <NavDropdown.Item href="/packages/myPackage" style={{color: "#ff7700"}}>My Package</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item onClick={this.handleClick} style={{color: "#ff7700"}}>Logout</NavDropdown.Item>
+              <NavDropdown.Item onClick={this.handleClickLogout} style={{color: "#ff7700"}}>Logout</NavDropdown.Item>
             </NavDropdown>
 
-            <img src="http://localhost:5000/images/bell.png" alt="notification" height='25px' style={{marginLeft: "2vw", marginRight: "2vw"}} onClick={this.handleClick}/>
+            <img src="http://localhost:5000/images/bell.png" alt="notification" height='25px' style={{marginLeft: "2vw", marginRight: "2vw"}} onClick={this.handleClickLogout}/>
             {/*
             <Container>
-            <Button variant="outline-primary" onClick={this.handleClick}><img src="http://localhost:5000/images/logout.png" alt="logout" height='25px'/></Button>
+            <Button variant="outline-primary" onClick={this.handleClickLogout}><img src="http://localhost:5000/images/logout.png" alt="logout" height='25px'/></Button>
             </Container>
             */}
-
             </Container>
-          
         </Container>
-
-                
-
       </Navbar>
 
     );

@@ -1,72 +1,7 @@
-// ///Home page if logged in as admin
-// import React, { Component } from 'react';
-// import axios from 'axios';
-
-// class UserHome extends Component {
-//     constructor(props) {
-//       super(props);
-//       this.state = {user:""};
-//     }
-  
-//     componentDidMount() {
-  
-//       axios.get('http://localhost:5000/user', {
-//         method: 'GET',
-//         headers: {
-//           'token': localStorage.getItem('token'),
-//         },
-//       })
-//         .then(res => {
-//           this.setState({user: res.data.user})
-//         })
-//         .catch(err =>{
-//           console.log('Error from UserHome');
-//         });
-//   }
-  
-//     render() {
-//       const user = this.state.user;
-//       if(user)
-//         return (
-//             <div className="UserHome">
-//             <div className="container">
-//                 <div className="user">
-//                 <h3>
-//                     {user.username}  
-//                     </h3>
-//                 </div>
-//                 <div>
-//                     <a href='/books'>Books</a>
-//                 </div>
-//                 <div>
-//                     <a href='/packages'>Packages</a>
-//                 </div>
-//                 <div>
-//                     <a href='/packages/myPackage'>My Package</a>
-//                 </div>
-//             </div>
-//             </div>
-//         );
-//         else
-//             return(
-//                 <div>
-//                     <h1>Error</h1>
-//                 </div>
-//             );
-//     }
-//   }
-  
-//   export default UserHome;
-
-
-///Home page if logged in as admin
-
 import React, { Component } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 import Carousel from 'react-bootstrap/Carousel';
-import { Container } from '@mui/material';
-
 
 function ControlledCarousel() {
   const [index, setIndex] = useState(0);
@@ -132,12 +67,11 @@ class UserHome extends Component {
     render() {
 
       
-      
       const user = this.state.user;
       let role = this.state.user.role;
       if(role === "Basic")
         return (
-            <Container className="UserHome" fluid>
+            <div className="UserHome">
               <br/><br/>
               <div className="container">
                   <div style={{display:"flex",alignItems: "center",justifyContent:"center"}}> 
@@ -161,7 +95,7 @@ class UserHome extends Component {
                       </div>
                     </div>
               </div>
-            </Container>
+            </div>
         );
         else
             return(

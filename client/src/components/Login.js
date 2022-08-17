@@ -138,9 +138,9 @@ export default function Login() {
             // redirect here
 			// navigate("/userlist");
 			if(data.user.role === "Admin")
-				window.location.href = "/admin/stats/books";
+				window.location.href = "/admin";
 			else
-				window.location.href = "/user";
+				window.location.href = "/books";
         }
         else
         {

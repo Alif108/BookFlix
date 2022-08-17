@@ -26,19 +26,21 @@ import EditPackage from './components/EditPackage';
 import RemovePackage from './components/RemovePackage';
 import GetPackage from './components/GetPackage';
 import MyPackage from './components/MyPackage';
+
 import MyList from './components/MyList';
 import RemoveMyList from './components/RemoveMyList';
 
-import StatsBooks from './components/StatsBooks';
-import StatsUsers from './components/StatsUsers';
-import StatsFinance from './components/StatsFinance';
+import RequestBook from './components/RequestBook';
+import ShowBookRequests from './components/showBookRequests';
+
+// import StatsBooks from './components/StatsBooks';	
+// import StatsUsers from './components/StatsUsers';	
+// import StatsFinance from './components/StatsFinance';
 
 const App = () => {
 	return (
 		<div>
-
 			<NavigationBar />
-			
 			<Routes>
 				<Route path="/" exact element={<Home />} />
 				<Route path="/register" exact element={<Register />} />
@@ -64,11 +66,13 @@ const App = () => {
 				<Route path='/packages/getPackage/:id' element={< GetPackage/> }/>
 				<Route path='/packages/myPackage' element={< MyPackage/> }/>
 
-				<Route path='/admin/stats/books' element={< StatsBooks/> }/>
-				<Route path='/admin/stats/users' element={< StatsUsers/> }/>
-				<Route path='/admin/stats/finance' element={< StatsFinance/> }/>
+				<Route path='/requestBook' element={< RequestBook/> }/>
+				<Route path='/requestBook/requests' element={< ShowBookRequests/> }/>
+
+				{/* <Route path='/admin/stats/books' element={< StatsBooks/> }/>	
+				<Route path='/admin/stats/users' element={< StatsUsers/> }/>	
+				<Route path='/admin/stats/finance' element={< StatsFinance/> }/> */}
 			</Routes>
-			
 		</div>
 	);
 };

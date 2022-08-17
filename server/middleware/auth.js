@@ -5,6 +5,9 @@ exports.adminAuth = (req, res, next) => {
     const token = req.header('token');
 
     if(token){
+
+        console.log("token: " + token);
+
         jwt.verify(token, jwtSecret, (err, decodedToken) => {
             if(err){
                 return res.status(401).json({message: "Not Authorized"});
@@ -30,6 +33,9 @@ exports.userAuth = (req, res, next) => {
   const token = req.header('token');
 
   if(token){
+
+    console.log("token: " + token);
+
       jwt.verify(token, jwtSecret, (err, decodedToken) => {
           if(err){
               return res.status(401).json({message: "Not Authorized"});
@@ -54,6 +60,9 @@ exports.generalAuth = (req, res, next) => {
   const token = req.header('token');
 
   if(token){
+
+    console.log("token: " + token);
+    
       jwt.verify(token, jwtSecret, (err, decodedToken) => {
           if(err){
               return res.status(401).json({message: "Not Authorized"});
@@ -65,6 +74,7 @@ exports.generalAuth = (req, res, next) => {
       })
   }
   else {
-      return res.status(401).json({message: "Not authorized, token not available"});
+    console.log("Not authorized, token not available");
+    return res.status(401).json({message: "Not authorized, token not available"});
   }
 }

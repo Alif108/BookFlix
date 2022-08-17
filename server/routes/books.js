@@ -11,10 +11,12 @@ let Book = require('../models/book.model');
 let Review = require('../models/review.model');
 let User = require('../models/user.model');
 let MyList = require('../models/mylist.model');
+let Genre = require('../models/genre.model');
 
 ///Book list generation
 router.get("/", generalAuth, function(req, res){
   Book.find()
+    .populate('genre', "name")
     .then(books => {
       console.log(books);
       res.json(books)
@@ -26,7 +28,24 @@ router.get("/", generalAuth, function(req, res){
 ///book profile generation
 router.get("/:id", generalAuth, function(req, res){
   Book.findById(req.params.id)
-    .then(book => res.json({user: req.session.user, book}))
+    .then(book => {
+      Genre.findById(book.genre)
+        .then(genre => {
+          res.json({user: req.session.user, book, genre})
+        })
+        .catch(err => res.status(400).json('Error: ' + err)); 
+    })
+    .catch(err => res.status(400).json('Error: ' + err));
+})
+
+// search book by title, author, or genre
+router.get("/searchBook/:query", generalAuth, function(req, res){
+  Book.find({ $or: [
+    {title: {$regex: req.params.query, $options: 'i'}}, 
+    {author: {$regex: req.params.query, $options: 'i'}},
+    // {genre: {$regex: req.params.query, $options: 'i'}}
+  ]})
+    .then(books => res.json(books))
     .catch(err => res.status(400).json('Error: ' + err));
 })
 
@@ -42,17 +61,6 @@ router.post ("/addReview", generalAuth, function(req, res, next){
 
   review.save();
   res.json({message: "Review added successfully"});
-})
-
-// search book by title, author, or genre
-router.get("/searchBook/:query", generalAuth, function(req, res){
-  Book.find({ $or: [
-    {title: {$regex: req.params.query, $options: 'i'}}, 
-    {author: {$regex: req.params.query, $options: 'i'}},
-    {genre: {$regex: req.params.query, $options: 'i'}}
-  ]})
-    .then(books => res.json(books))
-    .catch(err => res.status(400).json('Error: ' + err));
 })
 
 
@@ -106,9 +114,6 @@ router.post("/add", upload.any(), function(req, res, next){
 
   book.coverLocation = coverDest;
   book.pdfLocation = pdfDest;
-
-  console.log(book._id);
-  console.log(req.files);
 
   book.save()
     .then(() => {console.log("Book added");})
@@ -188,9 +193,11 @@ router.get("/user/getMyList", userAuth, async function(req, res){
         books = [];
 
         for(var i=0; i<objects.length; i++){
-            book = await Book.findById(objects[i].bookID);
+            book = await Book.findById(objects[i].bookID).populate('genre', "name");
+            // book = await Book.findById(objects[i].bookID);
             books.push(book);
         }
+        console.log(books);
         res.json(books);
     })
     .catch(err => res.status(400).json('Error: ' + err));
@@ -199,13 +206,18 @@ router.get("/user/getMyList", userAuth, async function(req, res){
 
 ///delete books from my list
 router.delete("/removeMyList/:id", userAuth, function(req, res){
-
-  console.log("Here");
-
   MyList.findOneAndDelete({bookID: req.params.id, userID: req.session.user.id})
     .then(() => res.json({success: true, message: "Book removed from MyList"}))
     .catch(err => res.status(400).json({success: false, message: "Book colud not be removed from MyList"}));
 });
 
+
+router.get("/genres/getGenres", adminAuth, function(req, res){
+  Genre.find()
+    .then(genre => {
+      res.json(genre);
+    })
+    .catch(err => res.status(400).json('Error: ' + err));
+});
 
 module.exports = router;
