@@ -26,11 +26,11 @@ export default class MyPackage extends Component{
         this.state = {
             package: "",
             user: "",
+            expiresIn: "",
         }
     }
 
     componentDidMount() {
-
         axios.get('http://localhost:5000/packages/user/myPackage', {
           method: 'GET',
           headers: {
@@ -38,7 +38,7 @@ export default class MyPackage extends Component{
           },
         })
           .then(res => {
-            this.setState({user: res.data.user, package: res.data.package});
+            this.setState({user: res.data.user, package: res.data.package, expiresIn: res.data.expiresIn});
           })
           .catch(err =>{
             console.log('Error from MyPackage');
@@ -47,9 +47,26 @@ export default class MyPackage extends Component{
         // console.log(this.state.user);
     }
 
+    showExpiresIn()
+    {
+      if(this.state.package.length !== 0)
+        return(
+          <div>
+            <h6>Expires in: </h6>
+            <h4>{this.state.expiresIn} Days</h4>
+          </div>
+        );
+    }
     
     showPackage()
     {
+      if(this.state.package.length === 0)
+        return(
+          <div>
+            <h1>You Are Not Subscribed!</h1>
+          </div>
+        );
+      else
         return(
             <div>
                 <Package package={this.state.package} />
@@ -60,14 +77,21 @@ export default class MyPackage extends Component{
     render() {
         return(
             <div>
-                <h3>Your Current Plan</h3>
                 <div>
                     <Row>
-                        <Col></Col>
                         <Col>
                         <div>
+                          <a href='/packages'>Get New Package</a>
+                        </div>
+                      </Col>
+                        <Col>
+                        <div>
+                        <h3>Your Current Plan</h3>
                             <Row xs={1} md={5} className="g-4">
                                 {this.showPackage()}
+                            </Row>
+                            <Row xs={1} md={5} className="g-4">
+                                {this.showExpiresIn()}
                             </Row>
                         </div>
                         </Col>

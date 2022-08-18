@@ -9,7 +9,7 @@ const bookSchema = new Schema({
     rating: {type: Number, required: true, default: 0},
     publisher: {type: String, required: false, default: "2005"},
     publishingYear: {type: Number, required: false},
-    genre: {type: String, required: false},
+    genre: {type: mongoose.Types.ObjectId, ref:"Genres", required: true, default: "62fca44e433704ca82de2e7a"},
     numPage: {type: Number, required: false},
     coverLocation: {type: String, required: false},
     pdfLocation: {type: String, required: false},

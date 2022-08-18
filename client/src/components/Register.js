@@ -146,8 +146,8 @@ export default function Register() {
 				{/* Region */}
 				<p>Region</p>
 				<select 
-					name="cars" 
-					id="cars"
+					name="region" 
+					id="region"
 					value={region}
 					onChange={(e) => setRegion(e.target.value)}
 					required

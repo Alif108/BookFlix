@@ -1,45 +1,40 @@
 import React, { Component }  from "react";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card';
 import axios from 'axios';
-import { Container } from "@mui/material";
 
-const Book = props => (
+const BookRequest = props => (
   <Col>
-  <Container style={{backgroundColor:"white", borderRadius:20, margin:20, padding:20 }} onClick={() => window.location.href = '/books/'+props.book._id} fluid>
-
-      <Row>
-        <img src= { 'http://localhost:5000'+props.book.coverLocation } style={{height:280, width:200}}/>
-      </Row>
-      <Row>
-        <h4>{props.book.title} </h4>
-      </Row>
-      <Row>
-        <h6> {props.book.author}</h6>
-      </Row>
-      <Row>
-        <h6>{props.book.genre.name}</h6>
-      </Row>
-
-  </Container>
+    <div>
+      <Card style={{ width: '15rem' }}>
+        <Card.Body>
+          <Card.Title>{ props.book.title }</Card.Title>
+          <Card.Subtitle>{ props.book.author }</Card.Subtitle>
+          <Card.Text>ISBN: { props.book.isbn }</Card.Text>
+          <Card.Text>Publisher: { props.book.publisher }</Card.Text>
+          <Card.Text>Publishing Year: { props.book.publishingYear }</Card.Text>
+          <Card.Text>{ props.book.description }</Card.Text>
+        </Card.Body>
+      </Card>
+    </div>
   </Col>
-
 )
 
-export default class BookList extends Component{
+export default class ShowBookRequests extends Component{
   constructor(props){
     super(props);
 
     this.state = {
       query: "",
-      books: [],
+      bookReq: [],
     };
 
-    this.searchBook = this.searchBook.bind(this);
+    this.searchBookRequest = this.searchBookRequest.bind(this);
   }
 
   async componentDidMount(){
-    axios.get('http://localhost:5000/books/', {
+    axios.get('http://localhost:5000/requestBook/requests', {
       method: 'GET',
       headers: {
         'token': localStorage.getItem('token'),
@@ -47,7 +42,7 @@ export default class BookList extends Component{
     })
       .then(response => {
         this.setState({
-          books: response.data,
+          bookReq: response.data,
         });
       })
       .catch(function(error){
@@ -56,7 +51,7 @@ export default class BookList extends Component{
     );
   }
 
-  async searchBook(event)
+  async searchBookRequest(event)
   {
     event.preventDefault();
     this.setState({query: event.target.value});
@@ -66,7 +61,7 @@ export default class BookList extends Component{
       alert("Please enter a valid Query");
     }
 
-    axios.get('http://localhost:5000/books/searchBook/'+this.state.query, {
+    axios.get('http://localhost:5000/requestBook/searchBookRequest/'+this.state.query, {
       method: 'GET',
       headers: {
         'token': localStorage.getItem('token'),
@@ -79,7 +74,7 @@ export default class BookList extends Component{
         }
         else
           this.setState({
-            books: response.data,
+            bookReq: response.data,
           });
       })
       .catch(function(error){
@@ -88,18 +83,18 @@ export default class BookList extends Component{
     );
   }
 
-  bookList(){
-    return this.state.books.map(currentbook => {
-      return <Book book={currentbook} key={currentbook._id}/>;
+  bookReqList(){
+    return this.state.bookReq.map(currentReq => {
+      return <BookRequest book={currentReq} key={currentReq._id}/>;
     })
   }
 
-  showBookList(){
-    if(this.state.books.length > 0){
+  showBookReqList(){
+    if(this.state.bookReq.length > 0){
       return (
         <div>
           <Row xs={1} md={5} className="g-4">
-              {this.bookList()}
+              {this.bookReqList()}
           </Row>
         </div>
       );
@@ -108,15 +103,16 @@ export default class BookList extends Component{
 
   render(){
     return (
-      <Container style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent:"center", backgroundColor:"#fff0cc"}}>
-        <br />
-        <form onSubmit={this.searchBook}>
+      <div>
+
+        <form onSubmit={this.searchBookRequest}>
           <input id="query" placeholder="Title or Author" type="text" onChange={event => this.setState({query: event.target.value})} value={this.state.query}/>
           <button type="submit">Search</button>
         </form>
-        <br />
-        {this.showBookList()}
-      </Container>
+
+        {this.showBookReqList()}
+        
+      </div>
     );
   }
 }

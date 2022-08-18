@@ -37,6 +37,9 @@ app.use("/books", bookRouter);
 // package routes
 const packageRouter = require("./routes/packages");
 app.use("/packages", packageRouter);
+// book request routes
+const bookRequestRouter = require("./routes/requestBook");
+app.use("/requestBook", bookRequestRouter);
 
 
 

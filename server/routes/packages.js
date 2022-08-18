@@ -26,7 +26,9 @@ router.get("/user/myPackage", userAuth, function(req, res){
       {
         Package.findById(transaction[0].packageID)
           .then(package => {
-            res.json({user: req.session.user, package});
+            timeSinceSub = Math.ceil((new Date().getTime() - new Date(transaction[0].date).getTime()) / (1000 * 3600 * 24)); // time since subscription (days)
+            expiresIn = package.duration - timeSinceSub; // time until subscription expires (days)
+            res.json({user: req.session.user, package, expiresIn});
           })
           .catch(err => res.status(400).json('Error: ' + err));
       })
