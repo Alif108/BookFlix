@@ -91,14 +91,15 @@ render() {
   let link1, link2, link3, link4;
   let username = this.state.username;
   if (this.state.role === "Admin") {
-    link1 = <Link to="/admin/stats/books" className="nav-link">Stats</Link>;
+    link1 = <Link to="/books" className="nav-link">Books</Link>;
     link2 = <Link to="/admin/addbook" className="nav-link">Add Book</Link>;
     link3 = <Link to="/admin/managepacks" className="nav-link">Manage Packs</Link>;
     link4 = <Link to="/requestBook/requests" className="nav-link">Requests</Link>;	
   } else {	
-    link2 = <Link to="/books/" className="nav-link">Books</Link>;	
-    link3 = <Link to="/books/user/getMyList/" className="nav-link">My List</Link>;	
-    link4 = <Link to="/requestBook/" className="nav-link">Request a Book</Link>;
+    link1 = <Link to="/books/" className="nav-link">Books</Link>;	
+    link2 = <Link to="/books/user/getMyList/" className="nav-link">My List</Link>;	
+    link3 = <Link to="/requestBook/" className="nav-link">Request a Book</Link>;
+    link4 = <Link to="/requestBook/myrequests" className="nav-link">My Requests</Link>;
   }
     
   return(

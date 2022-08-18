@@ -32,6 +32,7 @@ import RemoveMyList from './components/RemoveMyList';
 
 import RequestBook from './components/RequestBook';
 import ShowBookRequests from './components/showBookRequests';
+import MyRequest from './components/MyRequest';
 
 // import StatsBooks from './components/StatsBooks';	
 // import StatsUsers from './components/StatsUsers';	
@@ -68,6 +69,7 @@ const App = () => {
 
 				<Route path='/requestBook' element={< RequestBook/> }/>
 				<Route path='/requestBook/requests' element={< ShowBookRequests/> }/>
+				<Route path='/requestBook/myrequests/' element={< MyRequest/> }/>
 
 				{/* <Route path='/admin/stats/books' element={< StatsBooks/> }/>	
 				<Route path='/admin/stats/users' element={< StatsUsers/> }/>	

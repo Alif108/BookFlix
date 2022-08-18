@@ -11,7 +11,7 @@ router.post("/", userAuth, function(req, res, next){
     console.log(req.body);
 
     const bookRequest = new BookRequests({
-        userID: req.session.user.id,
+      userID: req.session.user.id,
       title: req.body.title,
       author: req.body.author,
       isbn: req.body.isbn,
@@ -66,5 +66,33 @@ router.get("/searchBookRequest/:query", generalAuth, function(req, res){
       .then(bookReqs => res.json(bookReqs))
       .catch(err => res.status(400).json('Error: ' + err));
   })
+
+//reject book request
+router.put("/rejectBookRequest/:id", function(req, res){
+    BookRequests.findById(req.params.id)
+      .then(bookReq => {
+        bookReq.served = true;
+        bookReq.status = "Rejected";
+        bookReq.save()
+          .then(() => res.json({success: true, message: "bookRequest updated"})) 
+          .catch(err => res.status(400).json('Error: ' + err));
+      })
+      .catch(err => res.status(400).json('Error: ' + err));
+  });
+
+//accept book request and add link
+router.post("/acceptBookRequest/:id", function(req, res){
+    BookRequests.findById(req.params.id)
+      .then(bookReq => {
+        bookReq.served = true;
+        bookReq.status = "Accepted";
+        bookReq.link = req.body.data.link;
+        //console.log(req);
+        bookReq.save()
+          .then(() => res.json({success: true, message: "bookRequest updated"}))
+          .catch(err => res.status(400).json('Error: ' + err));
+      })
+      .catch(err => res.status(400).json('Error: ' + err));
+  });
 
   module.exports = router;

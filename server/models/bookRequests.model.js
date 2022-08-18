@@ -10,6 +10,8 @@ const requestSchema = new Schema({
     publisher: {type: String, required: false},
     publishingYear: {type: Number, required: false},
     served: {type: Boolean, required: true, default: false},
+    status: {type: String, required: true, default: "Pending"},
+    link: {type: mongoose.Types.ObjectId, ref:"Book", required: false},
 },
     { collection: 'BookRequests' }        // collection name in the database
 );
