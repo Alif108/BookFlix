@@ -2,25 +2,33 @@ import React, { Component }  from "react";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
+import Typography from '@mui/material/Typography';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import { Container } from "@mui/material";
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import { margin } from "@mui/system";
 
 const Book = props => (
   <Col>
-  <Container style={{backgroundColor:"white", borderRadius:20, margin:20, padding:20 }} onClick={() => window.location.href = '/books/'+props.book._id} fluid>
-
-      <Row>
-        <img src= { 'http://localhost:5000'+props.book.coverLocation } style={{height:280, width:200}}/>
-      </Row>
-      <Row>
-        <h4>{props.book.title} </h4>
-      </Row>
-      <Row>
-        <h6> {props.book.author}</h6>
-      </Row>
-      <Row>
-        <h6>{props.book.genre.name}</h6>
-      </Row>
-
+  <Container style={{backgroundColor:"#fff0cc", width:"50vw", height:"100", borderRadius:10, padding: 20}} onClick={() => window.location.href = '/books/'+props.book._id} fixed>
+    <Row>
+      <Col xs={1}  style={{width: "200px"}}>
+        <Row>
+          <img src= { 'http://localhost:5000'+props.book.coverLocation } style={{height:210, width:165}}/>
+        </Row>
+      </Col>
+      <Col xs={8} style={{margin:0, paading:0}} fluid>
+      <Typography style={{fontSize:26, fontFamily:'Roboto'}}>{props.book.title}</Typography>
+      <Typography style={{fontSize:18, color:"red", fontFamily:'Roboto'}}>{props.book.author}</Typography>
+      <Typography style={{fontSize:14, color:"brown", fontFamily:'Roboto'}}>{props.book.genre.name}</Typography>
+      <Typography class="text-truncate" style={{fontSize:14, fontFamily:'Roboto'}}>{props.book.description}</Typography>
+              
+      </Col>
+    </Row>
   </Container>
   </Col>
 
@@ -88,6 +96,12 @@ export default class BookList extends Component{
     );
   }
 
+  async handleKeyDown(event) {
+    if (event.key === 'Enter') {
+      this.searchBook(event);
+    }
+  }
+
   bookList(){
     return this.state.books.map(currentbook => {
       return <Book book={currentbook} key={currentbook._id}/>;
@@ -97,25 +111,29 @@ export default class BookList extends Component{
   showBookList(){
     if(this.state.books.length > 0){
       return (
-        <div>
-          <Row xs={1} md={5} className="g-4">
+        <Container fluid>
+          <Row xs={1} md={1} className="g-4">
               {this.bookList()}
           </Row>
-        </div>
+        </Container>
       );
     }
   }
 
   render(){
     return (
-      <Container style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent:"center", backgroundColor:"#fff0cc"}}>
+      <Container style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent:"center"}}>
         <br />
-        <form onSubmit={this.searchBook}>
-          <input id="query" placeholder="Title or Author" type="text" onChange={event => this.setState({query: event.target.value})} value={this.state.query}/>
-          <button type="submit">Search</button>
-        </form>
+        <Container style={{width:"50vw", margin:20}}>
+          <Form class="form-inline my-2 my-lg-0" style={{display:"flex",flexDirection: "row", }}>
+          <input class="form-control mr-sm-2" type="search" placeholder="Search by Title or Author" aria-label="Search" onChange={event => this.setState({query: event.target.value})} value={this.state.query}/>
+          <Button variant='btn btn-warning my-2 my-sm-0' type="submit" onClick={this.searchBook}>Search</Button>
+          </Form>
+        </Container>
         <br />
-        {this.showBookList()}
+        <Container fluid>
+          {this.showBookList()}
+        </Container>
       </Container>
     );
   }

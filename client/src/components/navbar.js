@@ -132,11 +132,10 @@ render() {
             </Container>
             */}
             
-            <NavDropdown title={username} id="basic-nav-dropdown" style={{color: "white" , marginLeft: "auto"}}>
-              <NavDropdown.Item href="#" style={{color: "#ff7700"}}>View Profile</NavDropdown.Item>
-              <NavDropdown.Item href="#" style={{color: "#ff7700"}}>Notifications</NavDropdown.Item>
-              <NavDropdown.Item href="#" style={{color: "#ff7700"}}>Settings</NavDropdown.Item>
-              <NavDropdown.Item href="/packages/myPackage" style={{color: "#ff7700"}}>My Package</NavDropdown.Item>
+            <NavDropdown title={username} id="basic-nav-dropdown" menuVariant="dark" style={{color: "white" , marginLeft: "auto"}}>
+              <NavDropdown.Item href="#">View Profile</NavDropdown.Item>
+              <NavDropdown.Item href="#">Settings</NavDropdown.Item>
+              <NavDropdown.Item href="/packages/myPackage">My Package</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={this.handleClickLogout} style={{color: "#ff7700"}}>Logout</NavDropdown.Item>
             </NavDropdown>

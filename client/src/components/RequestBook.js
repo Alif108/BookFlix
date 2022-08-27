@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Container from "react-bootstrap/esm/Container";
 import axios from "axios";
 
 export default class RequestBook extends Component{
@@ -124,47 +125,49 @@ export default class RequestBook extends Component{
 
     render() {
         return(
-            <div><br/><br/>
-                <h3  class="text-warning" style={{display:"flex",alignItems:"center",justifyContent:"center"}}><i>Request a Book</i></h3>
-                <p style={{display:"flex",alignItems:"center",justifyContent:"center"}}>Sorry if you haven't found your favourite book here, but hey, why don't you request it?</p>
-                <p style={{display:"flex",alignItems:"center",justifyContent:"center"}}>We will try our best to include your favourite book</p>
+            <Container>
                 <br/><br/>
-                <div>
+                <h3  style={{display:"flex",alignItems:"center",justifyContent:"center", color:"#ff7700"}}><i>Request a Book</i></h3>
+                <br/>
+                <i style={{display:"flex",alignItems:"center",justifyContent:"center"}}>Sorry if you haven't found your favourite book here, but hey, why don't you request it?</i>
+                <i style={{display:"flex",alignItems:"center",justifyContent:"center"}}>We will try our best to include your favourite book</i>
+                <br/><br/>
+                <Container style={{ backgroundColor: "#fff0cc", padding:"2vw", paddingTop:"4vw", paddingBottom:"4vw"}} fluid>
                     <Row>
                         <Col></Col>
                         <Col xs={5}>
                             <Row>
-                                <Form.Label column="sm" lg={2}>Title:</Form.Label>
+                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Title:</Form.Label>
                                 <Col>
                                     <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeTitle} value={this.state.title} placeholder="Title of the book" />
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2}>Author:</Form.Label>
+                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Author:</Form.Label>
                                 <Col>
                                     <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeAuthor} value={this.state.author} placeholder="Author of the book" />
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2}>ISBN:</Form.Label>
+                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>ISBN:</Form.Label>
                                 <Col>
                                     <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeISBN} value={this.state.isbn} placeholder="ISBN of the book" required="false"/>
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2}>Publisher:</Form.Label>
+                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Publisher:</Form.Label>
                                 <Col>
                                     <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangePublisher} value={this.state.publisher} placeholder="Publisher of the book" required="false"/>
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2}>Publishing Year:</Form.Label>
+                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Publishing Year:</Form.Label>
                                 <Col>
                                     <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangePublishingYear} value={this.state.publishing_year} placeholder="Publishing Year of the book" required="false"/>
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2}>Description:</Form.Label>
+                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Description:</Form.Label>
                                 <Col>
                                     <Form.Control className="w-100" size="sm" as="textarea" onChange={this.onChangeDescription} value={this.state.description} placeholder="" />
                                 </Col>
@@ -177,8 +180,8 @@ export default class RequestBook extends Component{
                         </Col>
                         <Col></Col>
                     </Row>
-                </div>
-            </div>
+                </Container>
+            </Container>
         )
     }    
 }
