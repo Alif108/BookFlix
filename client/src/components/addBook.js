@@ -7,8 +7,6 @@ import axios from "axios";
 import Container from "react-bootstrap/esm/Container";
 
 
-const checkedGenres = [];
-
 export default class AddBook extends Component{
     constructor(props){
         super(props);
@@ -44,6 +42,9 @@ export default class AddBook extends Component{
             listOfGenre: [],
             listOfAuthor: [],
         }
+
+        const checkedGenres = [];
+
     }
 
     async componentDidMount(){
@@ -71,8 +72,6 @@ export default class AddBook extends Component{
         else{
             this.state.genre.splice(this.state.genre.indexOf(e.target.value), 1);
         }
-        console.log(typeof this.state.genre);
-        console.log(this.state.genre);
     }
 
     onChangeTitle(e) {
@@ -151,7 +150,7 @@ export default class AddBook extends Component{
         });
     }
 
-    showAuthors(){
+    renderAuthors(){
         return(
             <div className="search-container">
                 <div className="search-inner">
@@ -188,9 +187,6 @@ export default class AddBook extends Component{
 
     renderGenres()
     {
-        var isChecked = (item) =>
-        checkedGenres.includes(item) ? "checked-item" : "not-checked-item";
-
         return(
             <div className="checkList">
                 <div className="list-container">
@@ -198,7 +194,7 @@ export default class AddBook extends Component{
                 {this.state.listOfGenre.map((genre) => (
                     <div key={genre._id}>
                     <input value={genre._id} type="checkbox" onChange={this.handleCheckGenre} />
-                    <span className={isChecked(genre._id)}>{genre.name}</span>
+                    <span>{genre.name}</span>
                     </div>
                 ))}
                 </div>
@@ -290,7 +286,7 @@ export default class AddBook extends Component{
                             <Row className='mt-2'>
                             <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Author:</Form.Label>
                                 <Col>
-                                    { this.showAuthors() }
+                                    { this.renderAuthors() }
                                 </Col>
                             </Row>
                             <Row className='mt-2'>

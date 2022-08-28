@@ -38,6 +38,7 @@ import MyRequest from './components/MyRequest';
 import AddAuthor from './components/AddAuthor';
 import AuthorList from './components/AuthorList';
 import AuthorProfile from './components/AuthorProfile';
+import EditAuthor from "./components/EditAuthor";
 
 // import StatsBooks from './components/StatsBooks';	
 // import StatsUsers from './components/StatsUsers';	
@@ -81,6 +82,7 @@ const App = () => {
 
 				<Route path='/authors' element={< AuthorList/> }/>
 				<Route path='/authors/:id' element={< AuthorProfile/> }/>
+				<Route path='/admin/editAuthor/:id' element={< EditAuthor/> }/>
 
 
 				{/* <Route path='/admin/stats/books' element={< StatsBooks/> }/>	
