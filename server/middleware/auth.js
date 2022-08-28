@@ -2,79 +2,99 @@ const jwt = require('jsonwebtoken');
 const jwtSecret = "BOOKFLIX";
 
 exports.adminAuth = (req, res, next) => {
-    const token = req.header('token');
+    try {
+        const token = req.header('token');
 
-    if(token){
+        if(token){
 
-        console.log("token: " + token);
+            // console.log("token: " + token);
 
-        jwt.verify(token, jwtSecret, (err, decodedToken) => {
-            if(err){
-                return res.status(401).json({message: "Not Authorized"});
-            }
-            else {
-                if(decodedToken.role !== "Admin") {
+            jwt.verify(token, jwtSecret, (err, decodedToken) => {
+                if(err){
                     return res.status(401).json({message: "Not Authorized"});
                 }
-                else{
-                  req.session.user = decodedToken;
-                    next();
+                else {
+                    if(decodedToken.role !== "Admin") {
+                        return res.status(401).json({message: "Not Authorized"});
+                    }
+                    else{
+                    req.session.user = decodedToken;
+                        next();
+                    }
                 }
-            }
-        })
+            })
+        }
+        else {
+            return res.status(401).json({message: "Not authorized, token not available"});
+        }
+    } catch (error) {
+        console.log("Token not found yet");
     }
-    else {
-        return res.status(401).json({message: "Not authorized, token not available"});
-    }
+    
 }
 
 
 exports.userAuth = (req, res, next) => {
-  const token = req.header('token');
+    try {
+        // console.log(req.header('token'));
+        const token = req.header('token');
 
-  if(token){
+        if(token){
 
-    console.log("token: " + token);
+            // console.log("token: " + token);
 
-      jwt.verify(token, jwtSecret, (err, decodedToken) => {
-          if(err){
-              return res.status(401).json({message: "Not Authorized"});
-          }
-          else {
-              if(decodedToken.role !== "Basic") {
-                  return res.status(401).json({message: "Not Authorized"});
-              }
-              else{
-                req.session.user = decodedToken;
-                  next();
-              }
-          }
-      })
-  }
-  else {
-      return res.status(401).json({message: "Not authorized, token not available"});
-  }
+            jwt.verify(token, jwtSecret, (err, decodedToken) => {
+                if(err){
+                    return res.status(401).json({message: "Not Authorized"});
+                }
+                else {
+                    if(decodedToken.role !== "Basic") {
+                        return res.status(401).json({message: "Not Authorized"});
+                    }
+                    else{
+                        req.session.user = decodedToken;
+                        next();
+                    }
+                }
+            })
+        }
+        else {
+            console.log("Empty token");
+            return res.status(401).json({message: "Not authorized, token not available"});
+        }
+
+    } catch (error) {
+        console.log("Token not found yet");
+    }
+    
 }
 
 exports.generalAuth = (req, res, next) => {
-  const token = req.header('token');
+    try {
+        // console.log("mytoken", req.header('token'));
+        const token = req.header('token');
 
-  if(token){
+        if(token){
 
-    console.log("token: " + token);
+            // console.log("token: " + token);
+            
+            jwt.verify(token, jwtSecret, (err, decodedToken) => {
+                if(err){
+                    return res.status(401).json({message: "Not Authorized"});
+                }
+                else {
+                        req.session.user = decodedToken;
+                        next();
+                }
+            })
+        }
+        else {
+            console.log("Not authorized, token not available");
+            return res.status(401).json({message: "Not authorized, token not available"});
+        }
+    } catch (error) {
+        console.log("Token not found yet");
+    }
     
-      jwt.verify(token, jwtSecret, (err, decodedToken) => {
-          if(err){
-              return res.status(401).json({message: "Not Authorized"});
-          }
-          else {
-                req.session.user = decodedToken;
-                next();
-          }
-      })
-  }
-  else {
-    console.log("Not authorized, token not available");
-    return res.status(401).json({message: "Not authorized, token not available"});
-  }
+  
 }

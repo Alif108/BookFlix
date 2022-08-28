@@ -140,7 +140,7 @@ export default function Login() {
 			if(data.user.role === "Admin")
 				window.location.href = "/admin";
 			else
-				window.location.href = "/books";
+				window.location.href = "/user";
         }
         else
         {

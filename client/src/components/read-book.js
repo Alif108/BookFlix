@@ -19,15 +19,19 @@ export default class readBook extends Component{
     this.state = {
       book: [],
       user: [],
+      readItem: [],
+      // pdfLocation: "",
       id: window.location.pathname.split('/')[window.location.pathname.split('/').length - 2],
       viewer : React.createRef(null),
+      pageNum: 1,
     };
 
     this.componentDidMount = this.componentDidMount.bind(this);
-    
+    // this.buildWebViewer  = this.componentDidMount.bind(this);
+    // this.getReadItem = this.getReadItem.bind(this);
   }
 
-  componentDidMount(){
+  componentDidMount(){    
     axios.get('http://localhost:5000/books/'+this.state.id, {
       method: 'GET',
       headers: {
@@ -35,14 +39,71 @@ export default class readBook extends Component{
       },
     })
       .then(response => {
+        console.log(response.data);
         this.setState({
           user: response.data.user,
           book: response.data.book,
+          readItem: response.data.readItem,
+          pageNum: this.state.readItem.currentPage,
         });
       }).catch(function(error){
         console.log(error);
       }
     );
+  }
+
+  // getReadItem(){
+  //   //get page num
+  //   axios.get('http://localhost:5000/read/getReadItem/'+this.state.id,{
+  //     method: 'GET',
+  //     headers: {
+  //       'token': localStorage.getItem('token'),
+  //     }
+  //   })
+  //   .then(response => {
+  //     this.setState({
+  //       pageNum: response.data.currentPage,
+  //       pdfLocation: response.data.pdfLocation
+  //     });
+  //     console.log(this.state.pageNum);
+  //   })
+  //   .catch(function(error){
+  //     console.log(error);
+  //   })
+
+    
+    // const pagedata = await fetch('http://localhost:5000/read/getReadItem/'+this.state.id, {
+    //   method: 'GET',
+    //   headers: {
+    //     'token': localStorage.getItem('token'),
+    //   },
+    // })
+    // .then((response) => response.json())
+    // .then(data => {
+    //   return data
+    // })
+
+    // this.setState({
+    //   pageNum: pagedata,
+    // });
+
+    // console.log(this.state.pageNum);
+  //}
+
+  savePage = async (page)=>{
+    // Update page num
+    const response = await fetch('http://localhost:5000/read/update/'+this.state.id, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "token": localStorage.getItem("token"),
+      },
+      body: JSON.stringify({
+        currentPage: page,
+      })
+    })
+    const json = await response.json();
+    console.log(json);
   }
 
 
@@ -63,11 +124,15 @@ export default class readBook extends Component{
       // adding an event listener for when a document is loaded
       Core.documentViewer.addEventListener('documentLoaded', () => {
         console.log('document loaded');
+        // setting the current page number
+        Core.documentViewer.setCurrentPage(this.state.readItem.currentPage);
+        console.log("Page loaded: ", this.state.readItem.currentPage);
       });
 
       // adding an event listener for when the page number has changed
       Core.documentViewer.addEventListener('pageNumberUpdated', (pageNumber) => {
         console.log(`Page number is: ${pageNumber}`);
+        this.savePage(pageNumber);
       });
 
       // adds a button to the header that on click sets the page to the previous page
@@ -116,7 +181,7 @@ export default class readBook extends Component{
       <div className="MyComponent">
         <div>
         <Container>
-          <div className="header">{this.state.book.title}</div>
+          {/* <div className="header">{this.state.book.title}</div> */}
           <div className="webviewer" style={ reader } ref={this.state.viewer}></div>
         </Container>
       </div>

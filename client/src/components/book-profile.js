@@ -16,6 +16,7 @@ export default class Book extends Component{
     this.calc_rating = this.calc_rating.bind(this);
     this.addReview = this.addReview.bind(this);
     this.addToMyList = this.addToMyList.bind(this);
+    this.setReadItem = this.setReadItem.bind(this);
 
     this.state = {
       imgg: '',
@@ -131,6 +132,20 @@ export default class Book extends Component{
     );
   }
 
+  setReadItem = async () => {
+    const response = await fetch('http://localhost:5000/read/setReadItem/'+this.state.id, {
+      method: 'GET',
+      headers: {
+        'token': localStorage.getItem('token'),
+      },
+    });
+
+    console.log(response);
+
+    //go to read page
+    window.location.href = '/books/'+this.state.book._id+'/read';
+  }
+
   renderEditButton(){
     if (this.state.user.role === "Admin") {
       return (
@@ -142,6 +157,7 @@ export default class Book extends Component{
       );
     }
   }
+
 
   renderMyListButton(){
     if(this.state.user.role === "Basic" && this.state.user.subscription){
@@ -158,7 +174,8 @@ export default class Book extends Component{
     if(this.state.user.role === "Basic" && this.state.user.subscription){
       return (
         <div>
-          <Link to={'/books/'+this.state.book._id+'/read'}>Read</Link>
+          <Button className="float-end" size="sm" variant="info" onClick={this.setReadItem}>Read</Button>
+          {/* <Link to={'/books/'+this.state.book._id+'/read'}>Read</Link> */}
         </div>
       );
     }

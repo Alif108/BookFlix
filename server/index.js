@@ -31,17 +31,18 @@ app.use(require("./routes/adminHome"));
 app.use(require("./routes/userHome"));
 app.use(require("./routes/logout"));
 app.use(require("./routes/navbar"));
-// book routes
+
 const bookRouter = require("./routes/books");
 app.use("/books", bookRouter);
-// package routes
+
 const packageRouter = require("./routes/packages");
 app.use("/packages", packageRouter);
-// book request routes
-const bookRequestRouter = require("./routes/requestBook");
-app.use("/requestBook", bookRequestRouter);
 
+const requestBookRouter = require("./routes/requestBook");
+app.use("/requestBook", requestBookRouter);
 
+const readRouter = require("./routes/read");
+app.use("/read", readRouter);
 
 
 // ------------ home page of server --------------- //

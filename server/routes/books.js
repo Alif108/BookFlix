@@ -12,6 +12,7 @@ let Review = require('../models/review.model');
 let User = require('../models/user.model');
 let MyList = require('../models/mylist.model');
 let Genre = require('../models/genre.model');
+let ReadItem = require('../models/readList.model');
 
 ///Book list generation
 router.get("/", generalAuth, function(req, res){
@@ -31,7 +32,10 @@ router.get("/:id", generalAuth, function(req, res){
     .then(book => {
       Genre.findById(book.genre)
         .then(genre => {
-          res.json({user: req.session.user, book, genre})
+          ReadItem.findOne({userID: req.session.user.id, bookID: req.params.id})
+          .then(readItem =>{
+            res.json({user: req.session.user, book, genre, readItem})
+          })
         })
         .catch(err => res.status(400).json('Error: ' + err)); 
     })
@@ -219,5 +223,6 @@ router.get("/genres/getGenres", adminAuth, function(req, res){
     })
     .catch(err => res.status(400).json('Error: ' + err));
 });
+
 
 module.exports = router;

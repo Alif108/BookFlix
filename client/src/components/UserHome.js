@@ -61,9 +61,6 @@ class UserHome extends Component {
 
   
 
-  
-
-  
     render() {
 
       
@@ -77,23 +74,11 @@ class UserHome extends Component {
                   <div style={{display:"flex",alignItems: "center",justifyContent:"center"}}> 
                     <ControlledCarousel />
                   </div>
-                    <br/><br/>
-                    <div className="UserHome">
-                      <div className="user">
-                      <h3>
-                          {user.username}  
-                          </h3>
-                      </div>
-                      <div>
-                          <a href='/books'>Books</a>
-                      </div>
-                      <div>
-                          <a href='/packages'>Packages</a>
-                      </div>
-                      <div>
-                          <a href='/packages/myPackage'>My Package</a>
-                      </div>
-                    </div>
+                  <br/><br/>
+                  <div>
+                    <h4>Continue Reading</h4>
+                    
+                  </div>
               </div>
             </div>
         );

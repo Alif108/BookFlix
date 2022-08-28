@@ -67,7 +67,7 @@ renderHomeLogo() {
     else if(this.state.role === "Basic")
     {
       return(
-        <Navbar.Brand href="/books" style={{paddingLeft:'2vw',paddingRight:'2vw'}}>
+        <Navbar.Brand href="/user" style={{paddingLeft:'2vw',paddingRight:'2vw'}}>
           <img
             alt="BOOKFLIX"
             src="http://localhost:5000/images/logo.png"
