@@ -6,6 +6,9 @@ import Col from 'react-bootstrap/Col';
 import axios from "axios";
 import Container from "react-bootstrap/esm/Container";
 
+
+const checkedGenres = [];
+
 export default class AddBook extends Component{
     constructor(props){
         super(props);
@@ -22,13 +25,16 @@ export default class AddBook extends Component{
         this.savePdf = this.savePdf.bind(this);
         this.addBook = this.addBook.bind(this);
 
+        this.handleCheckGenre = this.handleCheckGenre.bind(this);
+
         this.state = {
             title: "",
             isbn: "",
+            author_name: "", 
             author: "",
             publisher: "",
             year: "",
-            genre: "",
+            genre: [],
             numPage: "",
             description: "",
             cover: null,
@@ -36,11 +42,12 @@ export default class AddBook extends Component{
             pdf: null,
             pdfName:"",
             listOfGenre: [],
+            listOfAuthor: [],
         }
     }
 
     async componentDidMount(){
-        axios.get('http://localhost:5000/books/genres/getGenres', {
+        axios.get('http://localhost:5000/books/genres&authors/get', {
           method: 'GET',
           headers: {
             'token': localStorage.getItem('token'),
@@ -48,13 +55,25 @@ export default class AddBook extends Component{
         })
           .then(response => {
             this.setState({
-              listOfGenre: response.data,
+              listOfGenre: response.data.genre,
+              listOfAuthor: response.data.author,
             });
           })
           .catch(function(error){
             console.log(error);
           });
       }
+
+    handleCheckGenre(e) {
+        if(e.target.checked){
+            this.state.genre.push(e.target.value);
+        }
+        else{
+            this.state.genre.splice(this.state.genre.indexOf(e.target.value), 1);
+        }
+        console.log(typeof this.state.genre);
+        console.log(this.state.genre);
+    }
 
     onChangeTitle(e) {
         this.setState({
@@ -70,7 +89,7 @@ export default class AddBook extends Component{
 
     onChangeAuthor(e) {
         this.setState({
-          author: e.target.value
+          author_name: e.target.value
         });
     };
 
@@ -104,6 +123,14 @@ export default class AddBook extends Component{
         });
     };
 
+    onClickAuthor(item)
+    {
+        this.setState({
+            author_name: item.name,
+            author: item._id
+        });
+    }
+
     saveCover(e) {
         this.setState({
             cover: e.target.files[0],
@@ -122,6 +149,61 @@ export default class AddBook extends Component{
         return this.state.listOfGenre.map((genre) => {
            return <option key={genre._id} value={genre._id}>{genre.name}</option>;
         });
+    }
+
+    showAuthors(){
+        return(
+            <div className="search-container">
+                <div className="search-inner">
+                    <input type="text" value={this.state.author_name} onChange={this.onChangeAuthor}/>
+                </div>
+                <div className="dropdown">
+                {this.state.listOfAuthor.filter((item) => {
+                    const searchTerm = this.state.author_name.toLowerCase();
+                    const fullName = item.name.toLowerCase();
+
+                    return (
+                        searchTerm &&
+                        fullName.startsWith(searchTerm) &&
+                        fullName !== searchTerm
+                    );
+                    })
+                    .slice(0, 10)
+                    .map((item) => (
+                    <div
+                        onClick={() => this.onClickAuthor(item)}
+                        className="dropdown-row"
+                        key={item.name}
+                    >
+                        <div>
+                            <img src= { 'http://localhost:5000'+item.photoLocation } style={{height:50, width:50}}/>
+                            {item.name}
+                        </div>
+                    </div>
+                    ))}
+                </div>
+        </div>
+        );
+    }
+
+    renderGenres()
+    {
+        var isChecked = (item) =>
+        checkedGenres.includes(item) ? "checked-item" : "not-checked-item";
+
+        return(
+            <div className="checkList">
+                <div className="list-container">
+                {/* {this.state.listOfGenre.map((item, index) => ( */}
+                {this.state.listOfGenre.map((genre) => (
+                    <div key={genre._id}>
+                    <input value={genre._id} type="checkbox" onChange={this.handleCheckGenre} />
+                    <span className={isChecked(genre._id)}>{genre.name}</span>
+                    </div>
+                ))}
+                </div>
+            </div>
+        );
     }
 
     async addBook(e) {
@@ -145,8 +227,10 @@ export default class AddBook extends Component{
             {headers:{
                 'Content-type': this.state.cover.type,
             }})
-                .then(res => console.log(res.data));
-            window.alert("Book Added");
+                .then(res => {
+                    console.log(res.data.message);
+                    window.alert(res.data.message);
+                });
         } catch (err) {
             console.log(err);
         }
@@ -155,6 +239,7 @@ export default class AddBook extends Component{
         this.setState({
             title: "",
             isbn: "",
+            author_name: "",
             author: "",
             publisher: "",
             year: "",
@@ -203,60 +288,45 @@ export default class AddBook extends Component{
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Author:</Form.Label>
+                            <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Author:</Form.Label>
                                 <Col>
-                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeAuthor} value={this.state.author} placeholder="Author of the book" />
+                                    { this.showAuthors() }
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>ISBN:</Form.Label>
+                            <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>ISBN:</Form.Label>
                                 <Col>
                                     <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeISBN} value={this.state.isbn} placeholder="ISBN of the book" />
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Publisher:</Form.Label>
+                            <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>ISBN:</Form.Label>
                                 <Col>
                                     <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangePublisher} value={this.state.publisher} placeholder="Publisher" />
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Publishing Year:</Form.Label>
+                            <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Publishing Year:</Form.Label>
                                 <Col>
                                     <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeYear} value={this.state.year} placeholder="" />
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Genre:</Form.Label>
-                                <Col>
-                                    {/* <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeGenre} value={this.state.genre} placeholder="" /> */}
-                                    <select 
-                                        name="region" 
-                                        id="region"
-                                        value={this.state.genre}
-                                        onChange={this.onChangeGenre}
-                                        required
-                                    >
-                                        {this.showGenres()}
-                                        {/* <option value="Dhaka">Dhaka</option>
-                                        <option value="Chittagong">Chittagong</option>
-                                        <option value="Sylhet">Sylhet</option>
-                                        <option value="Rajshahi">Rajshahi</option>
-                                        <option value="Barisal">Barisal</option>
-                                        <option value="Khulna">Khulna</option> */}
-                                    </select>
-                                </Col>
-                            </Row>
-                            <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Total pages:</Form.Label>
+                            <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Total pages:</Form.Label>
                                 <Col>
                                     <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeNumPage} value={this.state.numPage} placeholder="" />
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Description:</Form.Label>
+                            <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Total pages:</Form.Label>
                                 <Col>
                                     <Form.Control className="w-100" size="sm" as="textarea" onChange={this.onChangeDescription} value={this.state.description} placeholder="" />
+                                </Col>
+                            </Row>
+                            <Row className='mt-2'>
+                            <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Genre:</Form.Label>
+                                <Col>
+                                    { this.renderGenres() }
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
@@ -267,7 +337,7 @@ export default class AddBook extends Component{
                         </Col>
                         <Col></Col>
                     </Row>
-                </Container>
+                    </Container>
             </Container>
         )
     }

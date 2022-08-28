@@ -46,6 +46,7 @@ class Home extends Component {
     const role = this.state.user.role;
 
     if (role === "Admin" ) {
+      console.log("Admin");
       return (
         <div className="adminHome">
             <div className="container">
@@ -63,6 +64,7 @@ class Home extends Component {
                     <a href='/admin/addBook'>Add Book</a><br></br>
                     <a href='/admin/userlist'>List of Users</a><br></br>
                     <a href='/books'>Books</a>
+                    <a href='/admin/addAuthor'>Add Author</a>
                 </div>
             </div>
             </div>

@@ -12,6 +12,18 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { margin } from "@mui/system";
 
+function iterateGenres(genres)
+{
+  const rows = []
+  for(var i = 0; i < genres.length; i++)
+  {
+    rows.push(<h6>{genres[i].name}</h6>)
+  }
+  return(
+    <Row>{rows}</Row>
+  );
+}
+
 const Book = props => (
   <Col>
   <Container style={{backgroundColor:"#fff0cc", width:"50vw", height:"100", borderRadius:10, padding: 20}} onClick={() => window.location.href = '/books/'+props.book._id} fixed>
@@ -23,16 +35,17 @@ const Book = props => (
       </Col>
       <Col xs={8} style={{margin:0, paading:0}} fluid>
       <Typography style={{fontSize:26, fontFamily:'Roboto'}}>{props.book.title}</Typography>
-      <Typography style={{fontSize:18, color:"red", fontFamily:'Roboto'}}>{props.book.author}</Typography>
-      <Typography style={{fontSize:14, color:"brown", fontFamily:'Roboto'}}>{props.book.genre.name}</Typography>
+      <Typography style={{fontSize:18, color:"red", fontFamily:'Roboto'}}>{props.book.author.name}</Typography>
+      <Typography style={{fontSize:14, color:"brown", fontFamily:'Roboto'}}>{iterateGenres(props.book.genre)}</Typography>
       <Typography class="text-truncate" style={{fontSize:14, fontFamily:'Roboto'}}>{props.book.description}</Typography>
               
       </Col>
     </Row>
   </Container>
   </Col>
-
 )
+
+let allBooks = [];
 
 export default class BookList extends Component{
   constructor(props){
@@ -54,6 +67,7 @@ export default class BookList extends Component{
       },
     })
       .then(response => {
+        allBooks = response.data;
         this.setState({
           books: response.data,
         });
@@ -74,32 +88,13 @@ export default class BookList extends Component{
       alert("Please enter a valid Query");
     }
 
-    axios.get('http://localhost:5000/books/searchBook/'+this.state.query, {
-      method: 'GET',
-      headers: {
-        'token': localStorage.getItem('token'),
-      },
-    })
-      .then(response => {
-        // console.log(response.data);
-        if(response.data.length === 0){
-          alert("No book found");
-        }
-        else
-          this.setState({
-            books: response.data,
-          });
-      })
-      .catch(function(error){
-        console.log(error);
-      }
-    );
-  }
+    let filterBooks = allBooks.filter(book => {
+      return (book.title.toLowerCase().includes(this.state.query.toLowerCase())) || (book.author.name.toLowerCase().includes(this.state.query.toLowerCase())) || (book.genre.some(genre => genre.name.toLowerCase().includes(this.state.query.toLowerCase())));
+    }).map(book => { return book; });
 
-  async handleKeyDown(event) {
-    if (event.key === 'Enter') {
-      this.searchBook(event);
-    }
+    this.setState({
+      books: filterBooks,
+    });
   }
 
   bookList(){
@@ -126,7 +121,7 @@ export default class BookList extends Component{
         <br />
         <Container style={{width:"50vw", margin:20}}>
           <Form class="form-inline my-2 my-lg-0" style={{display:"flex",flexDirection: "row", }}>
-          <input class="form-control mr-sm-2" type="search" placeholder="Search by Title or Author" aria-label="Search" onChange={event => this.setState({query: event.target.value})} value={this.state.query}/>
+          <input class="form-control mr-sm-2" type="search" placeholder="Search by Title or Author or Genre" aria-label="Search" onChange={event => this.setState({query: event.target.value})} value={this.state.query}/>
           <Button variant='btn btn-warning my-2 my-sm-0' type="submit" onClick={this.searchBook}>Search</Button>
           </Form>
         </Container>

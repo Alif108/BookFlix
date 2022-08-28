@@ -6,6 +6,8 @@ import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import axios from "axios";
 
+import Stripe from "react-stripe-checkout";
+
 const Package = props => (
     <Col>
       <div>
@@ -29,7 +31,8 @@ export default class GetPackage extends Component{
         this.onChangeContact = this.onChangeContact.bind(this);
         this.onChangeBkash = this.onChangeBkash.bind(this);
         this.onChangeAddress = this.onChangeAddress.bind(this);
-        this.getPack = this.getPack.bind(this);
+        this.tokenHandler = this.tokenHandler.bind(this);
+        // this.getPack = this.getPack.bind(this);
         
         this.state = {
             id: window.location.pathname.split('/')[window.location.pathname.split('/').length - 1],
@@ -90,38 +93,114 @@ export default class GetPackage extends Component{
         );
     }
 
-    async getPack(e) {
-        e.preventDefault();
-
+    handleToken(price, token){
         const dict = {
+            stripeToken: token.id,
+            amount: price,
+
             user_ID: this.state.user.id,
             package_ID: this.state.package._id,
-            amount: this.state.package.price,
-            name: this.state.name,
-            contact: this.state.contact,
-            bkash: this.state.bkash,
-            address: this.state.address,
+            // name: this.state.name,
+            // contact: this.state.contact,
+            // bkash: this.state.bkash,
+            // address: this.state.address,
         }
-
         try {
             axios.post("http://localhost:5000/packages/getPackage/"+this.state.id, dict, {
                 headers: {
-                  'token': localStorage.getItem('token'),
+                    'token': localStorage.getItem('token'),
                 },
-              })
-                .then(res => {
-                    window.alert(res.data.message);
-                });
+            })
+            .then(res => {
+                window.alert(res.data.message);
+        });
         } catch (err) {
             console.log(err);
         }
+    }
+
+    tokenHandler(token){
+        console.log(this.state);
+        this.handleToken(this.state.package.price, token);
+    }
+
+    // async getPack(e) {
+    //     e.preventDefault();
+
+    //     const dict = {
+    //         user_ID: this.state.user.id,
+    //         package_ID: this.state.package._id,
+    //         amount: this.state.package.price,
+    //         name: this.state.name,
+    //         contact: this.state.contact,
+    //         bkash: this.state.bkash,
+    //         address: this.state.address,
+    //     }
+
+    //     try {
+    //         axios.post("http://localhost:5000/packages/getPackage/"+this.state.id, dict, {
+    //             headers: {
+    //               'token': localStorage.getItem('token'),
+    //             },
+    //           })
+    //             .then(res => {
+    //                 window.alert(res.data.message);
+    //             });
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
         
-        this.setState({
-            name: "",
-            contact: "",
-            bkash: "",
-            address: "",
-        });
+    //     this.setState({
+    //         name: "",
+    //         contact: "",
+    //         bkash: "",
+    //         address: "",
+    //     });
+    // }
+
+    renderSubscriptionForm(){
+        return(
+            <Col xs={5}>
+                <Row>
+                    <Form.Label column="sm" lg={2}>Name:</Form.Label>
+                    <Col>
+                        <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeName} value={this.state.name} placeholder="Subscriber's Name" />
+                    </Col>
+                </Row>
+                <Row className='mt-2'>
+                    <Form.Label column="sm" lg={2}>BKash No:</Form.Label>
+                    <Col>
+                        <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeContact} value={this.state.bkash} placeholder="Bkash Number" />
+                    </Col>
+                </Row>
+                <Row className='mt-2'>
+                    <Form.Label column="sm" lg={2}>Contact No:</Form.Label>
+                    <Col>
+                        <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeBkash} value={this.state.contact} placeholder="Contact Number" />
+                    </Col>
+                </Row>
+                <Row className='mt-2'>
+                    <Form.Label column="sm" lg={2}>Address:</Form.Label>
+                    <Col>
+                        <Form.Control className="w-100" size="sm" as="textarea" onChange={this.onChangeAddress} value={this.state.address} placeholder="Subscriber's Address" />
+                    </Col>
+                </Row>
+                <Row className='mt-2'>
+                    <Col>
+                    <Button className="float-end" size="sm" variant="info" onClick={this.getPack}>Subscribe</Button>
+                    </Col>
+                </Row>
+            </Col>
+        );
+    }
+
+    renderStripeForm(){
+        return (<div>
+            <Stripe
+                stripeKey="pk_test_51LbmAWB88tkyq4SlJJSR4iNlnZk7qPyJEIWAqqcCf7oVQx9XriQIcPl3LWNldokzLqzIK2pcck5fuNRUJMufydHY00Fv7HLuvF"
+                token={this.tokenHandler}
+            />
+        </div>);
     }
 
     render() {
@@ -137,37 +216,8 @@ export default class GetPackage extends Component{
                             </Row>
                         </div>
                         </Col>
-                        <Col xs={5}>
-                            <Row>
-                                <Form.Label column="sm" lg={2}>Name:</Form.Label>
-                                <Col>
-                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeName} value={this.state.name} placeholder="Subscriber's Name" />
-                                </Col>
-                            </Row>
-                            <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2}>BKash No:</Form.Label>
-                                <Col>
-                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeContact} value={this.state.bkash} placeholder="Bkash Number" />
-                                </Col>
-                            </Row>
-                            <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2}>Contact No:</Form.Label>
-                                <Col>
-                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeBkash} value={this.state.contact} placeholder="Contact Number" />
-                                </Col>
-                            </Row>
-                            <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2}>Address:</Form.Label>
-                                <Col>
-                                    <Form.Control className="w-100" size="sm" as="textarea" onChange={this.onChangeAddress} value={this.state.address} placeholder="Subscriber's Address" />
-                                </Col>
-                            </Row>
-                            <Row className='mt-2'>
-                                <Col>
-                                <Button className="float-end" size="sm" variant="info" onClick={this.getPack}>Subscribe</Button>
-                                </Col>
-                            </Row>
-                        </Col>
+                            {/* { this.renderSubscriptionForm() } */}
+                            { this.renderStripeForm() }
                         <Col></Col>
                     </Row>
                 </div>

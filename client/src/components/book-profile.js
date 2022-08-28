@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-import { MouseEvent } from 'react';
-import { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-
 import axios from 'axios';
 import Container from 'react-bootstrap/esm/Container';
 import Checkbox from '@mui/material/Checkbox';
@@ -47,7 +44,8 @@ export default class Book extends Component{
       description: '',
       rating: 0,
       id: window.location.pathname.split('/')[window.location.pathname.split('/').length - 1],
-      genre: "",
+      genre: [],
+      author: "",
     };
   }
 
@@ -62,7 +60,8 @@ export default class Book extends Component{
         this.setState({
           user: response.data.user,
           book: response.data.book,
-          genre: response.data.genre.name,
+          genre: response.data.genre,
+          author: response.data.author.name,
         });
       })
       .catch(function(error){
@@ -210,11 +209,10 @@ export default class Book extends Component{
         'token': localStorage.getItem('token'),
       }, 
     });
-
     console.log(response);
-
     window.location.href = '/books/' + this.state.book._id+ '/read' ;
   }
+
 
   renderReviews(){
       return (
@@ -235,13 +233,25 @@ export default class Book extends Component{
       );
   }
 
+  iterateGenres()
+  {
+    console.log(this.state.genre);
+    const rows = []
+    for(var i = 0; i < this.state.genre.length; i++)
+    {
+      rows.push(<h6>{this.state.genre[i].name}</h6>)
+    }
+    return(
+      <div>{rows}</div>
+    );
+  }
 
   renderReviewBox(){
     if (this.state.user.role === "Basic" && this.state.user.subscription) {
       return (
         <Container style={{width:"50vw"}}fixed>
           <Rating name="simple-controlled" size="large" value={this.state.rating} onChange={this.onChangeRating} />
-          <Form.Control className="w-100" size="sm" as="textarea" onChange={this.onChangeDescription} value={this.state.description} placeholder="" />
+          <Form.Control className="w-100" size="sm" as="textarea" onChange={this.onChangeDescription} value={this.state.description} placeholder="Your Review Here" />
           <Button className="float-end" size="sm" variant="warning" style={{width:"150px", color:"brown"}} onClick={this.addReview}>Save</Button>
           <br/><br/>
         </Container>
@@ -253,7 +263,7 @@ export default class Book extends Component{
     return (
       <Container style={{display: "flex", flexDirection:"row", backgroundColor:"#fff0cc", height:'calc(100vh - 70px)'}} fluid>
         <Container style={{flex:2 , display:"flex", flexDirection:"column", alignItems: "center", justifyContent:"center", backgroundColor:"#ffe3a1", margin:"20px"}} fluid>
-          <img src= {"http://localhost:5000" + this.state.book.coverLocation} alt="" height='85%' width='60%' margin='20px'/>
+        <img src= {"http://localhost:5000" + this.state.book.coverLocation} alt="" height='85%' width='60%' margin='20px'/>
           <br />
           { this.renderReadButton() }
           { this.renderEditButton() }
@@ -263,8 +273,8 @@ export default class Book extends Component{
           <Container style={{backgroundColor:"#ffe3a1", height:"15vh", borderRadius:5, margin:5, padding:20}} fluid>
             <Grid container spacing={0}>
               <Grid xs={11}>
-                <Typography style={{fontSize:36, fontFamily:'fantasy'}}>{this.state.book.title}</Typography>
-                <Typography style={{fontSize:16, color:"brown", margin:5}}><b>{this.state.book.author}</b></Typography>
+              <Typography style={{fontSize:36, fontFamily:'fantasy'}}>{this.state.book.title}</Typography>
+                <Typography style={{fontSize:16, color:"brown", margin:5}}><b>{this.state.author}</b></Typography>
               </Grid>
               <Grid xs={1}>
                 <Checkbox className="float-end" {...label} onClick={this.addToMyList} icon={<BookmarkBorderIcon />} checkedIcon={<BookmarkIcon />} />
@@ -279,7 +289,7 @@ export default class Book extends Component{
 
 
           <Container style={{height:"30vh", overflow:"scroll", backgroundColor:"#ffe3a1", borderRadius:5, margin:5, padding:20}} fixed>
-            <Typography style={{fontSize:14, fontFamily:'fantasy'}}>{this.state.book.description}</Typography>
+          <Typography style={{fontSize:14, fontFamily:'fantasy'}}>{this.state.book.description}</Typography>
           </Container>
 
 
@@ -290,7 +300,7 @@ export default class Book extends Component{
 
 
             <Typography style={{color:"white", backgroundColor:"orange", borderRadius:20, margin:5, padding:5, paddingLeft:10, paddingRight:10}}>
-              {this.state.genre}
+              {this.iterateGenres()}
             </Typography>
 
 

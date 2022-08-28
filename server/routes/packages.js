@@ -1,4 +1,6 @@
 const router = require('express').Router();
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const { v4 : uuidv4} = require('uuid');
 
 const {generalAuth, adminAuth, userAuth} = require("../middleware/auth");
 
@@ -35,7 +37,7 @@ router.get("/user/myPackage", userAuth, function(req, res){
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-///book update
+///package update
 router.route('/update/:id').post((req, res) => {
   console.log(req.body);
   Package.findById(req.params.id)
@@ -86,8 +88,8 @@ router.post("/addPackage", adminAuth, function(req, res){
 
 // subscription
 router.post("/getPackage/:id", userAuth, function(req, res){
-
-  // console.log(req.session.user);
+  
+  console.log(req.body);
 
   if(req.session.user.subscription)
   {
@@ -95,34 +97,71 @@ router.post("/getPackage/:id", userAuth, function(req, res){
   }
   else
   {
+    // const user_ID = req.body.user_ID;
+    // const package_ID = req.body.package_ID;
+    // const amount = req.body.amount;
+    // const name = req.body.name;
+    // const contact = req.body.contact;
+    // const bkash = req.body.bkash;
+    // const address = req.body.address;
+
+    // const transaction = new Transaction({
+    //   userID: user_ID,
+    //   packageID: package_ID,
+    //   amount: amount,
+    //   date: new Date(),
+    //   subscriber_name: name,
+    //   contact_number: contact,
+    //   bkash_number: bkash,
+    //   address: address,
+    // });
+
+    // transaction.save()
+    // .then(() => {
+    //   req.session.user.subscription = true;
+    //   // console.log(req.session.user);
+    //   res.json({success: true, message: "Subscription Successful"});
+    // })
+    // .catch(err => {
+    //   res.json({success: false, message: "Subscription failed"});
+    // });    
+    const stripeToken = req.body.stripeToken;
+    const amount = req.body.amount;
     const user_ID = req.body.user_ID;
     const package_ID = req.body.package_ID;
-    const amount = req.body.amount;
-    const name = req.body.name;
-    const contact = req.body.contact;
-    const bkash = req.body.bkash;
-    const address = req.body.address;
 
-    const transaction = new Transaction({
-      userID: user_ID,
-      packageID: package_ID,
-      amount: amount,
-      date: new Date(),
-      subscriber_name: name,
-      contact_number: contact,
-      bkash_number: bkash,
-      address: address,
-    });
+    const idempotencyKey = uuidv4();
 
-    transaction.save()
-    .then(() => {
-      req.session.user.subscription = true;
-      // console.log(req.session.user);
-      res.json({success: true, message: "Subscription Successful"});
+    return stripe.customers.create({
+      email: stripeToken.email,
+      source: stripeToken
+  })
+    .then(customer => {
+      stripe.charges.create({
+        amount: amount * 100,
+        currency: 'usd',
+        customer: customer.id,
+        receipt_email: stripeToken.email,
+      }, {idempotencyKey})
     })
-    .catch(err => {
-      res.json({success: false, message: "Subscription failed"});
-    });
+      .then(result => {
+        const transaction = new Transaction({
+          userID: user_ID,
+          packageID: package_ID,
+          amount: amount,
+          date: new Date(),
+        });
+
+        transaction.save()
+        .then(() => {
+          req.session.user.subscription = true;
+          res.json({success: true, message: "Subscription Successful"});
+        })
+        .catch(err => {
+          res.json({success: false, message: "Subscription failed"});
+        });
+      
+      }).catch(err => console.log(err));
   }
 });
 

@@ -95,6 +95,4 @@ exports.generalAuth = (req, res, next) => {
     } catch (error) {
         console.log("Token not found yet");
     }
-    
-  
 }
