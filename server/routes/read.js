@@ -3,6 +3,7 @@ const {generalAuth, adminAuth, userAuth} = require("../middleware/auth");
 
 
 let ReadItem = require('../models/readList.model');
+let Book = require('../models/book.model');
 
 
 //set read item
@@ -53,5 +54,67 @@ router.post("/update/:id", userAuth, function(req, res){
         .catch(err => res.status(400).json({message: "Error: " + err}));
     }).catch(err => res.status(400).json('Error: ' + err));
 }),
+
+//finished reading book
+router.post("/finished/:id", userAuth, function(req, res){
+  ReadItem.findOne({userID: req.session.user.id, bookID: req.params.id})
+    .then(readList => {
+      console.log(req.body.currentPage);
+      readList.isFinished = req.body.finished;
+
+      readList.save()
+        .then(() => res.json({message: "Page saved"}))
+        .catch(err => res.status(400).json({message: "Error: " + err}));
+    }).catch(err => res.status(400).json('Error: ' + err));
+}),
+
+
+//fetch all readItems for user that are not finished
+router.get("/getUserReadItems", userAuth, function(req, res){
+  ReadItem.find({userID: req.session.user.id, isFinished: false}) //populate whole book document
+    .populate("bookID", [], Book)
+    .then(result => {
+      // console.log(result);
+      res.json(result);
+    }).catch(err => res.status(400).json('Error: ' + err));
+}),
+
+
+//fetch all books from the readItems and get count
+router.get("/getPopularItems", userAuth, function(req, res){
+  ReadItem.aggregate([
+    {"$group" : {_id:"$bookID", count:{$sum:1}}},
+    {$sort:{"count":-1}}
+  ])
+  .then(async function(objects){
+    books = [];
+
+    for(var i=0; i<objects.length; i++){
+        book = await Book.findById(objects[i]._id)
+          .then(book => {
+            books.push(book);
+          }).catch(err => res.status(400).json('Error: ' + err));
+    }
+    // console.log(books);
+    res.json(books);
+})
+    .catch(err => res.status(400).json('Error: ' + err));
+})
+
+
+//fetch all books that have a timestamp between five days of currentdate
+router.get("/getNewItems", userAuth, function(req, res){
+  Book.find()
+    .then(async function(result){
+      bookes = [];
+      for(var i=0; i<result.length; i++){
+        if(result[i].timestamp > new Date(new Date().setDate(new Date().getDate() - 2))){
+          bookes.push(result[i]);
+        }
+      }
+      res.json(bookes);
+    }).catch(err => res.status(400).json('Error: ' + err));
+}),
+
 
 module.exports = router;

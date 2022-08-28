@@ -106,6 +106,22 @@ export default class readBook extends Component{
     console.log(json);
   }
 
+  markFinished = async ()=>{
+    //update readItem as finished
+    const response = await fetch('http://localhost:5000/read/finished/'+this.state.id, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "token": localStorage.getItem("token"),
+      },
+      body: JSON.stringify({
+        finished: true,
+      })
+    })
+    const json = await response.json();
+    console.log(json);
+  }
+
 
   buildWebViewer(){
     WebViewer(
@@ -165,6 +181,7 @@ export default class readBook extends Component{
 
             if (atLastPage) {
               Core.documentViewer.setCurrentPage(1);
+              this.markFinished();
             } else {
               Core.documentViewer.setCurrentPage(currentPage + 1);
             }
