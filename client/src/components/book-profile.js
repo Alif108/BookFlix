@@ -252,7 +252,7 @@ export default class Book extends Component{
     return (
       <Container style={{display: "flex", flexDirection:"row", backgroundColor:"#fff0cc", height:'calc(100vh - 70px)'}} fluid>
         <Container style={{flex:2 , display:"flex", flexDirection:"column", alignItems: "center", justifyContent:"center", backgroundColor:"#ffe3a1", margin:"20px"}} fluid>
-          <img src= {"http://localhost:5000" + this.state.book.coverLocation} alt="" height='85%' margin='20px'/>
+          <img src= {"http://localhost:5000" + this.state.book.coverLocation} alt="" height='85%' width='60%' margin='20px'/>
           <br />
           { this.renderReadButton() }
           { this.renderEditButton() }

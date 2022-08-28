@@ -8,7 +8,7 @@ import axios from 'axios';
 import { Container } from "@mui/material";
 
 const BookRequest = props => (
-  <Container style={{display:"flex", backgroundColor:"#fff0cc", width:"50vw", height:"100", borderRadius:10, padding: 20, margin:20, marginLeft:"auto", marginRight:"auto"}} onClick={() => window.location.href = '/books/'+props.book._id} fixed>
+  <Container style={{display:"flex", backgroundColor:"#fff0cc", width:"50vw", height:"100", borderRadius:10, padding: 20, margin:20, marginLeft:"auto", marginRight:"auto"}} fixed>
   <Row style={{borderColor:"black", padding:20}} fluid>
     <Col style={{width:"80vw"}}>
       <b>Title:</b> { props.book.title }<br/>
