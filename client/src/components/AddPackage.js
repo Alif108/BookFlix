@@ -1,4 +1,10 @@
+
+import Container from "react-bootstrap/esm/Container";
 import React, { useState } from 'react';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 export default function AddPackage() {
 
@@ -41,51 +47,54 @@ export default function AddPackage() {
 	}
 
     return (
-		<div>
-			<h1>Add New Package</h1>
-			<form onSubmit={addNewPackage}>
+		<Container>
+			<br/><br/>
+			<h3  style={{display:"flex",alignItems:"center",justifyContent:"center", color:"#ff7700"}}><i>Add New Package</i></h3>
+			<br/><br/><form onSubmit={addNewPackage}>
+			<Container style={{ backgroundColor: "#fff0cc", padding:"2vw", paddingTop:"4vw", paddingBottom:"4vw"}} fluid>
+				<Row>
 				
-				{/* Plan Name */}
-				<input
-					value={plan_name}
-					onChange={(e) => setPlanName(e.target.value)}
-					type="text"
-					placeholder="Plan Name"
-					required
-				/>
-				<br />
+				<Col></Col>
+                        <Col xs={5}>
+                            <Row>
+                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Plan Name:</Form.Label>
+                                <Col>
+                                    <Form.Control className="w-100" size="sm" type="text" onChange={(e) => setPlanName(e.target.value)} value={plan_name}/>
+                                </Col>
+                            </Row>
+                            <Row className='mt-2'>
+                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Price:</Form.Label>
+                                <Col>
+                                    <Form.Control className="w-100" size="sm" type="text" onChange={(e) => setPrice(e.target.value)} value={price}/>
+                                </Col>
+                            </Row>
+                            <Row className='mt-2'>
+                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Duration:</Form.Label>
+                                <Col>
+                                    <Form.Control className="w-100" size="sm" type="text" onChange={(e) => setDuration(e.target.value)} value={duration}/>
+                                </Col>
+                            </Row>
+                            <Row className='mt-2'>
+                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Max Books Limit:</Form.Label>
+                                <Col>
+                                    <Form.Control className="w-100" size="sm" type="text" onChange={(e) => setMaxBooksLimit(e.target.value)} value={max_books_limit} />
+                                </Col>
+                            </Row>
+                            
+                            <Row className='mt-2'>
+                                <Col><br/>
+                                <Button className="float-end" size="sm" variant="warning" type="submit">Add Package</Button>
+			
+                                {/* <Button className="float-end" size="sm" variant="danger" onClick={this.remove}>Remove</Button> */}
+                                </Col>
+                            </Row>
+                        </Col>
+                        <Col></Col>
 
-				{/* Price */}
-				<input
-					value={price}
-					onChange={(e) => setPrice(e.target.value)}
-					type="number"
-					placeholder="Price"
-					required
-				/>
-				<br />
-
-				{/* Duration */}
-				<input
-					value={duration}
-					onChange={(e) => setDuration(e.target.value)}
-					type="number"
-					placeholder="Duration (in Days)"
-					required
-				/>
-				<br />
-
-				{/* Maximum Books */}
-				<input
-					value={max_books_limit}
-					onChange={(e) => setMaxBooksLimit(e.target.value)}
-					type="number"
-					placeholder="Maximum Books Limit"
-				/>
-				<br />
-
-				<input type="submit" value="Add Package" />
-			</form>
-		</div>
+				
+			</Row>
+			</Container>
+</form>
+		</Container>
 	)
 }

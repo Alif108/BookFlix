@@ -1,4 +1,6 @@
 import React, { Component }  from "react";
+import { Link } from 'react-router-dom';
+import Container from "react-bootstrap/esm/Container";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
@@ -107,32 +109,35 @@ export default class EditPackage extends Component{
 
     render() {
         return(
-            <div>
-                <h3>Edit Book</h3>
-                <div>
+            <Container>
+                
+                <br/><br/>
+                <h3  style={{display:"flex",alignItems:"center",justifyContent:"center", color:"#ff7700"}}><i>Edit Package</i></h3>
+                <br/><br/>
+                <Container style={{ backgroundColor: "#fff0cc", padding:"2vw", paddingTop:"4vw", paddingBottom:"4vw", margin:20}} fluid>
                     <Row>
                         <Col></Col>
                         <Col xs={5}>
-                            <Row>
-                                <Form.Label column="sm" lg={2}>Plan Name:</Form.Label>
+                            <Row className='mt-2'>
+                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Plan Name:</Form.Label>
                                 <Col>
                                     <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeName} value={this.state.plan_name}/>
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2}>Duration:</Form.Label>
+                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Duration:</Form.Label>
                                 <Col>
                                     <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeDuration} value={this.state.duration}/>
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2}>Price:</Form.Label>
+                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Price:</Form.Label>
                                 <Col>
                                     <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangePrice} value={this.state.price} />
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2}>Max Books Limit:</Form.Label>
+                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Max Books Limit:</Form.Label>
                                 <Col>
                                     <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeMaxBooksLimit} value={this.state.max_books_limit} />
                                 </Col>
@@ -140,15 +145,17 @@ export default class EditPackage extends Component{
                             
                             <Row className='mt-2'>
                                 <Col>
-                                <Button className="float-end" size="sm" variant="info" onClick={this.editPackage}>Update</Button>
+                                <Button className="float-end" size="sm" variant="warning" onClick={this.editPackage}>Update</Button>
                                 {/* <Button className="float-end" size="sm" variant="danger" onClick={this.remove}>Remove</Button> */}
                                 </Col>
                             </Row>
                         </Col>
                         <Col></Col>
                     </Row>
-                </div>
-            </div>
+                
+                </Container>
+
+            </Container>
         )
     }
     

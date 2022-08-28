@@ -2,39 +2,34 @@ import React, { Component }  from "react";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { Container } from "@mui/material";
 
 const BookRequest = props => (
-  <div>
-  <Row>
-    <Col >
-      <b>{ props.book.title }</b><br/>
-      Author: { props.book.author }<br/>
-      Isbn: { props.book.isbn }<br/>
-      Publisher: { props.book.publisher }<br/>
-      Year: { props.book.publishingYear }<br/>
+  <Container style={{display:"flex", backgroundColor:"#fff0cc", width:"50vw", height:"100", borderRadius:10, padding: 20, margin:20, marginLeft:"auto", marginRight:"auto"}} onClick={() => window.location.href = '/books/'+props.book._id} fixed>
+  <Row style={{borderColor:"black", padding:20}} fluid>
+    <Col style={{width:"80vw"}}>
+      <b>Title:</b> { props.book.title }<br/>
+      <b>Author:</b> { props.book.author }<br/>
+      <b>Isbn:</b> { props.book.isbn }<br/>
+      <b>Publisher:</b> { props.book.publisher }<br/>
+      <b>Year:</b> { props.book.publishingYear }<br/>
+      <b>Description:</b> { props.book.description }
     </Col>
-    <Col>
-      <br/>
-      Description: <br/>
-      { props.book.description }
-    </Col>
-    <Col>
-      <br/>
-      <br/>
-      { props.book.status }
-    </Col>
-    <Col>
-      <br/>
-      <br/>
+    <Col style={{width:"20vw"}}>
+      { props.book.status === "Accepted" ? <i style={{color:"green"}}><b>Accepted</b></i> : null} 
+      { props.book.status === "Pending" ? <i style={{color:"orange"}}><b>Pending</b></i> : null} 
+      { props.book.status === "Rejected" ? <i style={{color:"red"}}><b>Rejected</b></i> : null} 
+      <br/><br/>
       {/* if status accepted go to book profile */}
-      { props.book.status === "Accepted" ? <button onClick={() => props.handleView(props.book._id)}>View</button> : null }
+      { props.book.status === "Accepted" ? <Button  variant="warning" width="100vw" onClick={() => props.handleView(props.book._id)}>View</Button> : null }
     </Col>
 
   </Row>
   <br/>
-  </div>
+  </Container>
 )
 
 export default class MyRequest extends Component{
@@ -104,29 +99,26 @@ export default class MyRequest extends Component{
   showBookReqList(){
     if(this.state.bookReq.length > 0){
       return (
-        <div>
+        <Container fluid>
           {this.bookReqList()}
-        </div>
+        </Container>
       );
     }
   }
 
   render(){
     return (
-      <div>
-        <Container style={{align: 'center'}}>
-          <form onSubmit={this.searchBookRequest}>
-            <input id="query" placeholder="Title or Author" type="text" onChange={event => this.setState({query: event.target.value})} value={this.state.query}/>
-            <button type="submit">Search</button>
-          </form>
+      <Container style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent:"center"}} fluid>
+        <br/>
+        <Container style={{width:"50vw", margin:20}}>
+          <Form class="form-inline my-2 my-lg-0" style={{display:"flex",flexDirection: "row", }}>
+          <input class="form-control mr-sm-2" type="search" placeholder="Search by Title or Author" aria-label="Search" onChange={event => this.setState({query: event.target.value})} value={this.state.query}/>
+          <Button variant='btn btn-warning my-2 my-sm-0' type="submit" onClick={this.searchBook}>Search</Button>
+          </Form>
         </Container>
         <br/>
-        <Container>
-          <div style={{align:'center'}}>
-            {this.showBookReqList()}
-          </div>
-        </Container>
-      </div>
+        {this.showBookReqList()}
+      </Container>
     );
   }
 } 
