@@ -5,8 +5,8 @@
   "dependencies": {
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
-    "@mui/icons-material": "^5.8.4",
-    "@mui/material": "^5.10.0",
+    "@mui/icons-material": "^5.10.2",
+    "@mui/material": "^5.10.2",
     "@pdftron/pdfjs-express-viewer": "^8.7.0",
     "@react-pdf-viewer/core": "^3.6.0",
     "@react-pdf-viewer/default-layout": "^3.6.0",
