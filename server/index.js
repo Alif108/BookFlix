@@ -29,6 +29,7 @@ app.use(require("./routes/login"));
 app.use(require("./routes/userList"));
 app.use(require("./routes/adminHome"));
 app.use(require("./routes/userHome"));
+app.use(require("./routes/userProfile"));
 app.use(require("./routes/logout"));
 app.use(require("./routes/navbar"));
 
@@ -47,7 +48,7 @@ app.use("/read", readRouter);
 
 // ------------ home page of server --------------- //
 app.get('/', (req, res) => {
-    res.send("Haha Vodox");
+    res.send("BookFlix");
 });
 
 const port = process.env.PORT || 5000;

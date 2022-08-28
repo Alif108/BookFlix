@@ -180,7 +180,7 @@ export default class readBook extends Component{
     return (
       <div className="MyComponent">
         <div>
-        <Container>
+        <Container style={{backgroundColor:"#fff0cc"}}>
           {/* <div className="header">{this.state.book.title}</div> */}
           <div className="webviewer" style={ reader } ref={this.state.viewer}></div>
         </Container>

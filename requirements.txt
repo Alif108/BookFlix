@@ -12,3 +12,6 @@ npm install bootstrap react-router-dom
 npm i react-bootstrap
 npm i @pdftron/pdfjs-express-viewer
 npm install @mui/material @mui/icons-material @emotion/react @emotion/styled
+npm install --save react-ui-cards
+npm install @fontsource/roboto
+npm install chart.js

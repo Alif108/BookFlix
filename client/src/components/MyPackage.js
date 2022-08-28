@@ -2,21 +2,38 @@ import React, { Component, useState }  from "react";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
+import { Link } from "react-router-dom";
+import { UserCard } from 'react-ui-cards';
+import Typography from '@mui/material/Typography';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 import axios from "axios";
 
 const Package = props => (
-    <Col>
-      <div>
-        <Card style={{ width: '15rem' }}>
-          <Card.Body>
-            <Card.Title>{ props.package.plan_name }</Card.Title>
-            <Card.Title>{ props.package.price }</Card.Title>
-            <Card.Subtitle className="mb-2 text-muted">{ props.package.duration } Days</Card.Subtitle>
-            <Card.Subtitle className="mb-2 text-muted">{ props.package.max_books_limit } Books</Card.Subtitle>
-          </Card.Body>
-        </Card>
-      </div>
-    </Col>
+  <UserCard
+            float
+            onClick={()=> props.handleClick(props.package._id)}
+            header='http://localhost:5000/images/stack_of_books.png'
+            avatar='http://localhost:5000/images/taka.png'
+            name={ props.package.plan_name }
+            positionName={ props.package.plan_description }
+            stats={[
+                {
+                    name: 'Taka',
+                    value: props.package.price,
+                },
+                {
+                    name: 'Days',
+                    value: props.package.duration,
+                },
+                {
+                    name: 'Books',
+                    value: props.package.max_books_limit,
+                }
+            ]}
+        />
   )
 
 export default class MyPackage extends Component{
@@ -51,9 +68,9 @@ export default class MyPackage extends Component{
     {
       if(this.state.package.length !== 0)
         return(
-          <div>
-            <h6>Expires in: </h6>
-            <h4>{this.state.expiresIn} Days</h4>
+          <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"center"}} fluid>
+          <Typography style={{fontSize:60, color:"orange", fontFamily:'impact'}}><b>{this.state.expiresIn} </b></Typography>
+          <Typography style={{fontSize:28, fontFamily:'impact', whiteSpace:'nowrap'}}> Days remaining</Typography>
           </div>
         );
     }
@@ -62,42 +79,31 @@ export default class MyPackage extends Component{
     {
       if(this.state.package.length === 0)
         return(
-          <div>
-            <h1>You Are Not Subscribed!</h1>
-          </div>
-        );
+          <Typography style={{fontSize:60, fontFamily:'impact'}}>You Are Not Subscribed!</Typography>
+
+          );
       else
         return(
-            <div>
-                <Package package={this.state.package} />
-            </div>
+          <div style={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center"}} fluid>
+          <Typography style={{fontSize:20, fontFamily:'impact'}}>Your Current Plan</Typography>
+          <Package package={this.state.package} />
+          </div>
         );
     }
 
     render() {
         return(
-            <div>
-                <div>
-                    <Row>
-                        <Col>
-                        <div>
-                          <a href='/packages'>Get New Package</a>
-                        </div>
-                      </Col>
-                        <Col>
-                        <div>
-                        <h3>Your Current Plan</h3>
-                            <Row xs={1} md={5} className="g-4">
-                                {this.showPackage()}
-                            </Row>
-                            <Row xs={1} md={5} className="g-4">
-                                {this.showExpiresIn()}
-                            </Row>
-                        </div>
-                        </Col>
-                    </Row>
+          <div style={{display:"flex", flexDirection:"column",  backgroundColor:"#fff0cc", height:'calc(100vh - 70px)', alignItems:"center"}} fluid>
+                          
+      
+                      {this.showExpiresIn()}
+
+                      {this.showPackage()}
+
+                      <Link className='btn btn-warning' to={"/packages/"}>Get New Package</Link>
+  
+
                 </div>
-            </div>
         )
     }
 }

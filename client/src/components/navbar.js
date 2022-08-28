@@ -8,6 +8,8 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownToggle from 'react-bootstrap/esm/DropdownToggle';
 
 import logout from "./LogOut";
 
@@ -93,7 +95,7 @@ render() {
   if (this.state.role === "Admin") {
     link1 = <Link to="/books" className="nav-link">Books</Link>;
     link2 = <Link to="/admin/addbook" className="nav-link">Add Book</Link>;
-    link3 = <Link to="/admin/managepacks" className="nav-link">Manage Packs</Link>;
+    link3 = <Link to="/packages" className="nav-link">Manage Packs</Link>;
     link4 = <Link to="/requestBook/requests" className="nav-link">Requests</Link>;	
   } else {	
     link1 = <Link to="/books/" className="nav-link">Books</Link>;	
@@ -132,15 +134,31 @@ render() {
             </Container>
             */}
             
-            <NavDropdown title={username} id="basic-nav-dropdown" menuVariant="dark" style={{color: "white" , marginLeft: "auto"}}>
-              <NavDropdown.Item href="#">View Profile</NavDropdown.Item>
+            <NavDropdown title={username} id="basic-nav-dropdown" menuVariant="dark" align="end" style={{color: "white" , marginLeft: "auto", paddingRight:20}}>
+              <NavDropdown.Item href="/user/profile">View Profile</NavDropdown.Item>
               <NavDropdown.Item href="#">Settings</NavDropdown.Item>
               <NavDropdown.Item href="/packages/myPackage">My Package</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={this.handleClickLogout} style={{color: "#ff7700"}}>Logout</NavDropdown.Item>
             </NavDropdown>
 
-            <img src="http://localhost:5000/images/bell.png" alt="notification" height='25px' style={{marginLeft: "2vw", marginRight: "2vw"}} onClick={this.handleClickLogout}/>
+
+
+            <Dropdown variant="dark" align="end">
+              <Dropdown.Toggle id="dropdown-button-drop-start" variant="dark" style={{ width:60, margin:0, paddingRight:20}}>
+              <img src="http://localhost:5000/images/bell.png" alt="notification" height='25px'/>     
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                <i style={{margin:10, color:'grey'}}>Notifications</i>
+                <hr/>
+                <Dropdown.Item href="#"><img src="http://localhost:5000/images/bell.png" alt="notification" height='25px'/>  Action sjbhfgsh sfgjbsjfg<br/> sfgbjsgfjs sfgsufghju</Dropdown.Item>
+                <hr/>
+                <Dropdown.Item href="#">Another action</Dropdown.Item>
+                <hr/>
+                <Dropdown.Item href="#">Something else</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
             {/*
             <Container>
             <Button variant="outline-primary" onClick={this.handleClickLogout}><img src="http://localhost:5000/images/logout.png" alt="logout" height='25px'/></Button>

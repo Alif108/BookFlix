@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Container from "react-bootstrap/esm/Container";
 import axios from "axios";
 
 export default class AddBook extends Component{
@@ -32,6 +33,7 @@ export default class AddBook extends Component{
           numPage: "",
           description: "",
           book: [],
+          listOfGenre: [],
           id: window.location.pathname.split('/')[window.location.pathname.split('/').length - 1],
         }
     }
@@ -112,6 +114,12 @@ export default class AddBook extends Component{
         });
     };
 
+    showGenres(){
+        return this.state.listOfGenre.map((genre) => {
+           return <option key={genre._id} value={genre._id}>{genre.name}</option>;
+        });
+    }
+
     // saveCover(e) {
     //     this.setState({
     //         cover: e.target.files[0],
@@ -163,85 +171,103 @@ export default class AddBook extends Component{
 
     render() {
         return(
-            <div>
-                <h3>Edit Book</h3>
-                <div>
+            <Container>
+                
+                <br/><br/>
+                <h3  style={{display:"flex",alignItems:"center",justifyContent:"center", color:"#ff7700"}}><i>Edit Book</i></h3>
+                <br/><br/>
+                <Container style={{ backgroundColor: "#fff0cc", padding:"2vw", paddingTop:"4vw", paddingBottom:"4vw"}} fluid>
                     <Row>
                         <Col></Col>
+                        {/*
                         <Col xs={3}>
                             <Row>
-                                {/* <Form.Group controlId="formFileSm" className="mb-3">
+                                 <Form.Group controlId="formFileSm" className="mb-3">
                                     <Form.Label>Upload book cover</Form.Label>
                                     <Form.Control id="cover" className="w-75" type="file" size="sm" onChange={this.saveCover} ref={ref=> this.fileInput = ref}/>
-                                </Form.Group> */}
+                                </Form.Group> 
                             </Row>
                             <Row>
-                                {/* <Form.Group controlId="formFileSm" className="mb-3">
+                                <Form.Group controlId="formFileSm" className="mb-3">
                                     <Form.Label>Upload PDF</Form.Label>
                                     <Form.Control id="pdf" className="w-75" type="file" size="sm" onChange={this.savePdf}/>
-                                </Form.Group> */}
+                                </Form.Group> 
                             </Row>
-                        </Col>
-                        <Col xs={5}>
+                        </Col>*/}
+                        <Col xs={6}>
                             <Row>
-                                <Form.Label column="sm" lg={2}>Title:</Form.Label>
+                            <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Title:</Form.Label>
                                 <Col>
-                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeTitle} value={this.state.title}/>
+                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeTitle} value={this.state.title} placeholder="Title of the book" />
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2}>Author:</Form.Label>
+                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Author:</Form.Label>
                                 <Col>
-                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeAuthor} value={this.state.author}/>
+                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeAuthor} value={this.state.author} placeholder="Author of the book" />
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2}>ISBN:</Form.Label>
+                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>ISBN:</Form.Label>
                                 <Col>
-                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeISBN} value={this.state.isbn} />
+                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeISBN} value={this.state.isbn} placeholder="ISBN of the book" />
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2}>Publisher:</Form.Label>
+                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Publisher:</Form.Label>
                                 <Col>
-                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangePublisher} value={this.state.publisher} />
+                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangePublisher} value={this.state.publisher} placeholder="Publisher" />
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2}>Publishing Year:</Form.Label>
+                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Publishing Year:</Form.Label>
                                 <Col>
-                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeYear} value={this.state.year} />
+                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeYear} value={this.state.year} placeholder="" />
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2}>Genre:</Form.Label>
+                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Genre:</Form.Label>
                                 <Col>
-                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeGenre} value={this.state.genre} />
+                                    {/* <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeGenre} value={this.state.genre} placeholder="" /> */}
+                                    <select 
+                                        name="region" 
+                                        id="region"
+                                        value={this.state.genre}
+                                        onChange={this.onChangeGenre}
+                                        required
+                                    >
+                                        {this.showGenres()}
+                                        {/* <option value="Dhaka">Dhaka</option>
+                                        <option value="Chittagong">Chittagong</option>
+                                        <option value="Sylhet">Sylhet</option>
+                                        <option value="Rajshahi">Rajshahi</option>
+                                        <option value="Barisal">Barisal</option>
+                                        <option value="Khulna">Khulna</option> */}
+                                    </select>
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2}>Total pages:</Form.Label>
+                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Total pages:</Form.Label>
                                 <Col>
-                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeNumPage} value={this.state.numPage} />
+                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeNumPage} value={this.state.numPage} placeholder="" />
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2}>Description:</Form.Label>
+                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Description:</Form.Label>
                                 <Col>
-                                    <Form.Control className="w-100" size="sm" as="textarea" onChange={this.onChangeDescription} value={this.state.description}/>
+                                    <Form.Control className="w-100" size="sm" as="textarea" onChange={this.onChangeDescription} value={this.state.description} placeholder="" />
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
                                 <Col>
-                                <Button className="float-end" size="sm" variant="info" onClick={this.addBook}>Update</Button>{"   "}
-                                <Button className="float-end" size="sm" variant="danger" onClick={this.remove}>Remove</Button>
+                                <Button className="float-end" size="sm" variant="warning" onClick={this.addBook}>Add Book</Button>
                                 </Col>
                             </Row>
                         </Col>
                         <Col></Col>
                     </Row>
-                </div>
-            </div>
+                </Container>
+            </Container>
         )
     }
     

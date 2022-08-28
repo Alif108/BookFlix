@@ -2,21 +2,35 @@ import React, { Component }  from "react";
 import { Link } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card';
+import { UserCard } from 'react-ui-cards';
 import axios from 'axios';
 
 const Package = props => (
   <Col>
-    <div>
-      <Card style={{ width: '15rem' }}>
-        <Card.Body>
-          <Card.Title>{ props.package.plan_name }</Card.Title>
-          <Card.Title>{ props.package.price }</Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">{ props.package.duration } Days</Card.Subtitle>
-          <Card.Subtitle className="mb-2 text-muted">{ props.package.max_books_limit } Books</Card.Subtitle>
-        </Card.Body>
-      </Card>
-    </div>
+
+      <UserCard
+            float
+            onClick={()=> props.handleClick(props.package._id)}
+            header='http://localhost:5000/images/stack_of_books.png'
+            avatar='http://localhost:5000/images/taka.png'
+            name={ props.package.plan_name }
+            positionName={ props.package.plan_description }
+            stats={[
+                {
+                    name: 'Taka',
+                    value: props.package.price,
+                },
+                {
+                    name: 'Days',
+                    value: props.package.duration,
+                },
+                {
+                    name: 'Books',
+                    value: props.package.max_books_limit,
+                }
+            ]}
+        />
+
   </Col>
 )
 
@@ -28,6 +42,8 @@ export default class PackageList extends Component{
         user: "",
       packages: [],
     };
+
+    this.handleClick = this.handleClick.bind(this);
   }
 
   async componentDidMount(){
@@ -53,9 +69,9 @@ export default class PackageList extends Component{
     {
         if(this.state.user.role === "Admin")
             return (
-            <div>
-                <Link to={"/admin/editPackage/"+currentPackage._id} className="nav-link" >Edit</Link>
-                <Link to={"/admin/removePackage/"+currentPackage._id} className="nav-link" >Remove</Link>
+            <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"center"}}>
+                <Link className='btn btn-warning' to={"/admin/editPackage/"+currentPackage._id} style={{marginLeft:40}}>Edit</Link>
+                <Link className='btn btn-danger' to={"/admin/removePackage/"+currentPackage._id} style={{marginLeft:20}}>Remove</Link>
             </div>
             );
     }
@@ -65,16 +81,30 @@ export default class PackageList extends Component{
         if(this.state.user.role === "Basic")
             return (
             <div>
-                <Link to={"/packages/getPackage/"+currentPackage._id} className="nav-link" >Get Package</Link>
+                <Link className='btn btn-warning' to={"/packages/getPackage/"+currentPackage._id} style={{marginLeft:85}}>Get Package</Link>
             </div>
             );
     }
 
+    addPackage(){
+        if(this.state.user.role === "Admin")
+            return (
+              <Link className='btn btn-danger' to={"/admin/addPackage"} style={{marginLeft:"auto", marginRight:100}}>Add Package</Link>
+            );
+    }
+
+  async handleClick(id){
+    if(this.state.user.role === "Basic")
+      window.location = "/packages/getPackage/" + id;
+    else if(this.state.user.role === "Admin")
+      window.location = "/admin/editPackage/" + id;
+  }
+
   packageList(){
     return this.state.packages.map(currentPackage => {
       return (
-        <div>
-            <Package package={currentPackage} key={currentPackage._id}/>
+        <div  style={{marginLeft:50}}>
+            <Package package={currentPackage} key={currentPackage._id} handleClick={this.handleClick}/>
             {this.admin_privilege(currentPackage)}
             {this.user_privilege(currentPackage)}
         </div>
@@ -85,18 +115,18 @@ export default class PackageList extends Component{
   showPackageList(){
     if(this.state.packages.length > 0){
       return (
-        <div>
-          <Row xs={1} md={5} className="g-4">
+          <Row xs={1} md={5} className="g-4" style={{margin:0}}>
               {this.packageList()}
           </Row>
-        </div>
       );
     }
   }
 
   render(){
     return (
-      <div>
+      <div style={{display:"flex", flexDirection:"column",  backgroundColor:"#fff0cc", height:'calc(100vh - 70px)', alignItems:"center", paddingTop:50}} fluid>
+        
+        {this.addPackage()}
         {this.showPackageList()}
       </div>
     );

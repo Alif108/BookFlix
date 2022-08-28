@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+
 import axios from 'axios';
 import Container from 'react-bootstrap/esm/Container';
 import Checkbox from '@mui/material/Checkbox';
@@ -262,7 +263,7 @@ export default class Book extends Component{
           <Container style={{backgroundColor:"#ffe3a1", height:"15vh", borderRadius:5, margin:5, padding:20}} fluid>
             <Grid container spacing={0}>
               <Grid xs={11}>
-                <Typography style={{fontSize:36, fontFamily:'Roboto'}}>{this.state.book.title}</Typography>
+                <Typography style={{fontSize:36, fontFamily:'fantasy'}}>{this.state.book.title}</Typography>
                 <Typography style={{fontSize:16, color:"brown", margin:5}}><b>{this.state.book.author}</b></Typography>
               </Grid>
               <Grid xs={1}>
@@ -278,7 +279,7 @@ export default class Book extends Component{
 
 
           <Container style={{height:"30vh", overflow:"scroll", backgroundColor:"#ffe3a1", borderRadius:5, margin:5, padding:20}} fixed>
-            <Typography style={{fontSize:14, fontFamily:'Roboto'}}>{this.state.book.description}</Typography>
+            <Typography style={{fontSize:14, fontFamily:'fantasy'}}>{this.state.book.description}</Typography>
           </Container>
 
 

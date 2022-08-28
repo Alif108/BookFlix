@@ -11,7 +11,9 @@ import Login from "./components/Login"
 import UserList from "./components/UserList"
 import NavigationBar from "./components/navbar";
 import AdminHome from "./components/AdminHome"
-import UserHome from "./components/UserHome"
+import UserHome from "./components/UserHome";
+
+import Profile from './components/Profile';
 
 import AddBook from "./components/addBook";
 import BookList from "./components/bookList";
@@ -48,6 +50,8 @@ const App = () => {
 				<Route path="/login" exact element={<Login />} />
 				<Route path="/admin" element={< AdminHome/> }/>
 				<Route path="/user" element={< UserHome/> }/>
+
+				<Route path='/user/profile' element={< Profile/>}/>
 
 				<Route path="/books" element={< BookList/> }/>
 				<Route path="/books/:id" element={< BookProfile/> }/>
