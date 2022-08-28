@@ -1,15 +1,9 @@
-///Home page if logged in as admin
 import React, { Component }  from "react";
-import NavigationBar from "./navbar";
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card';
 import Container from "react-bootstrap/esm/Container";
 import axios from 'axios';
-
 
 
 const Package = props => (

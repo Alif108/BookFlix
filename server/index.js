@@ -32,22 +32,24 @@ app.use(require("./routes/userHome"));
 app.use(require("./routes/userProfile"));
 app.use(require("./routes/logout"));
 app.use(require("./routes/navbar"));
-
+// book routes
 const bookRouter = require("./routes/books");
 app.use("/books", bookRouter);
-
+// package routes
 const packageRouter = require("./routes/packages");
 app.use("/packages", packageRouter);
-
+// author routes
+const authorRouter = require("./routes/authors");
+app.use("/authors", authorRouter);
+// request book routes
 const requestBookRouter = require("./routes/requestBook");
 app.use("/requestBook", requestBookRouter);
-
 const readRouter = require("./routes/read");
 app.use("/read", readRouter);
 
 // ------------ home page of server --------------- //
 app.get('/', (req, res) => {
-    res.send("BookFlix");
+    res.send("Haha Vodox");
 });
 
 const port = process.env.PORT || 5000;

@@ -43,7 +43,9 @@ class adminHome extends Component {
                 <div>
                     <a href='/admin/addBook'>Add Book</a><br></br>
                     <a href='/admin/userlist'>List of Users</a><br></br>
-                    <a href='/books'>Books</a>
+                    <a href='/books'>Books</a><br></br>
+                    <a href='/admin/addAuthor'>Add Author</a><br></br>
+                    <a href='/authors'>Authors</a>
                 </div>
             </div>
             </div>

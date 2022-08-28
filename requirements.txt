@@ -5,12 +5,14 @@ npm install jsonwebtoken
 npm install bcryptjs
 npm i cookie-parser
 npm i express-session
+npm install stripe
 
 cd ../client
 npx create-react-app ./
 npm install bootstrap react-router-dom
 npm i react-bootstrap
 npm i @pdftron/pdfjs-express-viewer
+npm install react-stripe-checkout
 npm install @mui/material @mui/icons-material @emotion/react @emotion/styled
 npm install --save react-ui-cards
 npm install @fontsource/roboto

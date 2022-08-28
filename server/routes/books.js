@@ -12,12 +12,13 @@ let Review = require('../models/review.model');
 let User = require('../models/user.model');
 let MyList = require('../models/mylist.model');
 let Genre = require('../models/genre.model');
-let ReadItem = require('../models/readList.model');
+let Author = require('../models/author.model');
 
 ///Book list generation
 router.get("/", generalAuth, function(req, res){
   Book.find()
     .populate('genre', "name")
+    .populate('author', "name")
     .then(books => {
       console.log(books);
       res.json(books)
@@ -28,28 +29,23 @@ router.get("/", generalAuth, function(req, res){
 
 ///book profile generation
 router.get("/:id", generalAuth, function(req, res){
-  Book.findById(req.params.id)
-    .then(book => {
-      Genre.findById(book.genre)
-        .then(genre => {
-          ReadItem.findOne({userID: req.session.user.id, bookID: req.params.id})
-          .then(readItem =>{
-            res.json({user: req.session.user, book, genre, readItem})
-          })
-        })
-        .catch(err => res.status(400).json('Error: ' + err)); 
-    })
-    .catch(err => res.status(400).json('Error: ' + err));
-})
 
-// search book by title, author, or genre
-router.get("/searchBook/:query", generalAuth, function(req, res){
-  Book.find({ $or: [
-    {title: {$regex: req.params.query, $options: 'i'}}, 
-    {author: {$regex: req.params.query, $options: 'i'}},
-    // {genre: {$regex: req.params.query, $options: 'i'}}
-  ]})
-    .then(books => res.json(books))
+  const genre = []
+  Book.findById(req.params.id)
+  .then(book => {
+    Author.findById(book.author)
+      .then(async function(author){
+        for(var i=0; i<book.genre.length; i++)
+        {
+          await Genre.findById(book.genre[i])
+            .then(gen => {
+              genre.push(gen);
+            })
+        }
+        res.json({user: req.session.user, book: book, genre: genre, author: author});
+        })
+      .catch(err => res.status(400).json('Error: ' + err));
+    })
     .catch(err => res.status(400).json('Error: ' + err));
 })
 
@@ -99,13 +95,15 @@ const upload = multer({ storage: storage });
 // add book
 router.post("/add", upload.any(), function(req, res, next){
 
+  console.log(req.body.genre.split(','));
+
   const book = new Book({
     title: req.body.title,
     isbn: req.body.isbn,
     author: req.body.author,
     publisher: req.body.publisher,
     publishingYear: req.body.year,
-    genre: req.body.genre,
+    genre: req.body.genre.split(','),
     numPage: req.body.numPage,
     description: req.body.description,
   });
@@ -120,8 +118,14 @@ router.post("/add", upload.any(), function(req, res, next){
   book.pdfLocation = pdfDest;
 
   book.save()
-    .then(() => {console.log("Book added");})
-    .catch(err => console.log(err));
+    .then(() => {
+      res.json({message: "Book added successfully"});
+    })
+    .catch(err => 
+      {
+        console.log(err);
+        res.status(400).json({message: "Error: " + err});
+      });
 });
 
 
@@ -197,11 +201,9 @@ router.get("/user/getMyList", userAuth, async function(req, res){
         books = [];
 
         for(var i=0; i<objects.length; i++){
-            book = await Book.findById(objects[i].bookID).populate('genre', "name");
-            // book = await Book.findById(objects[i].bookID);
+            book = await Book.findById(objects[i].bookID).populate('genre', "name").populate('author', "name");
             books.push(book);
         }
-        console.log(books);
         res.json(books);
     })
     .catch(err => res.status(400).json('Error: ' + err));
@@ -216,13 +218,16 @@ router.delete("/removeMyList/:id", userAuth, function(req, res){
 });
 
 
-router.get("/genres/getGenres", adminAuth, function(req, res){
+router.get("/genres&authors/get", adminAuth, function(req, res){
   Genre.find()
     .then(genre => {
-      res.json(genre);
+      Author.find()
+        .then(author => {
+          res.json({genre: genre, author: author});
+        }).catch(err => res.status(400).json('Error: ' + err));
+      // res.json(genre);
     })
     .catch(err => res.status(400).json('Error: ' + err));
 });
-
 
 module.exports = router;

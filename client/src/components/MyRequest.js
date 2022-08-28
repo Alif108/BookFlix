@@ -113,7 +113,7 @@ export default class MyRequest extends Component{
         <Container style={{width:"50vw", margin:20}}>
           <Form class="form-inline my-2 my-lg-0" style={{display:"flex",flexDirection: "row", }}>
           <input class="form-control mr-sm-2" type="search" placeholder="Search by Title or Author" aria-label="Search" onChange={event => this.setState({query: event.target.value})} value={this.state.query}/>
-          <Button variant='btn btn-warning my-2 my-sm-0' type="submit" onClick={this.searchBook}>Search</Button>
+          <Button variant='btn btn-warning my-2 my-sm-0' type="submit" onClick={this.searchBookRequest}>Search</Button>
           </Form>
         </Container>
         <br/>

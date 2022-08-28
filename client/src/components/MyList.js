@@ -17,8 +17,7 @@ const Book = props => (
       </Col>
       <Col xs={8} style={{margin:0, paading:0}} fluid>
       <Typography style={{fontSize:32, fontFamily:'Roboto'}}>{props.book.title}</Typography>
-      <Typography style={{fontSize:18, color:"red", fontFamily:'Roboto'}}>{props.book.author}</Typography>
-      <Typography style={{fontSize:14, color:"brown", fontFamily:'Roboto'}}>{props.book.genre.name}</Typography>
+      <Typography style={{fontSize:18, color:"red", fontFamily:'Roboto'}}>{props.book.author.name}</Typography>
       <Typography class="text-truncate" style={{fontSize:14, fontFamily:'Roboto'}}>{props.book.description}</Typography>
               
       </Col>
