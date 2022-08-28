@@ -13,6 +13,7 @@ let User = require('../models/user.model');
 let MyList = require('../models/mylist.model');
 let Genre = require('../models/genre.model');
 let Author = require('../models/author.model');
+let ReadItem = require('../models/readList.model');
 
 ///Book list generation
 router.get("/", generalAuth, function(req, res){
@@ -34,16 +35,20 @@ router.get("/:id", generalAuth, function(req, res){
   Book.findById(req.params.id)
   .then(book => {
     Author.findById(book.author)
-      .then(async function(author){
-        for(var i=0; i<book.genre.length; i++)
-        {
-          await Genre.findById(book.genre[i])
-            .then(gen => {
-              genre.push(gen);
-            })
-        }
-        res.json({user: req.session.user, book: book, genre: genre, author: author});
+      .then(author => {
+        ReadItem.findOne({userID: req.session.user.id, bookID: req.params.id})
+          .then(readItem =>{
+            for(var i=0; i<book.genre.length; i++)
+            {
+              Genre.findById(book.genre[i])
+                .then(gen => {
+                  genre.push(gen);
+                })
+            }
+            res.json({user: req.session.user, book: book, genre: genre, author: author, readItem: readItem});
         })
+
+      })
       .catch(err => res.status(400).json('Error: ' + err));
     })
     .catch(err => res.status(400).json('Error: ' + err));

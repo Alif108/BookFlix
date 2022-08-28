@@ -47,8 +47,6 @@ app.use("/requestBook", requestBookRouter);
 const readRouter = require("./routes/read");
 app.use("/read", readRouter);
 
-
-
 // ------------ home page of server --------------- //
 app.get('/', (req, res) => {
     res.send("Haha Vodox");
