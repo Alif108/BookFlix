@@ -13,13 +13,13 @@ const ContinueItem = props => (
 )
 
 const PopularItem = props => (
-  <Container onClick={() => window.location.href = '/books/'+props.item._id+"/read"}  style={{width:200, margin:0, padding:0}}>
+  <Container onClick={() => window.location.href = '/books/'+props.item._id}  style={{width:200, margin:0, padding:0}}>
     <img src= { 'http://localhost:5000'+props.item.coverLocation } style={{height:180, width:120}}/>
   </Container>
 )
 
 const NewItem = props => (
-  <Container onClick={() => window.location.href = '/books/'+props.item._id+"/read"}  style={{width:200, margin:0, padding:0}}>
+  <Container onClick={() => window.location.href = '/books/'+props.item._id}  style={{width:200, margin:0, padding:0}}>
     <img src= { 'http://localhost:5000'+props.item.coverLocation } style={{height:180, width:120}}/>
   </Container>
 )

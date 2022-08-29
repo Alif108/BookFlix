@@ -10,7 +10,7 @@ export default function RemoveMyList() {
         }
     })
     .then(response => { 
-        window.alert(response.data.message);
+        //window.alert(response.data.message);
         window.location = "/books/user/getMyList";
     });
 }

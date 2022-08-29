@@ -85,6 +85,7 @@ router.get("/getPopularItems", userAuth, function(req, res){
   ReadItem.aggregate([
     {"$group" : {_id:"$bookID", count:{$sum:1}}},
     {$sort:{"count":-1}},
+    {"$limit": 6}
   ])
   .then(async function(objects){
     bookes = [];
