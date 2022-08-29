@@ -35,12 +35,12 @@ router.get("/:id", generalAuth, function(req, res){
   Book.findById(req.params.id)
   .then(book => {
     Author.findById(book.author)
-      .then(author => {
+      .then(async (author) => {
         ReadItem.findOne({userID: req.session.user.id, bookID: req.params.id})
-          .then(readItem =>{
+          .then(async (readItem) => {
             for(var i=0; i<book.genre.length; i++)
             {
-              Genre.findById(book.genre[i])
+              await Genre.findById(book.genre[i])
                 .then(gen => {
                   genre.push(gen);
                 })

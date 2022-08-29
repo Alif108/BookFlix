@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import Container from "react-bootstrap/esm/Container";
 import axios from "axios";
 
-export default class AddBook extends Component{
+export default class EditBook extends Component{
     constructor(props){
         super(props);
 
@@ -22,23 +22,46 @@ export default class AddBook extends Component{
         // this.savePdf = this.savePdf.bind(this);
         this.addBook = this.addBook.bind(this);
         this.remove = this.remove.bind(this);
+        this.handleCheckGenre = this.handleCheckGenre.bind(this);
+        this.onClickAuthor = this.onClickAuthor.bind(this);
 
         this.state = {
           title: "",
           isbn: "",
           author: "",
+          author_name: "",
           publisher: "",
           year: "",
-          genre: "",
+          genre: [],
           numPage: "",
           description: "",
           book: [],
           listOfGenre: [],
+          listOfAuthor: [],
           id: window.location.pathname.split('/')[window.location.pathname.split('/').length - 1],
         }
+
+        const checkedGenres = [];
     }
 
     componentDidMount(){
+
+        axios.get('http://localhost:5000/books/genres&authors/get', {
+            method: 'GET',
+            headers: {
+            'token': localStorage.getItem('token'),
+            },
+        })
+            .then(response => {
+                this.setState({
+                    listOfGenre: response.data.genre,
+                    listOfAuthor: response.data.author,
+                });
+            })
+            .catch(function(error){
+                console.log(error);
+            });
+
       axios.get('http://localhost:5000/books/'+this.state.id, {
         method: 'GET',
         headers: {
@@ -50,14 +73,13 @@ export default class AddBook extends Component{
             book: response.data.book,
             title: response.data.book.title,
             isbn: response.data.book.isbn,
-            author: response.data.book.author,
+            author: response.data.author.name,
             publisher: response.data.book.publisher,
             year: response.data.book.publishingYear,
-            genre: response.data.book.genre,
+            genre: response.data.genre,
             numPage: response.data.book.numPage,
             description: response.data.book.description,
           });
-          console.log(response.data.book.title);
         })
         .catch(function(error){
           console.log(error);
@@ -80,9 +102,17 @@ export default class AddBook extends Component{
 
     onChangeAuthor(e) {
         this.setState({
-          author: e.target.value
+          author_name: e.target.value
         });
     };
+
+    onClickAuthor(item)
+    {
+        this.setState({
+            author_name: item.name,
+            author: item._id
+        });
+    }
 
     onChangePublisher(e) {
         this.setState({
@@ -102,6 +132,15 @@ export default class AddBook extends Component{
         });
     };
 
+    handleCheckGenre(e) {
+        if(e.target.checked){
+            this.state.genre.push(e.target.value);
+        }
+        else{
+            this.state.genre.splice(this.state.genre.indexOf(e.target.value), 1);
+        }
+    }
+
     onChangeNumPage(e) {
         this.setState({
           numPage: e.target.value
@@ -114,11 +153,11 @@ export default class AddBook extends Component{
         });
     };
 
-    showGenres(){
-        return this.state.listOfGenre.map((genre) => {
-           return <option key={genre._id} value={genre._id}>{genre.name}</option>;
-        });
-    }
+    // showGenres(){
+    //     return this.state.listOfGenre.map((genre) => {
+    //        return <option key={genre._id} value={genre._id}>{genre.name}</option>;
+    //     });
+    // }
 
     // saveCover(e) {
     //     this.setState({
@@ -169,6 +208,58 @@ export default class AddBook extends Component{
         // })
       }
 
+      renderAuthors(){
+        return(
+            <div className="search-container">
+                <div className="search-inner">
+                    <input type="text" value={this.state.author_name} onChange={this.onChangeAuthor}/>
+                </div>
+                <div className="dropdown">
+                {this.state.listOfAuthor.filter((item) => {
+                    const searchTerm = this.state.author_name.toLowerCase();
+                    const fullName = item.name.toLowerCase();
+
+                    return (
+                        searchTerm &&
+                        fullName.startsWith(searchTerm) &&
+                        fullName !== searchTerm
+                    );
+                    })
+                    .slice(0, 10)
+                    .map((item) => (
+                    <div
+                        onClick={() => this.onClickAuthor(item)}
+                        className="dropdown-row"
+                        key={item.name}
+                    >
+                        <div>
+                            <img src= { 'http://localhost:5000'+item.photoLocation } style={{height:50, width:50}}/>
+                            {item.name}
+                        </div>
+                    </div>
+                    ))}
+                </div>
+        </div>
+        );
+    }
+
+      renderGenres()
+      {
+          return(
+              <div className="checkList">
+                  <div className="list-container">
+                  {/* {this.state.listOfGenre.map((item, index) => ( */}
+                  {this.state.listOfGenre.map((gen) => (
+                      <div key={gen._id}>
+                      <input value={gen._id} type="checkbox" onChange={this.handleCheckGenre} />
+                      <span >{gen.name}</span>
+                      </div>
+                  ))}
+                  </div>
+              </div>
+          );
+      }
+
     render() {
         return(
             <Container>
@@ -202,9 +293,9 @@ export default class AddBook extends Component{
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Author:</Form.Label>
+                            <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Author:</Form.Label>
                                 <Col>
-                                    <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeAuthor} value={this.state.author} placeholder="Author of the book" />
+                                    { this.renderAuthors() }
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
@@ -226,24 +317,9 @@ export default class AddBook extends Component{
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
-                                <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Genre:</Form.Label>
+                            <Form.Label column="sm" lg={2} style={{whiteSpace:'nowrap', width:"10vw"}}>Genre:</Form.Label>
                                 <Col>
-                                    {/* <Form.Control className="w-100" size="sm" type="text" onChange={this.onChangeGenre} value={this.state.genre} placeholder="" /> */}
-                                    <select 
-                                        name="region" 
-                                        id="region"
-                                        value={this.state.genre}
-                                        onChange={this.onChangeGenre}
-                                        required
-                                    >
-                                        {this.showGenres()}
-                                        {/* <option value="Dhaka">Dhaka</option>
-                                        <option value="Chittagong">Chittagong</option>
-                                        <option value="Sylhet">Sylhet</option>
-                                        <option value="Rajshahi">Rajshahi</option>
-                                        <option value="Barisal">Barisal</option>
-                                        <option value="Khulna">Khulna</option> */}
-                                    </select>
+                                    { this.renderGenres() }
                                 </Col>
                             </Row>
                             <Row className='mt-2'>
@@ -260,7 +336,7 @@ export default class AddBook extends Component{
                             </Row>
                             <Row className='mt-2'>
                                 <Col>
-                                <Button className="float-end" size="sm" variant="warning" onClick={this.addBook}>Add Book</Button>
+                                <Button className="float-end" size="sm" variant="warning" onClick={this.addBook}>Edit Book</Button>
                                 </Col>
                             </Row>
                         </Col>

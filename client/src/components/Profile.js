@@ -25,8 +25,9 @@ class Profile extends Component{
 
     render(){
         return(
-            <div>
-                {this.state.user.username}
+            <div style={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center"}}>
+                <img src="http://localhost:5000/images/1.png" width="200px" />
+                 {this.state.user.username}
             </div>
         );
     }

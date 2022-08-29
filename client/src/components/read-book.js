@@ -7,7 +7,7 @@ import { Container } from "react-bootstrap";
 
 const reader = {
   width: '100%',
-  height: '100vh',
+  height: 'calc(100vh - 70px)',
 };
 
 
@@ -197,7 +197,7 @@ export default class readBook extends Component{
     return (
       <div className="MyComponent">
         <div>
-        <Container style={{backgroundColor:"#fff0cc"}}>
+        <Container>
           {/* <div className="header">{this.state.book.title}</div> */}
           <div className="webviewer" style={ reader } ref={this.state.viewer}></div>
         </Container>

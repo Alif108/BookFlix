@@ -90,18 +90,20 @@ render() {
   let logoutButton;
   logoutButton = <button onClick={this.handleClickLogout}>Logout</button>;
 
-  let link1, link2, link3, link4;
+  let link1, link2, link3, link4, link5;
   let username = this.state.username;
   if (this.state.role === "Admin") {
     link1 = <Link to="/books" className="nav-link">Books</Link>;
     link2 = <Link to="/admin/addbook" className="nav-link">Add Book</Link>;
     link3 = <Link to="/packages" className="nav-link">Manage Packs</Link>;
     link4 = <Link to="/requestBook/requests" className="nav-link">Requests</Link>;	
+    link5 = <Link to="/admin/addAuthor" className="nav-link">Add Author</Link>;
   } else {	
     link1 = <Link to="/books/" className="nav-link">Books</Link>;	
     link2 = <Link to="/books/user/getMyList/" className="nav-link">My List</Link>;	
     link3 = <Link to="/requestBook/" className="nav-link">Request a Book</Link>;
     link4 = <Link to="/requestBook/myrequests" className="nav-link">My Requests</Link>;
+    link5 = <Link to="/authors" className="nav-link">Author</Link>;
   }
     
   return(
@@ -120,6 +122,7 @@ render() {
           <Nav.Link style={{whiteSpace:'nowrap'}}>{link2}</Nav.Link>
           <Nav.Link style={{whiteSpace:'nowrap'}}>{link3}</Nav.Link>
           <Nav.Link style={{whiteSpace:'nowrap'}}>{link4}</Nav.Link>
+          <Nav.Link style={{whiteSpace:'nowrap'}}>{link5}</Nav.Link>
 
           </Nav>
 
