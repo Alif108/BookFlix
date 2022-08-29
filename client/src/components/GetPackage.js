@@ -112,10 +112,6 @@ export default class GetPackage extends Component{
 
             user_ID: this.state.user.id,
             package_ID: this.state.package._id,
-            // name: this.state.name,
-            // contact: this.state.contact,
-            // bkash: this.state.bkash,
-            // address: this.state.address,
         }
         try {
             axios.post("http://localhost:5000/packages/getPackage/"+this.state.id, dict, {
@@ -125,6 +121,7 @@ export default class GetPackage extends Component{
             })
             .then(res => {
                 window.alert(res.data.message);
+                window.location = '/books';
         });
         } catch (err) {
             console.log(err);

@@ -142,9 +142,13 @@ class UserHome extends Component {
   showContinueReadingItems() {
     if(this.state.continueReadingItems.length > 0){
       return (
+        <div>
+                    <h5><i style={{color:"grey"}}>Continue Reading</i></h5>
+          
         <Container style={{display:"flex", flexDirection:"row", padding:10, alignContent:"flex-start"}}>
           {this.contReadingItems()}
         </Container>
+        </div>
       );
     }
   }
@@ -194,7 +198,7 @@ class UserHome extends Component {
                 </div> */}
                 <br/><br/>
                 <div>
-                    <h5><i style={{color:"grey"}}>Continue Reading</i></h5>
+
                     {this.showContinueReadingItems()}
                 </div>
                 <div>

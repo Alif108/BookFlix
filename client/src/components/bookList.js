@@ -136,11 +136,11 @@ export default class BookList extends Component{
 
   renderRadioButtons(){
     return (
-      <div onChange={this.onChangeRadio}>
-        <input type="radio" value="Book" name="search" /> Book Only
-        <input type="radio" value="Author" name="search" /> Author Only
-        <input type="radio" value="Genre" name="search" /> Genre Only
-        <input type="radio" value="All" name="search" /> All 
+      <div onChange={this.onChangeRadio} style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent:"center"}} >
+        <input style={{marginRight: 5, marginLeft: 25}} type="radio" value="Book" name="search" /> Book Only
+        <input style={{marginRight: 5, marginLeft: 25}} type="radio" value="Author" name="search" /> Author Only
+        <input style={{marginRight: 5, marginLeft: 25}} type="radio" value="Genre" name="search" /> Genre Only
+        <input style={{marginRight: 5, marginLeft: 25}} type="radio" value="All" name="search" /> All 
       </div>
     );
   }
