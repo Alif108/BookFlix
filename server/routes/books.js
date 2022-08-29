@@ -98,7 +98,7 @@ var storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // add book
-router.post("/add", upload.any(), function(req, res, next){
+router.post("/add", upload.any(), async function(req, res, next){
 
   console.log(req.body.genre.split(','));
 
@@ -122,7 +122,7 @@ router.post("/add", upload.any(), function(req, res, next){
   book.coverLocation = coverDest;
   book.pdfLocation = pdfDest;
 
-  book.save()
+  const id = await book.save()
     .then(() => {
       res.json({message: "Book added successfully"});
     })

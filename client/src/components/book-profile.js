@@ -34,7 +34,8 @@ export default class Book extends Component{
     this.addReview = this.addReview.bind(this);
     this.addToMyList = this.addToMyList.bind(this);
     this.setReadItem = this.setReadItem.bind(this);
-    this.iterateGenres = this.iterateGenres(this);
+    this.iterateGenres = this.iterateGenres.bind(this);
+    this.remove = this.remove.bind(this);
 
     this.state = {
       imgg: '',
@@ -173,13 +174,36 @@ export default class Book extends Component{
     );
   }
 
+  remove(e) {
+    axios.delete('http://localhost:5000/books/remove/'+this.state.id)
+      .then(response => { 
+        console.log(response.data);
+        window.alert("Book Removed");
+        window.location = "/books/";
+    });
+
+    // this.setState({
+    //   exercises: this.state.exercises.filter(el => el._id !== id)
+    // })
+  }
+
   renderEditButton(){
     if (this.state.user.role === "Admin") {
       return (
         <Container style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
-          <Link className='btn btn-danger' to={'/books/edit/'+this.state.book._id}>
+          <Link className="btn btn-warning" to={'/books/edit/'+this.state.book._id}>
             Edit Book
           </Link>
+        </Container>
+      );
+    }
+  }
+
+  renderRemoveButton(){
+    if (this.state.user.role === "Admin") {
+      return (
+        <Container style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
+          <Button className='btn btn-danger' size="sm" variant="warning" onClick={this.remove}>Remove</Button>
         </Container>
       );
     }
@@ -250,6 +274,16 @@ export default class Book extends Component{
     );
   }
 
+  renderMyListButton(){
+    if(this.state.user.role === "Basic" && this.state.user.subscription){
+      return (
+        <Grid xs={1}>
+          <Checkbox className="float-end" {...label} onClick={this.addToMyList} icon={<BookmarkBorderIcon />} checkedIcon={<BookmarkIcon />} />
+        </Grid>
+      );
+    }
+  }
+
   renderReviewBox(){
     if (this.state.user.role === "Basic" && this.state.user.subscription) {
       return (
@@ -270,7 +304,10 @@ export default class Book extends Component{
         <img src= {"http://localhost:5000" + this.state.book.coverLocation} alt="" height='85%' width='60%' margin='20px'/>
           <br />
           { this.renderReadButton() }
-          { this.renderEditButton() }
+          <div style={{flex:2 , display:"flex", flexDirection:"row", alignItems: "center", whiteSpace:'nowrap', justifyContent:"center"}}>
+            { this.renderEditButton() }
+            { this.renderRemoveButton() }
+          </div>
         </Container>
 
         <Container style={{flex:3 , display:"flex", flexDirection:"column", marginTop:20, marginBottom:20}} fluid>
@@ -280,9 +317,10 @@ export default class Book extends Component{
               <Typography style={{fontSize:36, fontFamily:'fantasy'}}>{this.state.book.title}</Typography>
                 <Typography style={{fontSize:16, color:"brown", margin:5}}><b>{this.state.author}</b></Typography>
               </Grid>
-              <Grid xs={1}>
+              {/* <Grid xs={1}>
                 <Checkbox className="float-end" {...label} onClick={this.addToMyList} icon={<BookmarkBorderIcon />} checkedIcon={<BookmarkIcon />} />
-              </Grid>
+              </Grid> */}
+              { this.renderMyListButton() }
             </Grid>
           </Container>
 
@@ -301,12 +339,7 @@ export default class Book extends Component{
             <Typography style={{color:"white", backgroundColor:"grey", borderRadius:20, margin:5, padding:5, paddingLeft:10, paddingRight:10}}>
               Category
             </Typography>
-
-
-              {this.iterateGenres}
-            
-
-
+              {this.iterateGenres()}
           </Container>
 
 

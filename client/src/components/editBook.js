@@ -339,6 +339,11 @@ export default class EditBook extends Component{
                                 <Button className="float-end" size="sm" variant="warning" onClick={this.addBook}>Edit Book</Button>
                                 </Col>
                             </Row>
+                            {/* <Row className='mt-2'>
+                                <Col>
+                                <Button className="float-end" size="sm" variant="warning" onClick={this.remove}>Remove</Button>
+                                </Col>
+                            </Row> */}
                         </Col>
                         <Col></Col>
                     </Row>
