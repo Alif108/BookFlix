@@ -58,6 +58,8 @@ export default class Book extends Component{
       },
     })
       .then(response => {  
+        console.log("here");
+        console.log(response.data.book.genre);
         this.setState({
           user: response.data.user,
           book: response.data.book,
@@ -237,7 +239,6 @@ export default class Book extends Component{
 
   iterateGenres()
   {
-    //console.log(this.state.genre);
     const rows = []
 
     for(var i = 0; i < this.state.genre.length; i++)
