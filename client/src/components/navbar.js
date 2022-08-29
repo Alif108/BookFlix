@@ -48,7 +48,7 @@ renderHomeLogo() {
   if(this.state.loggedIn){
     if(this.state.role === "Admin")
     {
-      return(<Navbar.Brand href="/admin/stats/books" style={{paddingLeft:'2vw',paddingRight:'2vw'}}>
+      return(<Navbar.Brand href="/books" style={{paddingLeft:'2vw',paddingRight:'2vw'}}>
       <img
         alt="BOOKFLIX"
         src="http://localhost:5000/images/logo.png"
@@ -110,7 +110,7 @@ render() {
 
   let link1, link2, link3, link4, link5;
   if (this.state.role === "Admin") {
-    link1 = <Link to="/books" className="nav-link">Books</Link>;
+    link1 = <Link to="/admin/stats/books" className="nav-link">Stats</Link>;
     // link2 = <Link to="/admin/addbook" className="nav-link">Add Book</Link>;
     link2 =  <Link to="/authors" className="nav-link">Author</Link>;;
     link3 = <Link to="/packages" className="nav-link">Manage Packs</Link>;

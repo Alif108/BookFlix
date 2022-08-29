@@ -54,6 +54,7 @@ router.post("/login", async (req, res) => {
                     if(result)
                     {
                         let isSubscribed = await isSubscribedUser(data._id);
+                        console.log(isSubscribed);
                         const payload = {id: data._id, username: data.username, role: data.role, subscription: isSubscribed};
                         const token_age = 3 * 60 * 60; // 3hrs in sec
 

@@ -190,7 +190,7 @@ class UserHome extends Component {
     let role = this.state.user.role;
     if(role === "Basic")
       return (
-          <div className="UserHome" style={{backgroundColor:"#fff0cc"}}>
+          <div className="UserHome" style={{minHeight:'calc(100vh - 70px)', backgroundColor:"#fff0cc"}}>
             <br/><br/>
             <div className="container">
                 {/* <div style={{display:"flex",alignItems: "center",justifyContent:"center"}}> 
