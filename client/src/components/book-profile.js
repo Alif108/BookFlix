@@ -34,6 +34,7 @@ export default class Book extends Component{
     this.addReview = this.addReview.bind(this);
     this.addToMyList = this.addToMyList.bind(this);
     this.setReadItem = this.setReadItem.bind(this);
+
     this.iterateGenres = this.iterateGenres.bind(this);
     this.remove = this.remove.bind(this);
 
@@ -270,7 +271,7 @@ export default class Book extends Component{
       rows.push(<Typography style={{color:"white", backgroundColor:"orange", borderRadius:20, margin:5, padding:5, paddingLeft:10, paddingRight:10}}>{this.state.genre[i].name}</Typography>)
     }
     return(
-      <div>{rows}</div>
+      <div  style={{display:"flex", flexDirection:"row", padding:0}}>{rows}</div>
     );
   }
 
@@ -330,7 +331,7 @@ export default class Book extends Component{
           </Container>
 
 
-          <Container style={{height:"30vh", overflow:"scroll", backgroundColor:"#ffe3a1", borderRadius:5, margin:5, padding:20}} fixed>
+          <Container style={{height:"30vh", overflowY:"scroll", backgroundColor:"#ffe3a1", borderRadius:5, margin:5, padding:20}} fixed>
           <Typography style={{fontSize:14, fontFamily:'fantasy'}}>{this.state.book.description}</Typography>
           </Container>
 
@@ -340,10 +341,11 @@ export default class Book extends Component{
               Category
             </Typography>
               {this.iterateGenres()}
+
           </Container>
 
 
-          <Container style={{height:"50vh", overflow:"scroll", backgroundColor:"#ffe3a1", borderRadius:5, margin:5, padding:20}} fixed>
+          <Container style={{height:"50vh", overflowY:"scroll", backgroundColor:"#ffe3a1", borderRadius:5, margin:5, padding:20}} fixed>
             { this.renderReviewBox() }
 
             {this.state.reviews.map((review) => {

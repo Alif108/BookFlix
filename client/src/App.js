@@ -85,10 +85,9 @@ const App = () => {
 				<Route path='/authors/:id' element={< AuthorProfile/> }/>
 				<Route path='/admin/editAuthor/:id' element={< EditAuthor/> }/>
 
-
-				{/* <Route path='/admin/stats/books' element={< StatsBooks/> }/>	
+				<Route path='/admin/stats/books' element={< StatsPopularity/> }/>	
 				<Route path='/admin/stats/users' element={< StatsUsers/> }/>	
-				<Route path='/admin/stats/finance' element={< StatsFinance/> }/> */}
+				<Route path='/admin/stats/finance' element={< StatsFinance/> }/>
 			</Routes>
 		</div>
 	);
