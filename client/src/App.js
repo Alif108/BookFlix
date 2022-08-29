@@ -39,9 +39,9 @@ import AddAuthor from './components/AddAuthor';
 import AuthorList from './components/AuthorList';
 import AuthorProfile from './components/AuthorProfile';
 
-// import StatsBooks from './components/StatsBooks';	
-// import StatsUsers from './components/StatsUsers';	
-// import StatsFinance from './components/StatsFinance';
+import StatsPopularity from './components/StatsPopularity';	
+import StatsUsers from './components/StatsUsers';	
+import StatsFinance from './components/StatsFinance';
 
 const App = () => {
 	return (
@@ -70,6 +70,7 @@ const App = () => {
 				<Route path="/admin/removePackage/:id" element={< RemovePackage/> }/>
 				<Route path='/admin/editPackage/:id' element={< EditPackage/> }/>
 				<Route path='/admin/addAuthor' element={< AddAuthor/> }/>
+				<Route path='/admin/stats/popularity' element={< StatsPopularity/> }/>
 
 				<Route path='/packages' element={< PackageList/> }/>
 				<Route path='/packages/getPackage/:id' element={< GetPackage/> }/>

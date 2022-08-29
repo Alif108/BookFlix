@@ -84,19 +84,19 @@ router.get("/getUserReadItems", userAuth, function(req, res){
 router.get("/getPopularItems", userAuth, function(req, res){
   ReadItem.aggregate([
     {"$group" : {_id:"$bookID", count:{$sum:1}}},
-    {$sort:{"count":-1}}
+    {$sort:{"count":-1}},
   ])
   .then(async function(objects){
-    books = [];
+    bookes = [];
 
     for(var i=0; i<objects.length; i++){
         book = await Book.findById(objects[i]._id)
           .then(book => {
-            books.push(book);
+            bookes.push(book);
           }).catch(err => res.status(400).json('Error: ' + err));
     }
     // console.log(books);
-    res.json(books);
+    res.json(bookes);
 })
     .catch(err => res.status(400).json('Error: ' + err));
 })
@@ -106,13 +106,13 @@ router.get("/getPopularItems", userAuth, function(req, res){
 router.get("/getNewItems", userAuth, function(req, res){
   Book.find()
     .then(async function(result){
-      bookes = [];
+      books = [];
       for(var i=0; i<result.length; i++){
         if(result[i].timestamp > new Date(new Date().setDate(new Date().getDate() - 2))){
-          bookes.push(result[i]);
+          books.push(result[i]);
         }
       }
-      res.json(bookes);
+      res.json(books);
     }).catch(err => res.status(400).json('Error: ' + err));
 }),
 

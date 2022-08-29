@@ -136,7 +136,7 @@ render() {
             
             <NavDropdown title={username} id="basic-nav-dropdown" menuVariant="dark" align="end" style={{color: "white" , marginLeft: "auto", paddingRight:20}}>
               <NavDropdown.Item href="/user/profile">View Profile</NavDropdown.Item>
-              <NavDropdown.Item href="#">Settings</NavDropdown.Item>
+              {/* <NavDropdown.Item href="#">Settings</NavDropdown.Item> */}
               <NavDropdown.Item href="/packages/myPackage">My Package</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={this.handleClickLogout} style={{color: "#ff7700"}}>Logout</NavDropdown.Item>

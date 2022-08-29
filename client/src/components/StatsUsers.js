@@ -50,18 +50,18 @@ class StatsUsers extends Component {
         <NavigationBar />
 
      */   
-        <Container style={{display: "flex", flexDirection: "row", height:"100vh", padding:0}} fluid> 
+        <Container style={{display: "flex", flexDirection: "row",  height:'calc(100vh - 70px)', padding:0}} fluid> 
           <Container style={{ flex: 1,  flexDirection: "column", backgroundColor: "orange", padding: '3vh'}} >
 
-          <Link style={{textDecoration:"none", color:"white",fontSize:20}} to='/admin/stats/books/'>
-            Books
+          <Link style={{textDecoration:"none", color:"white",fontSize:20, padding:"5px 20px 5px 20px",}} to='/admin/stats/popularity/'>
+            Popularity
           </Link>
           <br />
-          <Link style={{textDecoration:"none", color:"white",fontSize:20}} to='/admin/stats/users/'>
+          <Link style={{textDecoration:"none", color:"white",fontSize:20, padding:"5px 20px 5px 20px", borderRadius:50, backgroundColor:"black" }} to='/admin/stats/users/'>
             Users
           </Link>
           <br />
-          <Link style={{textDecoration:"none", color:"white",fontSize:20}} to='/admin/stats/finance/'>
+          <Link style={{textDecoration:"none", color:"white",fontSize:20, padding:"5px 20px 5px 20px", }} to='/admin/stats/finance/'>
             Finance
           </Link>
 
