@@ -7,7 +7,7 @@ exports.adminAuth = (req, res, next) => {
 
         if(token){
 
-            // console.log("token: " + token);
+            console.log("token: " + token);
 
             jwt.verify(token, jwtSecret, (err, decodedToken) => {
                 if(err){
@@ -41,7 +41,7 @@ exports.userAuth = (req, res, next) => {
 
         if(token){
 
-            // console.log("token: " + token);
+            console.log("token: " + token);
 
             jwt.verify(token, jwtSecret, (err, decodedToken) => {
                 if(err){
@@ -76,7 +76,7 @@ exports.generalAuth = (req, res, next) => {
 
         if(token){
 
-            // console.log("token: " + token);
+            console.log("token: " + token);
             
             jwt.verify(token, jwtSecret, (err, decodedToken) => {
                 if(err){

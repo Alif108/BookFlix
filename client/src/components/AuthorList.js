@@ -3,22 +3,19 @@ import { Link } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/esm/Container';
+
 import axios from 'axios';
 
 const Author = props => (
-  <Col>
-    <div>
-      <Card style={{ width: '15rem' }} onClick={() => window.location.href = '/authors/'+props.author._id}>
-        <Card.Body>
-            <Row>
-                <img src= { 'http://localhost:5000'+props.author.photoLocation } style={{height:280, width:200}}/>
-            </Row>
-          <Card.Title>{ props.author.name }</Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">{ props.author.description }</Card.Subtitle>
-        </Card.Body>
-      </Card>
+
+    <div style={{ width: '200px', height:'300px', padding:20, borderRadius:10, backgroundColor:"white", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center"}} onClick={() => window.location.href = '/authors/'+props.author._id} >
+        <img src= { 'http://localhost:5000'+props.author.photoLocation } style={{height:200, width:160}}/>
+        <i style={{margin:20}}>{ props.author.name }</i>
     </div>
-  </Col>
+
 )
 
 export default class AuthorList extends Component{
@@ -98,7 +95,7 @@ export default class AuthorList extends Component{
   authorList(){
     return this.state.authors.map(currentAuthor => {
       return (
-        <div>
+        <div fluid>
             <Author author={currentAuthor} key={currentAuthor._id}/>
             {this.admin_privilege(currentAuthor)}
         </div>
@@ -120,16 +117,18 @@ export default class AuthorList extends Component{
 
   render(){
     return (
-      <div>
-        <div>
-          <br />
-          <form onSubmit={this.searchAuthor}>
-            <input id="query" placeholder="Author" type="text" onChange={event => this.setState({query: event.target.value})} value={this.state.query}/>
-            <button type="submit">Search</button>
-          </form>
-          <br />
-        </div>
-        <div>
+      <div style={{display: "flex", flexDirection: "column", backgroundColor:"#fff0cc",  alignItems: "center", justifyContent:"center"}}>
+        <br />
+        <Container style={{width:"50vw", margin:20}}>
+          <Form class="form-inline my-2 my-lg-0" style={{display:"flex",flexDirection: "row", }}>
+          <input class="form-control mr-sm-2" type="text" placeholder="Author" aria-label="Search" onChange={event => this.setState({query: event.target.value})} value={this.state.query}/>
+          <Button variant='btn btn-warning my-2 my-sm-0' type="submit" onClick={this.searchAuthor}>Search</Button>
+          </Form>
+        </Container>
+        <br />
+
+
+        <div style={{width:"80vw", height:'calc(100vh - 70px)'}} fluid>
           {this.showAuthorList()}
         </div>
       </div>

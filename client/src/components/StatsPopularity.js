@@ -224,10 +224,6 @@ class StatsBooks extends Component {
             Popularity
           </Link>
           <br />
-          <Link style={{textDecoration:"none", color:"white",fontSize:20, padding:"5px 20px 5px 20px", }} to='/admin/stats/users/'>
-            Users
-          </Link>
-          <br />
           <Link style={{textDecoration:"none", color:"white",fontSize:20, padding:"5px 20px 5px 20px", }} to='/admin/stats/finance/'>
             Finance
           </Link>

@@ -3,37 +3,28 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
 import { Container } from "@mui/material";
+import Typography from '@mui/material/Typography';
 import Card from 'react-bootstrap/Card';
 
 const Author = props => (
-    <Col>
-      <div>
-        <Card style={{ width: '15rem' }} onClick={() => window.location.href = '/authors/'+props.author._id}>
-          <Card.Body>
-              <Row>
+      <div style={{width:"50vw", height:"320", backgroundColor:"white", borderRadius:20}}>
+        <Row style={{padding:0}}>
+            <Col xs={3} style={{width:"200px", margin:20}}>
                   <img src= { 'http://localhost:5000'+props.author.photoLocation } style={{height:280, width:200}}/>
-              </Row>
-            <Card.Title>{ props.author.name }</Card.Title>
-            <Card.Subtitle className="mb-2 text-muted">{ props.author.description }</Card.Subtitle>
-          </Card.Body>
-        </Card>
+            </Col>
+            <Col style={{margin:30}}>
+            
+            <Typography style={{fontSize:36, fontFamily:'fantasy'}}><b>{ props.author.name }</b></Typography>
+            <Typography style={{fontSize:16, color:"grey", margin:5, overflowY:"scroll"}}><i>{ props.author.description }</i></Typography>
+            </Col>
+        </Row>
       </div>
-    </Col>
   )
 
   const Book = props => (
-    <Col>
-    <Container style={{backgroundColor:"white", borderRadius:20, margin:20, padding:20 }} onClick={() => window.location.href = '/books/'+props.book._id} fluid>
-  
-        <Row>
-          <img src= { 'http://localhost:5000'+props.book.coverLocation } style={{height:280, width:200}}/>
-        </Row>
-        <Row>
-          <h4>{props.book.title} </h4>
-        </Row>
-  
-    </Container>
-    </Col>
+    <Container onClick={() => window.location.href = '/books/'+props.book._id+"/read"}  style={{width:200, margin:0, padding:0}}>
+    <img src= { 'http://localhost:5000'+props.book.coverLocation } style={{height:180, width:120}}/>
+  </Container>
   )
 
 export default class AuthorProfile extends Component{
@@ -89,28 +80,25 @@ export default class AuthorProfile extends Component{
   renderBookList(){
     if(this.state.books.length > 0){
       return (
-        <div>
-          <Row xs={1} md={5} className="g-4">
-              {this.bookList()}
-          </Row>
-        </div>
+        <Container style={{display:"flex", flexDirection:"row", padding:10, flexFlow:"row nowrap"}} fluid>
+          
+          {this.bookList()}
+        </Container>
       );
     }
   }
 
   render(){
     return (
-      <div>
-        <Row>
-          <Col></Col>
-            { this.renderAuthorProfile() }
-          <Col></Col>
-        </Row>
-        <Row>
-          <Col></Col>
-            { this.renderBookList() }
-          <Col></Col>
-        </Row>
+      <div style={{display: "flex", flexDirection: "column", backgroundColor:"#fff0cc",minHeight:'calc(100vh - 70px)', alignItems: "center", justifyContent:"center"}}>
+        <br />
+        { this.renderAuthorProfile() }
+        <hr /><br />
+        <i style={{color:"grey"}}>Books by this author</i>
+        <div>
+        <br />
+        { this.renderBookList() }
+        </div>
       </div>
     );
   }
