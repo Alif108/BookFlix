@@ -34,6 +34,7 @@ export default class Book extends Component{
     this.addReview = this.addReview.bind(this);
     this.addToMyList = this.addToMyList.bind(this);
     this.setReadItem = this.setReadItem.bind(this);
+    this.iterateGenres = this.iterateGenres(this);
 
     this.state = {
       imgg: '',
@@ -63,6 +64,7 @@ export default class Book extends Component{
           genre: response.data.genre,
           author: response.data.author.name,
         });
+        console.log(response.data);
       })
       .catch(function(error){
         console.log(error);
@@ -235,11 +237,12 @@ export default class Book extends Component{
 
   iterateGenres()
   {
-    console.log(this.state.genre);
+    //console.log(this.state.genre);
     const rows = []
+
     for(var i = 0; i < this.state.genre.length; i++)
     {
-      rows.push(<h6>{this.state.genre[i].name}</h6>)
+      rows.push(<Typography style={{color:"white", backgroundColor:"orange", borderRadius:20, margin:5, padding:5, paddingLeft:10, paddingRight:10}}>{this.state.genre[i].name}</Typography>)
     }
     return(
       <div>{rows}</div>
@@ -299,9 +302,8 @@ export default class Book extends Component{
             </Typography>
 
 
-            <Typography style={{color:"white", backgroundColor:"orange", borderRadius:20, margin:5, padding:5, paddingLeft:10, paddingRight:10}}>
-              {this.iterateGenres()}
-            </Typography>
+              {this.iterateGenres}
+            
 
 
           </Container>

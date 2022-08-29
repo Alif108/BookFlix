@@ -7,19 +7,19 @@ import Carousel from 'react-bootstrap/Carousel';
 import { Container } from "@mui/material";
 
 const ContinueItem = props => (
-  <Container onClick={() => window.location.href = '/books/'+props.item._id+"/read"}>
+  <Container onClick={() => window.location.href = '/books/'+props.item._id+"/read"}  style={{width:200, margin:0, padding:0}}>
     <img src= { 'http://localhost:5000'+props.item.coverLocation } style={{height:180, width:120}}/>
   </Container>
 )
 
 const PopularItem = props => (
-  <Container onClick={() => window.location.href = '/books/'+props.item._id+"/read"}>
+  <Container onClick={() => window.location.href = '/books/'+props.item._id+"/read"}  style={{width:200, margin:0, padding:0}}>
     <img src= { 'http://localhost:5000'+props.item.coverLocation } style={{height:180, width:120}}/>
   </Container>
 )
 
 const NewItem = props => (
-  <Container onClick={() => window.location.href = '/books/'+props.item._id+"/read"}>
+  <Container onClick={() => window.location.href = '/books/'+props.item._id+"/read"}  style={{width:200, margin:0, padding:0}}>
     <img src= { 'http://localhost:5000'+props.item.coverLocation } style={{height:180, width:120}}/>
   </Container>
 )
@@ -142,8 +142,7 @@ class UserHome extends Component {
   showContinueReadingItems() {
     if(this.state.continueReadingItems.length > 0){
       return (
-        <Container fluid>
-          <h4>Continue Reading</h4>
+        <Container style={{display:"flex", flexDirection:"row", padding:10, alignContent:"flex-start"}}>
           {this.contReadingItems()}
         </Container>
       );
@@ -159,8 +158,7 @@ class UserHome extends Component {
   showPopularItems() {
     if(this.state.popularItems.length > 0){
       return (
-        <Container fluid>
-          <h4>Popular Now</h4>
+        <Container  style={{display:"flex", flexDirection:"row", padding:10, alignContent:"flex-start"}} fluid>
           {this.popularItems()}
         </Container>
       );
@@ -176,8 +174,7 @@ class UserHome extends Component {
   showNewItems() {
     if(this.state.newItems.length > 0){
       return (
-        <Container fluid>
-          <h4>New</h4>
+        <Container style={{display:"flex", flexDirection:"row", padding:10, flexFlow:"row nowrap"}} fluid>
           {this.newItems()}
         </Container>
       );
@@ -189,7 +186,7 @@ class UserHome extends Component {
     let role = this.state.user.role;
     if(role === "Basic")
       return (
-          <div className="UserHome">
+          <div className="UserHome" style={{backgroundColor:"#fff0cc"}}>
             <br/><br/>
             <div className="container">
                 <div style={{display:"flex",alignItems: "center",justifyContent:"center"}}> 
@@ -197,12 +194,15 @@ class UserHome extends Component {
                 </div>
                 <br/><br/>
                 <div>
+                    <h5><i style={{color:"grey"}}>Continue Reading</i></h5>
                     {this.showContinueReadingItems()}
                 </div>
                 <div>
+                    <h5><i style={{color:"grey"}}>Popular Now</i></h5>
                     {this.showPopularItems()}
                 </div>
                 <div>
+                    <h5><i style={{color:"grey"}}>New Items</i></h5>
                     {this.showNewItems()}
                 </div>
             </div>

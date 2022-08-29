@@ -17,10 +17,10 @@ function iterateGenres(genres)
   const rows = []
   for(var i = 0; i < genres.length; i++)
   {
-    rows.push(<h6>{genres[i].name}</h6>)
+    rows.push(<Typography style={{fontSize:14, color:"white", fontFamily:'Roboto', padding:"0px 5px 0px 5px", margin:2, backgroundColor:"orange", borderRadius:20}}>{genres[i].name}</Typography>)
   }
   return(
-    <Row>{rows}</Row>
+    <div style={{display:"flex", flexDirection:"row", padding:0}}>{rows}</div>
   );
 }
 
@@ -36,7 +36,7 @@ const Book = props => (
       <Col xs={8} style={{margin:0, paading:0}} fluid>
       <Typography style={{fontSize:26, fontFamily:'Roboto'}}>{props.book.title}</Typography>
       <Typography style={{fontSize:18, color:"red", fontFamily:'Roboto'}}>{props.book.author.name}</Typography>
-      <Typography style={{fontSize:14, color:"brown", fontFamily:'Roboto'}}>{iterateGenres(props.book.genre)}</Typography>
+      {iterateGenres(props.book.genre)}
       <Typography class="text-truncate" style={{fontSize:14, fontFamily:'Roboto'}}>{props.book.description}</Typography>
               
       </Col>
