@@ -44,16 +44,6 @@ handleClickLogout(event)
   logout.LogOut();
 }
 
-// renderHomeLogo() {
-//   if(this.state.loggedIn) {
-//     if(this.state.role === "Admin")
-//       return <Link to="/admin" className="navbar-brand"><img src="http://localhost:5000/images/logo.png" alt="BOOKFLIX" height='40px' width='120px'/></Link>
-//     else if(this.state.role === "Basic")
-//       return <Link to="/user" className="navbar-brand"><img src="http://localhost:5000/images/logo.png" alt="BOOKFLIX" height='40px' width='120px'/></Link>
-//   }
-//   else
-//     return <Link to="/" className="navbar-brand"><img src="http://localhost:5000/images/logo.png" alt="BOOKFLIX" height='40px' width='120px'/></Link>
-// }
 renderHomeLogo() {
   if(this.state.loggedIn){
     if(this.state.role === "Admin")
@@ -81,6 +71,34 @@ renderHomeLogo() {
   }
 }
 
+renderNavbarDropdown() {
+  if(this.state.role === "Admin")
+  {
+    return(
+      <NavDropdown title={this.state.username} id="basic-nav-dropdown" menuVariant="dark" align="end" style={{color: "white" , marginLeft: "auto", paddingRight:20}}>
+              {/* <NavDropdown.Item href="/user/profile">View Profile</NavDropdown.Item> */}
+              <NavDropdown.Item href="/admin/addbook">Add Book</NavDropdown.Item>
+              <NavDropdown.Item href="/admin/addAuthor">Add Author</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item onClick={this.handleClickLogout} style={{color: "#ff7700"}}>Logout</NavDropdown.Item>
+            </NavDropdown>
+    );
+  }
+  else
+  {
+    return(
+      <NavDropdown title={this.state.username} id="basic-nav-dropdown" menuVariant="dark" align="end" style={{color: "white" , marginLeft: "auto", paddingRight:20}}>
+              {/* <NavDropdown.Item href="/user/profile">View Profile</NavDropdown.Item> */}
+              <NavDropdown.Item href="/packages/myPackage">My Package</NavDropdown.Item>
+              <NavDropdown.Item href="/books/user/getMyList/">My List</NavDropdown.Item>
+              <NavDropdown.Item href="/requestBook/myrequests">My Requests</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item onClick={this.handleClickLogout} style={{color: "#ff7700"}}>Logout</NavDropdown.Item>
+            </NavDropdown>
+    );
+  }
+}
+
 render() {
 
   // navbar if user is logged in
@@ -91,24 +109,25 @@ render() {
   logoutButton = <button onClick={this.handleClickLogout}>Logout</button>;
 
   let link1, link2, link3, link4, link5;
-  let username = this.state.username;
   if (this.state.role === "Admin") {
     link1 = <Link to="/books" className="nav-link">Books</Link>;
-    link2 = <Link to="/admin/addbook" className="nav-link">Add Book</Link>;
+    // link2 = <Link to="/admin/addbook" className="nav-link">Add Book</Link>;
+    link2 =  <Link to="/authors" className="nav-link">Author</Link>;;
     link3 = <Link to="/packages" className="nav-link">Manage Packs</Link>;
     link4 = <Link to="/requestBook/requests" className="nav-link">Requests</Link>;	
-    link5 = <Link to="/admin/addAuthor" className="nav-link">Add Author</Link>;
+    // link5 = <Link to="/admin/addAuthor" className="nav-link">Add Author</Link>;
+    link5 = "";
   } else {	
     link1 = <Link to="/books/" className="nav-link">Books</Link>;	
-    link2 = <Link to="/books/user/getMyList/" className="nav-link">My List</Link>;	
-    link3 = <Link to="/requestBook/" className="nav-link">Request a Book</Link>;
-    link4 = <Link to="/requestBook/myrequests" className="nav-link">My Requests</Link>;
-    link5 = <Link to="/authors" className="nav-link">Author</Link>;
+    // link2 = <Link to="/books/user/getMyList/" className="nav-link">My List</Link>;	
+    link2 = "";	
+    link3 = <Link to="/authors" className="nav-link">Author</Link>;
+    // link4 = <Link to="/requestBook/myrequests" className="nav-link">My Requests</Link>;
+    link4 = "";
+    link5 = <Link to="/requestBook/" className="nav-link">Request a Book</Link>;
   }
     
   return(
-
-
       <Navbar bg="dark" variant="dark" style={{height:"70px"}}>
     
         
@@ -116,7 +135,6 @@ render() {
           {this.renderHomeLogo()}
 
           <Nav className="me-auto">
-
 
           <Nav.Link style={{whiteSpace:'nowrap'}}>{link1}</Nav.Link>
           <Nav.Link style={{whiteSpace:'nowrap'}}>{link2}</Nav.Link>
@@ -137,20 +155,15 @@ render() {
             </Container>
             */}
             
-            <NavDropdown title={username} id="basic-nav-dropdown" menuVariant="dark" align="end" style={{color: "white" , marginLeft: "auto", paddingRight:20}}>
-              <NavDropdown.Item href="/user/profile">View Profile</NavDropdown.Item>
-              {/* <NavDropdown.Item href="#">Settings</NavDropdown.Item> */}
-              <NavDropdown.Item href="/packages/myPackage">My Package</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item onClick={this.handleClickLogout} style={{color: "#ff7700"}}>Logout</NavDropdown.Item>
-            </NavDropdown>
+           
+            {this.renderNavbarDropdown()}
 
 
 
             <Dropdown variant="dark" align="end">
-              <Dropdown.Toggle id="dropdown-button-drop-start" variant="dark" style={{ width:60, margin:0, paddingRight:20}}>
+              {/* <Dropdown.Toggle id="dropdown-button-drop-start" variant="dark" style={{ width:60, margin:0, paddingRight:20}}>
               <img src="http://localhost:5000/images/bell.png" alt="notification" height='25px'/>     
-              </Dropdown.Toggle>
+              </Dropdown.Toggle> */}
 
               <Dropdown.Menu>
                 <i style={{margin:10, color:'grey'}}>Notifications</i>

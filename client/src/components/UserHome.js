@@ -189,9 +189,9 @@ class UserHome extends Component {
           <div className="UserHome" style={{backgroundColor:"#fff0cc"}}>
             <br/><br/>
             <div className="container">
-                <div style={{display:"flex",alignItems: "center",justifyContent:"center"}}> 
+                {/* <div style={{display:"flex",alignItems: "center",justifyContent:"center"}}> 
                   <ControlledCarousel />
-                </div>
+                </div> */}
                 <br/><br/>
                 <div>
                     <h5><i style={{color:"grey"}}>Continue Reading</i></h5>

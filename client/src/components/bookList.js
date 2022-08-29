@@ -1,4 +1,5 @@
 import React, { Component }  from "react";
+import { Link } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
@@ -6,11 +7,6 @@ import Typography from '@mui/material/Typography';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from "react-bootstrap/esm/Container";
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import { margin } from "@mui/system";
 
 function iterateGenres(genres)
 {
@@ -38,7 +34,6 @@ const Book = props => (
       <Typography style={{fontSize:18, color:"red", fontFamily:'Roboto'}}>{props.book.author.name}</Typography>
       {iterateGenres(props.book.genre)}
       <Typography class="text-truncate" style={{fontSize:14, fontFamily:'Roboto'}}>{props.book.description}</Typography>
-              
       </Col>
     </Row>
   </Container>
@@ -57,6 +52,7 @@ export default class BookList extends Component{
     };
 
     this.searchBook = this.searchBook.bind(this);
+    this.onChangeRadio = this.onChangeRadio.bind(this);
   }
 
   async componentDidMount(){
@@ -115,6 +111,40 @@ export default class BookList extends Component{
     }
   }
 
+  onChangeRadio(event){
+    console.log(event.target.value);
+
+    if(this.state.query !== "" && event.target.value !== "All"){
+      let filterBooks = allBooks.filter(book => {
+        if(event.target.value === "Book"){
+          return book.title.toLowerCase().includes(this.state.query.toLowerCase());
+        }
+        else if(event.target.value === "Author"){
+          return book.author.name.toLowerCase().includes(this.state.query.toLowerCase());
+        }
+        else if(event.target.value === "Genre"){
+          return book.genre.some(genre => genre.name.toLowerCase().includes(this.state.query.toLowerCase()));
+        }
+      }).map(book => { return book; });
+
+      this.setState({
+        books: filterBooks,
+      });
+    }
+
+  }
+
+  renderRadioButtons(){
+    return (
+      <div onChange={this.onChangeRadio}>
+        <input type="radio" value="Book" name="search" /> Book Only
+        <input type="radio" value="Author" name="search" /> Author Only
+        <input type="radio" value="Genre" name="search" /> Genre Only
+        <input type="radio" value="All" name="search" /> All 
+      </div>
+    );
+  }
+
   render(){
     return (
       <Container style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent:"center"}}>
@@ -124,6 +154,7 @@ export default class BookList extends Component{
           <input class="form-control mr-sm-2" type="search" placeholder="Search by Title or Author or Genre" aria-label="Search" onChange={event => this.setState({query: event.target.value})} value={this.state.query}/>
           <Button variant='btn btn-warning my-2 my-sm-0' type="submit" onClick={this.searchBook}>Search</Button>
           </Form>
+          { this.renderRadioButtons() }
         </Container>
         <br />
         <Container fluid>
