@@ -48,7 +48,7 @@ renderHomeLogo() {
   if(this.state.loggedIn){
     if(this.state.role === "Admin")
     {
-      return(<Navbar.Brand href="/admin" style={{paddingLeft:'2vw',paddingRight:'2vw'}}>
+      return(<Navbar.Brand href="/admin/stats/books" style={{paddingLeft:'2vw',paddingRight:'2vw'}}>
       <img
         alt="BOOKFLIX"
         src="http://localhost:5000/images/logo.png"

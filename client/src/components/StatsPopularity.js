@@ -216,7 +216,7 @@ class StatsBooks extends Component {
     /*    <Container style={{padding:0, margin:0}} fluid>
         <NavigationBar />
 
-     */    
+        
         <Container style={{display: "flex", flexDirection: "row",  height:'calc(100vh - 70px)', padding:0}} fluid>
           <Container style={{ flex: 1,  flexDirection: "column", backgroundColor: "orange", padding: '3vh'}} >
 
@@ -228,8 +228,11 @@ class StatsBooks extends Component {
             Finance
           </Link>
 
-          </Container>
-          <Container style={{ flex: 6, backgroundColor: "#fff0cc" , padding: '5vh'}} >
+
+          */ 
+          <Container style={{display: "flex", flexDirection: "row", backgroundColor: "#fff0cc" ,   height:'calc(100vh - 70px)', padding:0}} fluid>
+          
+          <Container style={{ backgroundColor: "#fff0cc" , padding: '5vh'}} >
             {/* Form to take input */}
             <Form style={{display:"flex", flexDirection:"row", alignItem:"center", justifyContent:"center"}}>
               {/* dropdown field with label */}
