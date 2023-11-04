@@ -1,6 +1,0 @@
-- make "isSubscribedUser" in login.js to retrieve the current running package (probably by adding a boolean field "Expired" in "Transactions")
-- make the "Expired" field false automatically when time is over (How?)
-
-
-- make the search in navbar functional
-- resolve errors of home page and navbar
